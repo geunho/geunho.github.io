@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="referrer" content="no-referrer">
+    
+
+    
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans:400|Old+Standard+TT:400' rel='stylesheet' type='text/css'>
+    
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <title>
+      
+      
+         Hbase, Phoenix - PhoenixIOException: The system cannot find the path specified 
+      
+    </title>
+    <link rel="canonical" href="https://blog.geunho.dev/posts/hbase-phoenix-troubleshoot-1/">
+
+    <style>
+  * {
+    border:0;
+    font:inherit;
+    font-size:100%;
+    vertical-align:baseline;
+    margin:0;
+    padding:0;
+    color: black;
+    text-decoration-skip: ink;
+  }
+
+  body {
+    font-family:'Open Sans', 'Myriad Pro', Myriad, sans-serif;
+    font-size:17px;
+    line-height:160%;
+    color:#1d1313;
+    max-width:700px;
+    margin:auto;
+  }
+
+  .footnotes {
+    margin: 30px 0 40px 0;
+  }
+  sup.footnote-ref {
+    font-size: 0.85em;
+    vertical-align: top;
+    position: relative;
+    top: -0.5em;
+  }
+
+  footer {
+    font-size: x-small;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    margin: 20px 0;
+  }
+
+  a img {
+    border:none;
+  }
+
+  img {
+    margin: 10px auto 10px auto;
+    max-width: 75%;
+    display: block;
+  }
+
+  .left-justify {
+    float: left;
+  }
+
+  .right-justify {
+    float:right;
+  }
+
+  pre, code {
+    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    background-color: #f7f7f7;
+  }
+
+  code {
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  pre {
+    margin-top: 0;
+    margin-bottom: 16px;
+    word-wrap: normal;
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+  }
+
+  pre>code {
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
+  }
+
+  pre code {
+    display: inline;
+    max-width: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    line-height: inherit;
+    word-wrap: normal;
+    background-color: transparent;
+    border: 0;
+  }
+
+  pre code::before,
+  pre code::after {
+    content: normal;
+  }
+
+  em,q,em,dfn {
+    font-style:italic;
+  }
+
+  .sans,html .gist .gist-file .gist-meta {
+    font-family:"Open Sans","Myriad Pro",Myriad,sans-serif;
+  }
+
+  .mono,pre,code,tt,p code,li code {
+    font-family:Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
+  }
+
+  .heading,.serif,h1,h2,h3 {
+    font-family:"Old Standard TT",serif;
+  }
+
+  strong {
+    font-weight:600;
+  }
+
+  q:before {
+    content:"\201C";
+  }
+
+  q:after {
+    content:"\201D";
+  }
+
+  del,s {
+    text-decoration:line-through;
+  }
+
+  blockquote {
+    font-family:"Old Standard TT",serif;
+    text-align:center;
+    padding:50px;
+  }
+
+  blockquote p {
+    display:inline-block;
+    font-style:italic;
+  }
+
+  blockquote:before,blockquote:after {
+    font-family:"Old Standard TT",serif;
+    content:'\201C';
+    font-size:35px;
+    color:#403c3b;
+  }
+
+  blockquote:after {
+    content:'\201D';
+  }
+
+  hr {
+    width:40%;
+    height: 1px;
+    background:#403c3b;
+    margin: 25px auto;
+  }
+
+  h1 {
+    font-size:35px;
+  }
+
+  h2 {
+    font-size:28px;
+  }
+
+  h3 {
+    font-size:22px;
+    margin-top:18px;
+  }
+
+  h1 a,h2 a,h3 a {
+    text-decoration:none;
+  }
+
+  h1,h2 {
+    margin-top:28px;
+  }
+
+  #sub-header, time {
+    color:#403c3b;
+    font-size:13px;
+  }
+
+  #sub-header {
+    margin: 0 4px;
+  }
+
+  #nav h1 a {
+    font-size:35px;
+    color:#1d1313;
+    line-height:120%;
+  }
+
+  .posts_listing a,#nav a {
+    text-decoration: none;
+  }
+
+  li {
+    margin-left: 20px;
+  }
+
+  ul li {
+    margin-left: 5px;
+  }
+
+  ul li {
+    list-style-type: none;
+  }
+
+  ul li:before {
+    content:"\2022 \0020";
+  }
+
+  ul li ul li:before {
+    content:"\2043 \0020";
+  }
+
+  #nav ul li:before, .posts_listing li:before {
+    content:'';
+    margin-right:0;
+  }
+
+  #content {
+    text-align:left;
+    width:100%;
+    font-size:15px;
+    padding:60px 0 80px;
+  }
+
+  #content h1,#content h2 {
+    margin-bottom:5px;
+  }
+
+  #content h2 {
+    font-size:25px;
+  }
+
+  #content .entry-content {
+    margin-top:15px;
+  }
+
+  #content time {
+    margin-left:3px;
+  }
+
+  #content h1 {
+    font-size:30px;
+  }
+
+  .highlight {
+    margin: 10px 0;
+  }
+
+  .posts_listing {
+    margin:0 0 50px;
+  }
+
+  .posts_listing li {
+    margin:0 0 25px 15px;
+  }
+
+  .posts_listing li a:hover,#nav a:hover {
+    text-decoration: underline;
+  }
+
+  #nav {
+    text-align:center;
+    position:static;
+    margin-top:60px;
+  }
+
+  #nav ul {
+    display: table;
+    margin: 8px auto 0 auto;
+  }
+
+  #nav li {
+    list-style-type:none;
+    display:table-cell;
+    font-size:15px;
+    padding: 0 20px;
+  }
+
+  #links {
+    margin: 50px 0 0 0;
+  }
+
+  #links :nth-child(2) {
+    float:right;
+  }
+
+  img.avatar {
+    border-radius: 50%;
+    width: 300px;
+  }
+
+   
+  .social_id {
+    color:#9b9b9b; 
+    font-size:10px;
+    text-align:center;
+  }
+  .social-icons {
+    display: flex;
+    justify-content: center;
+  }
+  .social-icons__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  
+  .social-icons__icon--linkedin {
+    background-image: url(/icons/linkedin.svg);
+    margin-right: 2rem;    
+  }
+  .social-icons__icon--github {
+    background-image: url(/icons/github.svg);
+    margin-right: 2rem; 
+  }
+  .social-icons__icon--gmail {
+    background-image: url(/icons/gmail.svg);
+  }
+
+  .rss-icon {
+    display: flex;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/rss.svg);
+  }
+
+  #not-found {
+    display: flex;
+  }
+  .not-found__icon--docker {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-right: 0.5em;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/docker.svg);
+  }
+
+  nav#TableOfContents {
+    margin: 20px 0 50px 0;
+  }
+
+  @media (max-width: 750px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 80%;
+    }
+
+    #nav h1 a {
+      font-size:28px;
+    }
+
+    #nav li {
+      font-size:13px;
+      padding: 0 15px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:50px;
+      font-size:14px;
+    }
+
+    #content h1 {
+      font-size:25px;
+    }
+
+    #content h2 {
+      font-size:22px;
+    }
+
+    .posts_listing li div {
+      font-size:12px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    #nav h1 a {
+      font-size:22px;
+    }
+
+    #nav li {
+      font-size:12px;
+      padding: 0 10px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:20px;
+      font-size:12px;
+    }
+
+    #content h1 {
+      font-size:20px;
+    }
+
+    #content h2 {
+      font-size:18px;
+    }
+
+    .posts_listing li div{
+      font-size:12px;
+    }
+
+    img.avatar {
+      border-radius: 50%;
+      width: 170px;
+    }
+  }
+</style>
+
+
+    
+  </head>
+
+  <body>
+    <section id=nav>
+      <h1><a href="/">Blog · 김근호(Kim, Geunho)</a></h1>
+      <ul>
+        
+          <li><a href="/about">About</a></li>
+        
+          <li><a href="/posts">Posts</a></li>
+        
+          <li><a href="/thoughts">Thoughts</a></li>
+        
+        <a class="rss-icon" href="/index.xml"></a>
+      </ul>
+    </section>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-146312497-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+<section id="content">
+  <h1> Hbase, Phoenix - PhoenixIOException: The system cannot find the path specified </h1>
+
+  
+    <div id="sub-header">
+      17 June 2016 · 1 minute read
+    </div>
+  
+
+  <nav id="TableOfContents">
+<ul>
+<li><a href="#발생원인-및-해결방법">발생원인 및 해결방법</a></li>
+</ul>
+</nav>
+
+  <div class="entry-content">
+    
+
+<h1 id="발생원인-및-해결방법">발생원인 및 해결방법</h1>
+
+<p>윈도우에서 Phoenix에 jdbc client로 접속 후 <code>order by</code> 혹은 <code>group by</code>가 포함된 쿼리를 수행하면 아래와 같은 에러 메시지가 발생한다.</p>
+<div class="highlight"><pre class="chroma">PhoenixIOException: The system cannot find the path specified</pre></div>
+<p>메시지 내용 그대로 특정 파일 경로를 찾지 못해 발생하는 IOException인데, 특이한 점은 위와 같은 집계 절이 포함된 쿼리에 대해서만 발생 한다는 것이다. 이는 Phoenix의 쿼리 처리 방법과 관련이 있다. Phoenix 쿼리 서버에 쿼리를 요청하면,</p>
+
+<ol>
+<li>Hbase 서버의 데이터를 scan (full or range)</li>
+<li>필요한 경우 client에서 데이터 처리 (merge, limit, …)<br /></li>
+</ol>
+
+<p>를 하게 된다. 이는 explain 명령어를 통해 쿼리 실행 계획을 보고 알 수 있다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">explain</span>
+<span class="k">select</span> <span class="k">host</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="k">host</span><span class="p">)</span> <span class="k">as</span> <span class="n">cnt</span> <span class="k">from</span> <span class="n">logs</span>
+<span class="k">where</span> <span class="k">timestamp</span> <span class="o">&gt;</span> <span class="n">to_date</span><span class="p">(</span><span class="err">‘</span><span class="mi">2016</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">17</span><span class="err">’</span><span class="p">)</span>
+<span class="k">group</span> <span class="k">by</span> <span class="k">host</span>
+<span class="k">order</span> <span class="k">by</span> <span class="k">host</span>
+
+<span class="n">PLAN</span>
+<span class="err">——————————————</span>
+<span class="n">CLIENT</span> <span class="mi">2</span><span class="o">-</span><span class="n">CHUNK</span> <span class="n">PARALLEL</span> <span class="mi">2</span><span class="o">-</span><span class="n">WAY</span> <span class="n">RANGE</span> <span class="n">SCAN</span>  <span class="err">–</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">SERVER</span> <span class="k">AGGREGATE</span> <span class="k">INTO</span> <span class="k">DISTINCT</span> <span class="k">ROWS</span>  <span class="err">–</span> <span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">CLIENT</span> <span class="n">MERGE</span> <span class="n">SORT</span>  <span class="err">–</span> <span class="p">(</span><span class="mi">3</span><span class="p">)</span></code></pre></div>
+<p>클라이언트에서 범위 스캔 후 (1) 서버에서 집계를 하고 (2) 마지막으로 다시 클라이언트에서 병합 정렬을 (3) 수행한다.</p>
+
+<p>마지막 (3) 실행시 임시 폴더를 사용하게 되는데 이 값이 4.6.0 이하 버전까지는 <code>/tmp</code> 라는 정적 상수 값으로 설정되어 있었다. (<code>static final String DEFAULT_SPOOL_DIR = &quot;/tmp&quot;</code>)<br />
+이는 <a href="https://issues.apache.org/jira/browse/PHOENIX-2348">https://issues.apache.org/jira/browse/PHOENIX-2348</a> 에서 보고되었고 4.7.0 버전에서 수정되었는데, 이전 버전의 Phoenix client를 윈도우 환경에서 사용할 경우 위와 같이 에러가 발생할 수 있다.</p>
+
+<p>결국 해결 방법은 간단한데, client가 실행되는 위치의 드라이브에 /tmp 폴더를 생성해주면 된다.</p>
+
+  </div>
+
+  
+    <div id="sub-header">
+      Updated 19 August 2019
+    </div>
+  
+
+  <div id="links">
+    
+      <a class="basic-alignment left" href="https://blog.geunho.dev/posts/kafa-troubleshoot-2/">&laquo; Kafka - org.apache.zookeeper.KeeperException$NoNodeException: KeeperErrorCode = NoNode for $BROKER_PATH</a>
+    
+    
+      <a class="basic-alignment left" href="https://blog.geunho.dev/posts/grafana-influxdb-telegraf-monitoring-alerting/">Grafana, Influxdb, Telegraf - 서버의 관제(Monitoring)와 알림(Alerting) &raquo;</a>
+    
+  </div>
+</section>
+<section id="comment">
+  <script src="https://utteranc.es/client.js"
+    repo="geunho/blog"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>  
+</section>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2013-2020 Copyright Geunho Kim. All rights reserved.
+    </p>
+  </div>
+</footer>
+

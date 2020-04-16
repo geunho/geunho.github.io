@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="referrer" content="no-referrer">
+    
+
+    
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans:400|Old+Standard+TT:400' rel='stylesheet' type='text/css'>
+    
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <title>
+      
+      
+         Posts 
+      
+    </title>
+    <link rel="canonical" href="https://blog.geunho.dev/posts/">
+
+    <style>
+  * {
+    border:0;
+    font:inherit;
+    font-size:100%;
+    vertical-align:baseline;
+    margin:0;
+    padding:0;
+    color: black;
+    text-decoration-skip: ink;
+  }
+
+  body {
+    font-family:'Open Sans', 'Myriad Pro', Myriad, sans-serif;
+    font-size:17px;
+    line-height:160%;
+    color:#1d1313;
+    max-width:700px;
+    margin:auto;
+  }
+
+  .footnotes {
+    margin: 30px 0 40px 0;
+  }
+  sup.footnote-ref {
+    font-size: 0.85em;
+    vertical-align: top;
+    position: relative;
+    top: -0.5em;
+  }
+
+  footer {
+    font-size: x-small;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    margin: 20px 0;
+  }
+
+  a img {
+    border:none;
+  }
+
+  img {
+    margin: 10px auto 10px auto;
+    max-width: 75%;
+    display: block;
+  }
+
+  .left-justify {
+    float: left;
+  }
+
+  .right-justify {
+    float:right;
+  }
+
+  pre, code {
+    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    background-color: #f7f7f7;
+  }
+
+  code {
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  pre {
+    margin-top: 0;
+    margin-bottom: 16px;
+    word-wrap: normal;
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+  }
+
+  pre>code {
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
+  }
+
+  pre code {
+    display: inline;
+    max-width: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    line-height: inherit;
+    word-wrap: normal;
+    background-color: transparent;
+    border: 0;
+  }
+
+  pre code::before,
+  pre code::after {
+    content: normal;
+  }
+
+  em,q,em,dfn {
+    font-style:italic;
+  }
+
+  .sans,html .gist .gist-file .gist-meta {
+    font-family:"Open Sans","Myriad Pro",Myriad,sans-serif;
+  }
+
+  .mono,pre,code,tt,p code,li code {
+    font-family:Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
+  }
+
+  .heading,.serif,h1,h2,h3 {
+    font-family:"Old Standard TT",serif;
+  }
+
+  strong {
+    font-weight:600;
+  }
+
+  q:before {
+    content:"\201C";
+  }
+
+  q:after {
+    content:"\201D";
+  }
+
+  del,s {
+    text-decoration:line-through;
+  }
+
+  blockquote {
+    font-family:"Old Standard TT",serif;
+    text-align:center;
+    padding:50px;
+  }
+
+  blockquote p {
+    display:inline-block;
+    font-style:italic;
+  }
+
+  blockquote:before,blockquote:after {
+    font-family:"Old Standard TT",serif;
+    content:'\201C';
+    font-size:35px;
+    color:#403c3b;
+  }
+
+  blockquote:after {
+    content:'\201D';
+  }
+
+  hr {
+    width:40%;
+    height: 1px;
+    background:#403c3b;
+    margin: 25px auto;
+  }
+
+  h1 {
+    font-size:35px;
+  }
+
+  h2 {
+    font-size:28px;
+  }
+
+  h3 {
+    font-size:22px;
+    margin-top:18px;
+  }
+
+  h1 a,h2 a,h3 a {
+    text-decoration:none;
+  }
+
+  h1,h2 {
+    margin-top:28px;
+  }
+
+  #sub-header, time {
+    color:#403c3b;
+    font-size:13px;
+  }
+
+  #sub-header {
+    margin: 0 4px;
+  }
+
+  #nav h1 a {
+    font-size:35px;
+    color:#1d1313;
+    line-height:120%;
+  }
+
+  .posts_listing a,#nav a {
+    text-decoration: none;
+  }
+
+  li {
+    margin-left: 20px;
+  }
+
+  ul li {
+    margin-left: 5px;
+  }
+
+  ul li {
+    list-style-type: none;
+  }
+
+  ul li:before {
+    content:"\2022 \0020";
+  }
+
+  ul li ul li:before {
+    content:"\2043 \0020";
+  }
+
+  #nav ul li:before, .posts_listing li:before {
+    content:'';
+    margin-right:0;
+  }
+
+  #content {
+    text-align:left;
+    width:100%;
+    font-size:15px;
+    padding:60px 0 80px;
+  }
+
+  #content h1,#content h2 {
+    margin-bottom:5px;
+  }
+
+  #content h2 {
+    font-size:25px;
+  }
+
+  #content .entry-content {
+    margin-top:15px;
+  }
+
+  #content time {
+    margin-left:3px;
+  }
+
+  #content h1 {
+    font-size:30px;
+  }
+
+  .highlight {
+    margin: 10px 0;
+  }
+
+  .posts_listing {
+    margin:0 0 50px;
+  }
+
+  .posts_listing li {
+    margin:0 0 25px 15px;
+  }
+
+  .posts_listing li a:hover,#nav a:hover {
+    text-decoration: underline;
+  }
+
+  #nav {
+    text-align:center;
+    position:static;
+    margin-top:60px;
+  }
+
+  #nav ul {
+    display: table;
+    margin: 8px auto 0 auto;
+  }
+
+  #nav li {
+    list-style-type:none;
+    display:table-cell;
+    font-size:15px;
+    padding: 0 20px;
+  }
+
+  #links {
+    margin: 50px 0 0 0;
+  }
+
+  #links :nth-child(2) {
+    float:right;
+  }
+
+  img.avatar {
+    border-radius: 50%;
+    width: 300px;
+  }
+
+   
+  .social_id {
+    color:#9b9b9b; 
+    font-size:10px;
+    text-align:center;
+  }
+  .social-icons {
+    display: flex;
+    justify-content: center;
+  }
+  .social-icons__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  
+  .social-icons__icon--linkedin {
+    background-image: url(/icons/linkedin.svg);
+    margin-right: 2rem;    
+  }
+  .social-icons__icon--github {
+    background-image: url(/icons/github.svg);
+    margin-right: 2rem; 
+  }
+  .social-icons__icon--gmail {
+    background-image: url(/icons/gmail.svg);
+  }
+
+  .rss-icon {
+    display: flex;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/rss.svg);
+  }
+
+  #not-found {
+    display: flex;
+  }
+  .not-found__icon--docker {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-right: 0.5em;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/docker.svg);
+  }
+
+  nav#TableOfContents {
+    margin: 20px 0 50px 0;
+  }
+
+  @media (max-width: 750px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 80%;
+    }
+
+    #nav h1 a {
+      font-size:28px;
+    }
+
+    #nav li {
+      font-size:13px;
+      padding: 0 15px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:50px;
+      font-size:14px;
+    }
+
+    #content h1 {
+      font-size:25px;
+    }
+
+    #content h2 {
+      font-size:22px;
+    }
+
+    .posts_listing li div {
+      font-size:12px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    #nav h1 a {
+      font-size:22px;
+    }
+
+    #nav li {
+      font-size:12px;
+      padding: 0 10px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:20px;
+      font-size:12px;
+    }
+
+    #content h1 {
+      font-size:20px;
+    }
+
+    #content h2 {
+      font-size:18px;
+    }
+
+    .posts_listing li div{
+      font-size:12px;
+    }
+
+    img.avatar {
+      border-radius: 50%;
+      width: 170px;
+    }
+  }
+</style>
+
+
+    
+        <atom:link href="https://blog.geunho.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+  </head>
+
+  <body>
+    <section id=nav>
+      <h1><a href="/">Blog · 김근호(Kim, Geunho)</a></h1>
+      <ul>
+        
+          <li><a href="/about">About</a></li>
+        
+          <li><a href="/posts">Posts</a></li>
+        
+          <li><a href="/thoughts">Thoughts</a></li>
+        
+        <a class="rss-icon" href="/index.xml"></a>
+      </ul>
+    </section>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-146312497-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+<section id=content>
+  <ul class=posts_listing>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/docker-exit-137/">Docker 컨테이너 비정상 종료 문제 - non-zero exit (137)</a></h2>
+        <div id=date>
+          <time>April 2020</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/mean-median-percentile/">관제에서 평균값, 중앙값, 그리고 백분위</a></h2>
+        <div id=date>
+          <time>November 2019</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/docker-old-os-editor/">Docker - 오래된 버전의 OS 베이스 이미지에 텍스트 편집기 설치하기</a></h2>
+        <div id=date>
+          <time>November 2019</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/pkix-path-building-failed/">Java - PKIX path building failed</a></h2>
+        <div id=date>
+          <time>November 2019</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/vue-instance-and-components/">Vuejs 정리 1 - 인스턴스와 컴포넌트</a></h2>
+        <div id=date>
+          <time>September 2019</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/docker-mac-crash/">Docker for Mac 오류 - UNIX error exception: 17</a></h2>
+        <div id=date>
+          <time>September 2019</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/container-based-test-env/">Testcontainers - 컨테이너 기반 테스트 환경</a></h2>
+        <div id=date>
+          <time>September 2019</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/hadoop-docker-test-env-hdfs/">Docker로 Hadoop 테스트 환경 구축하기 - HDFS</a></h2>
+        <div id=date>
+          <time>August 2019</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/mac-terminal-text-edit/">Mac Terminal에서 텍스트 편집기 바로 열기</a></h2>
+        <div id=date>
+          <time>August 2019</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/git-tips-1/">Git Tips - 과거 커밋으로부터 텍스트 검색하기</a></h2>
+        <div id=date>
+          <time>August 2019</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/git-tips-2/">Git Tips - 로컬 커밋 복구하기</a></h2>
+        <div id=date>
+          <time>August 2019</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/hadoop-yarn/">Hadoop YARN</a></h2>
+        <div id=date>
+          <time>August 2019</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/hadoop-datanode/">Hadoop DataNode</a></h2>
+        <div id=date>
+          <time>July 2019</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/hadoop-namenode/">Hadoop NameNode</a></h2>
+        <div id=date>
+          <time>July 2019</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/microservice-decomposing/">마이크로서비스 아키텍처(MSA) 경계 구분하기</a></h2>
+        <div id=date>
+          <time>September 2017</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/microservice-challenges/">마이크로서비스 아키텍처(MSA) 도전과제들</a></h2>
+        <div id=date>
+          <time>September 2017</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/rpm-install-ubuntu/">Ubuntu에서 RPM 파일 설치하기</a></h2>
+        <div id=date>
+          <time>February 2017</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/grafana-influxdb-telegraf-monitoring-alerting/">Grafana, Influxdb, Telegraf - 서버의 관제(Monitoring)와 알림(Alerting)</a></h2>
+        <div id=date>
+          <time>January 2017</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/hbase-phoenix-troubleshoot-1/">Hbase, Phoenix - PhoenixIOException: The system cannot find the path specified</a></h2>
+        <div id=date>
+          <time>June 2016</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/kafa-troubleshoot-2/">Kafka - org.apache.zookeeper.KeeperException$NoNodeException: KeeperErrorCode = NoNode for $BROKER_PATH</a></h2>
+        <div id=date>
+          <time>June 2016</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/kafka-troubleshoot-1/">kafka - kafka.common.InconsistentBrokerIdException: Configured brokerId $id doesn’t match stored brokerId $id in meta.properties</a></h2>
+        <div id=date>
+          <time>May 2016</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/filesystem-permission/">Linux 파일 시스템 접근 권한</a></h2>
+        <div id=date>
+          <time>April 2016</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/nodejs-troubleshoot-1/">Nodejs - Error: listen EACCES 0.0.0.0:80</a></h2>
+        <div id=date>
+          <time>March 2016</time>
+        </div>
+      </li>
+    
+      <li>
+        <h2><a href="https://blog.geunho.dev/posts/java-deep-copy-shallow-copy/">Java - 깊은 복사(Deep copy)와 얕은 복사(Shallow copy)</a></h2>
+        <div id=date>
+          <time>June 2013</time>
+        </div>
+      </li>
+    
+  </ul>
+</section>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2013-2020 Copyright Geunho Kim. All rights reserved.
+    </p>
+  </div>
+</footer>
+
+

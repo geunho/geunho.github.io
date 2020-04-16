@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="referrer" content="no-referrer">
+    
+
+    
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans:400|Old+Standard+TT:400' rel='stylesheet' type='text/css'>
+    
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <title>
+      
+      
+         Hadoop YARN 
+      
+    </title>
+    <link rel="canonical" href="https://blog.geunho.dev/posts/hadoop-yarn/">
+
+    <style>
+  * {
+    border:0;
+    font:inherit;
+    font-size:100%;
+    vertical-align:baseline;
+    margin:0;
+    padding:0;
+    color: black;
+    text-decoration-skip: ink;
+  }
+
+  body {
+    font-family:'Open Sans', 'Myriad Pro', Myriad, sans-serif;
+    font-size:17px;
+    line-height:160%;
+    color:#1d1313;
+    max-width:700px;
+    margin:auto;
+  }
+
+  .footnotes {
+    margin: 30px 0 40px 0;
+  }
+  sup.footnote-ref {
+    font-size: 0.85em;
+    vertical-align: top;
+    position: relative;
+    top: -0.5em;
+  }
+
+  footer {
+    font-size: x-small;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    margin: 20px 0;
+  }
+
+  a img {
+    border:none;
+  }
+
+  img {
+    margin: 10px auto 10px auto;
+    max-width: 75%;
+    display: block;
+  }
+
+  .left-justify {
+    float: left;
+  }
+
+  .right-justify {
+    float:right;
+  }
+
+  pre, code {
+    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    background-color: #f7f7f7;
+  }
+
+  code {
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  pre {
+    margin-top: 0;
+    margin-bottom: 16px;
+    word-wrap: normal;
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+  }
+
+  pre>code {
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
+  }
+
+  pre code {
+    display: inline;
+    max-width: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    line-height: inherit;
+    word-wrap: normal;
+    background-color: transparent;
+    border: 0;
+  }
+
+  pre code::before,
+  pre code::after {
+    content: normal;
+  }
+
+  em,q,em,dfn {
+    font-style:italic;
+  }
+
+  .sans,html .gist .gist-file .gist-meta {
+    font-family:"Open Sans","Myriad Pro",Myriad,sans-serif;
+  }
+
+  .mono,pre,code,tt,p code,li code {
+    font-family:Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
+  }
+
+  .heading,.serif,h1,h2,h3 {
+    font-family:"Old Standard TT",serif;
+  }
+
+  strong {
+    font-weight:600;
+  }
+
+  q:before {
+    content:"\201C";
+  }
+
+  q:after {
+    content:"\201D";
+  }
+
+  del,s {
+    text-decoration:line-through;
+  }
+
+  blockquote {
+    font-family:"Old Standard TT",serif;
+    text-align:center;
+    padding:50px;
+  }
+
+  blockquote p {
+    display:inline-block;
+    font-style:italic;
+  }
+
+  blockquote:before,blockquote:after {
+    font-family:"Old Standard TT",serif;
+    content:'\201C';
+    font-size:35px;
+    color:#403c3b;
+  }
+
+  blockquote:after {
+    content:'\201D';
+  }
+
+  hr {
+    width:40%;
+    height: 1px;
+    background:#403c3b;
+    margin: 25px auto;
+  }
+
+  h1 {
+    font-size:35px;
+  }
+
+  h2 {
+    font-size:28px;
+  }
+
+  h3 {
+    font-size:22px;
+    margin-top:18px;
+  }
+
+  h1 a,h2 a,h3 a {
+    text-decoration:none;
+  }
+
+  h1,h2 {
+    margin-top:28px;
+  }
+
+  #sub-header, time {
+    color:#403c3b;
+    font-size:13px;
+  }
+
+  #sub-header {
+    margin: 0 4px;
+  }
+
+  #nav h1 a {
+    font-size:35px;
+    color:#1d1313;
+    line-height:120%;
+  }
+
+  .posts_listing a,#nav a {
+    text-decoration: none;
+  }
+
+  li {
+    margin-left: 20px;
+  }
+
+  ul li {
+    margin-left: 5px;
+  }
+
+  ul li {
+    list-style-type: none;
+  }
+
+  ul li:before {
+    content:"\2022 \0020";
+  }
+
+  ul li ul li:before {
+    content:"\2043 \0020";
+  }
+
+  #nav ul li:before, .posts_listing li:before {
+    content:'';
+    margin-right:0;
+  }
+
+  #content {
+    text-align:left;
+    width:100%;
+    font-size:15px;
+    padding:60px 0 80px;
+  }
+
+  #content h1,#content h2 {
+    margin-bottom:5px;
+  }
+
+  #content h2 {
+    font-size:25px;
+  }
+
+  #content .entry-content {
+    margin-top:15px;
+  }
+
+  #content time {
+    margin-left:3px;
+  }
+
+  #content h1 {
+    font-size:30px;
+  }
+
+  .highlight {
+    margin: 10px 0;
+  }
+
+  .posts_listing {
+    margin:0 0 50px;
+  }
+
+  .posts_listing li {
+    margin:0 0 25px 15px;
+  }
+
+  .posts_listing li a:hover,#nav a:hover {
+    text-decoration: underline;
+  }
+
+  #nav {
+    text-align:center;
+    position:static;
+    margin-top:60px;
+  }
+
+  #nav ul {
+    display: table;
+    margin: 8px auto 0 auto;
+  }
+
+  #nav li {
+    list-style-type:none;
+    display:table-cell;
+    font-size:15px;
+    padding: 0 20px;
+  }
+
+  #links {
+    margin: 50px 0 0 0;
+  }
+
+  #links :nth-child(2) {
+    float:right;
+  }
+
+  img.avatar {
+    border-radius: 50%;
+    width: 300px;
+  }
+
+   
+  .social_id {
+    color:#9b9b9b; 
+    font-size:10px;
+    text-align:center;
+  }
+  .social-icons {
+    display: flex;
+    justify-content: center;
+  }
+  .social-icons__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  
+  .social-icons__icon--linkedin {
+    background-image: url(/icons/linkedin.svg);
+    margin-right: 2rem;    
+  }
+  .social-icons__icon--github {
+    background-image: url(/icons/github.svg);
+    margin-right: 2rem; 
+  }
+  .social-icons__icon--gmail {
+    background-image: url(/icons/gmail.svg);
+  }
+
+  .rss-icon {
+    display: flex;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/rss.svg);
+  }
+
+  #not-found {
+    display: flex;
+  }
+  .not-found__icon--docker {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-right: 0.5em;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/docker.svg);
+  }
+
+  nav#TableOfContents {
+    margin: 20px 0 50px 0;
+  }
+
+  @media (max-width: 750px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 80%;
+    }
+
+    #nav h1 a {
+      font-size:28px;
+    }
+
+    #nav li {
+      font-size:13px;
+      padding: 0 15px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:50px;
+      font-size:14px;
+    }
+
+    #content h1 {
+      font-size:25px;
+    }
+
+    #content h2 {
+      font-size:22px;
+    }
+
+    .posts_listing li div {
+      font-size:12px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    #nav h1 a {
+      font-size:22px;
+    }
+
+    #nav li {
+      font-size:12px;
+      padding: 0 10px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:20px;
+      font-size:12px;
+    }
+
+    #content h1 {
+      font-size:20px;
+    }
+
+    #content h2 {
+      font-size:18px;
+    }
+
+    .posts_listing li div{
+      font-size:12px;
+    }
+
+    img.avatar {
+      border-radius: 50%;
+      width: 170px;
+    }
+  }
+</style>
+
+
+    
+  </head>
+
+  <body>
+    <section id=nav>
+      <h1><a href="/">Blog · 김근호(Kim, Geunho)</a></h1>
+      <ul>
+        
+          <li><a href="/about">About</a></li>
+        
+          <li><a href="/posts">Posts</a></li>
+        
+          <li><a href="/thoughts">Thoughts</a></li>
+        
+        <a class="rss-icon" href="/index.xml"></a>
+      </ul>
+    </section>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-146312497-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+<section id="content">
+  <h1> Hadoop YARN </h1>
+
+  
+    <div id="sub-header">
+      5 August 2019 · 4 minutes read
+    </div>
+  
+
+  <nav id="TableOfContents">
+<ul>
+<li><a href="#hadoop-1">Hadoop 1</a></li>
+<li><a href="#architecture">Architecture</a></li>
+<li><a href="#resource-management">Resource management</a></li>
+<li><a href="#application-scheduling-and-monitoring">Application scheduling and monitoring</a></li>
+<li><a href="#high-availability">High Availability</a></li>
+</ul>
+</nav>
+
+  <div class="entry-content">
+    
+
+<h1 id="hadoop-1">Hadoop 1</h1>
+
+<p>YARN에 대해서 얘기하기 전에, 먼저 하둡 1에서 Job의 실행과 관리가 어떻게 이루어졌는지 살펴본다.<br />
+<a href="/posts/hadoop-namenode/">NameNode</a>와 <a href="/posts/hadoop-datanode/">DataNode</a>가 하둡의 분산 파일 시스템인 HDFS를 구성하는 주요 컴포넌트라면, MapReduce job을 구동하기 위해 JobTracker와 TaskTracker 컴포넌트가 필요하다.</p>
+
+<p>MapReduce job은 여러 개의 mapper과 reducer task로 이루어지는데, JobTracker는 HDFS의 NameNode처럼 단일 마스터 노드로서 job의 mapper, reducer task를 스케쥴링하고 관제한다. 만약 실패한 task가 있다면 다른 TaskTracker로 task를 재할당한다. TaskTracker는 task를 실행한다.</p>
+
+<p><img src="/hadoop-yarn-1.png" alt="JobTracker &amp; TaskTracker" /> <em>그림 1. JobTracker와 TaskTracker의 Master/Slave 구조</em></p>
+
+<p>그림 1에서와 같이, TaskTracker는 DataNode가 동작하는 노드에 함께 구동되고 JobTracker는 NameNode와는 별도의 노드에서 동작한다.<br />
+JobTracker도 단일 마스터 노드이기 때문에 NameNode처럼 SPOF<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup> 문제가 있는데 장애가 발생하면 MapReduce job이 모두 실패하고 복구 되기 전까지는 다시 실행할 수 없다. JobTracker는 별도의 컴포넌트로 동작하지만 HDFS 위에서 동작하도록 설계되었다. 하지만 JobTracker와 TaskTracker의 장애는 HDFS 동작 환경에는 영향을 주지 않는다.</p>
+
+<p>이러한 특성과 JobTracker가 단일 마스터 노드라는 점의 한계가 만나면서, 필요할 때에만 JobTracker와 데이터 사이즈에 알맞는 TaskTracker를 띄워 MapReduce 클러스터를 구성해서 job을 실행하고, 끝나면 다시 종료하는 Hadoop on Demand(HoD) 기술이 발전했다.<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup> 이 기술은 Hadoop 2에서 YARN의 설계에 직접적인 영향을 미쳤다.</p>
+
+<p><br /></p>
+
+<h1 id="architecture">Architecture</h1>
+
+<p>Hadoop 2가 되면서 JobTracker와 TaskTracker는 더 이상 사용되지 않는다. 대신 이를 완전히 대체하는 YARN(Yet Another Resource Negotiator)이 등장했다. YARN은 역할에 따라 컴포넌트를 세분화했다.</p>
+
+<ul>
+<li>ResourceManager<br />
+
+<ul>
+<li>ApplicationsManager<br /></li>
+<li>Scheduler<br /></li>
+</ul></li>
+<li>NodeManager<br /></li>
+<li>ApplicationMaster<br /></li>
+<li>Container<br /></li>
+</ul>
+
+<p>마스터 노드인 ResourceManager는 ApplicationsManager와 Scheduler라는 두 개의 주요 컴포넌트로 이루어져 있고, NodeManager는 DataNode가 동작하는 워커 노드에서 동작한다.</p>
+
+<p><img src="/hadoop-yarn-2.png" alt="YARN Architecture" /> <em>그림 2. YARN의 구조</em></p>
+
+<p>그림 2를 살펴보면, JobTracker의 역할을 ResourceManager가 YARN의 마스터 노드로서 가져갔고, NodeManager는 TaskTracker의 역할을 가져가면서 각 워커 노드에서 동작하는 구조를 갖게 되었다.<br />
+마스터와 워커 노드 모두 기능에 따라 여러 프로세스로 나뉘어졌는데, ResourceManager는 클러스터 전체 리소스 내에서 다양한 종류의 애플리케이션이 동작할 수 있도록 총괄하는 역할을 담당하며, 각 스케쥴링과 애플리케이션 실행은 마스터 노드 내에서 함께 동작하는 Scheduler와 ApplicationsManager가 맡는다.</p>
+
+<p>NodeManager은 마치 DataNode가 NameNode에게 heartbeat을 주기적으로 보내고 블록 리포트를 보내는것 처럼, 각 노드의 리소스를 관제하면서 ResourceManager에게 주기적으로 heartbeat와 리소스 관제 내용을 ResourceManage에게 보낸다.</p>
+
+<p>YARN은 이렇듯 리소스 관리와 애플리케이션 스케쥴링과 모니터링 기능을 서로 다른 컴포넌트에서 동작하도록 역할을 분리했다. 각 측면에 대해서 더 상세히 살펴보도록 한다.</p>
+
+<h1 id="resource-management">Resource management</h1>
+
+<p>ResourceManager와 NodeManager는 클러스터의 리소스 관리를 담당한다. 각 워커 노드에서 동작하는 NodeManager는 이름 그대로 노드의 cpu, 메모리, 네트워크 상태 정보와 같은 리소스 정보를 관제하고 ResourceManager에게 리포팅한다. ResourceManager는 수집한 노드의 리소스 정보를 바탕으로 애플리케이션이 동작할때 어떤 노드에서 얼만큼의 리소스를 할당할지 결정한다.</p>
+
+<p><img src="/hadoop-yarn-4.png" alt="YARN resource management" /> <em>그림 3. 노드의 리소스 리포트와 heartbeat 전송</em></p>
+
+<h1 id="application-scheduling-and-monitoring">Application scheduling and monitoring</h1>
+
+<p>클라이언트로부터 job 애플리케이션이 제출되면 ApplicationsManager가 받아서 최초 ApplicationMaster를 위한 컨테이너 할당을 요청한다.<br />
+ApplicationMaster는 실행하기 위한 리소스 컨테이너를 Scheduler에게 요청하며, Scheduler는 애플리케이션의 실행을 스케쥴링 하면서 노드의 자원 상태에 따라 컨테이너를 할당한다.<br />
+워커 노드에 컨테이너를 생성하는 것은 각 NodeManager가 담당한다. 생성된 컨테이너들은 한정된 리소스를 사용하여 ApplicationMaster의 워커 노드로서 애플리케이션을 실행한다.</p>
+
+<p>ApplicationMaster는 실행 상태를 관제하면서 컨테이너의 상태를 추적한다. 실행이 완료되면 ApplicationsManager에게 완료되었음을 알린다. 만약 완료 되기전에 문제가 발생해서 비정상 종료가 되면 ApplicationsManager이 다른 워커 노드에 다시 할당하여 애플리케이션이 재시작할 수 있도록 한다.</p>
+
+<p>하둡 1에서는 MapReduce 프레임워크로 작성된 애플리케이션<sup class="footnote-ref" id="fnref:3"><a href="#fn:3">3</a></sup>만 실행하고 관제할 수 있었다. YARN이라는 리소스 관리 계층이 추가되면서 MR 뿐만 아니라 YARN API를 이용해 작성된 다양한 애플리케이션의 실행 환경을 지원한다.<br />
+게다가 하둡 이외의 장치 없이<sup class="footnote-ref" id="fnref:4"><a href="#fn:4">4</a></sup> 클러스터 전체의 리소스를 관리, 관제하면서 리소스가 허용하는 범위 내에서 여러 개의 애플리케이션을 동시에 실행할 수 있게 되었다.</p>
+
+<p><img src="/hadoop-yarn-5.png" alt="YARN scheduling and monitoring" /> <em>그림 4. 애플리케이션 스케줄링</em></p>
+
+<h1 id="high-availability">High Availability</h1>
+
+<p>하둡 1에서는 단일 마스터 노드인 JobTracker가 다운되면 전체 job이 실패하고 더이상 job을 실행할 수 없었다. 하둡 2의 ResourceManager도 단일 마스터 노드로서 YARN의 SPOF였는데, 2.4 버전 이후부터는 Active/Standby 노드 구성을 하면서 고가용성 특성을 얻게 되었다.<br />
+ResourceManager의 Active/Standby 상태는 Zookeeper 클러스터의 리더 선출 기능을 통해 결정된다. Active 노드는 현재 상태를 Zookeeper에 주기적으로 알리는데, Active 노드가 다운된다면 상태 갱신도 이루어지지 않기 때문에 Zookeeper는 Standby 상태였던 노드를 새로은 리더로 선출한다. 이때 Standby 노드는 Active 노드가 되며, Active는 Standby 상태가 되는 것이다.</p>
+
+<p><img src="/hadoop-yarn-3.png" alt="YARN HA" /> <em>그림 5. Active/Standby ResourceManager</em></p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">단일 지점 실패, Single point of failure
+ <a class="footnote-return" href="#fnref:1">[↑]</a></li>
+<li id="fn:2">뿐만 아니라 HDFS 클러스터도 필요한 만큼 여러 개를 구성하거나, 새로운 버전을 띄워 검증하는 용도로도 쓰였다.
+ <a class="footnote-return" href="#fnref:2">[↑]</a></li>
+<li id="fn:3">MR 외에도 Apache Pig, Hive 등 다른 애플리케이션도 동작시킬 수 있었는데, 이 둘은 MR을 한 단계 더 추상화시킨 것으로, 사용자의 Pig 스크립트 혹은 Hive 쿼리를 MR로 변환시켜 실행하는 방식이었다.
+ <a class="footnote-return" href="#fnref:3">[↑]</a></li>
+<li id="fn:4">HoD. 이를 위해 하둡 바깥에 RingMaster, HODRing 등 HoD 계층을 위한 프로그램을 실행하고 관리해야 했다.
+ <a class="footnote-return" href="#fnref:4">[↑]</a></li>
+</ol>
+</div>
+
+  </div>
+
+  
+    <div id="sub-header">
+      Updated 19 August 2019
+    </div>
+  
+
+  <div id="links">
+    
+      <a class="basic-alignment left" href="https://blog.geunho.dev/posts/hadoop-datanode/">&laquo; Hadoop DataNode</a>
+    
+    
+      <a class="basic-alignment left" href="https://blog.geunho.dev/posts/git-tips-2/">Git Tips - 로컬 커밋 복구하기 &raquo;</a>
+    
+  </div>
+</section>
+<section id="comment">
+  <script src="https://utteranc.es/client.js"
+    repo="geunho/blog"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>  
+</section>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2013-2020 Copyright Geunho Kim. All rights reserved.
+    </p>
+  </div>
+</footer>
+

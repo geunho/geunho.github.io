@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="referrer" content="no-referrer">
+    
+
+    
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans:400|Old+Standard+TT:400' rel='stylesheet' type='text/css'>
+    
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <title>
+      
+      
+         Git Tips - 로컬 커밋 복구하기 
+      
+    </title>
+    <link rel="canonical" href="https://blog.geunho.dev/posts/git-tips-2/">
+
+    <style>
+  * {
+    border:0;
+    font:inherit;
+    font-size:100%;
+    vertical-align:baseline;
+    margin:0;
+    padding:0;
+    color: black;
+    text-decoration-skip: ink;
+  }
+
+  body {
+    font-family:'Open Sans', 'Myriad Pro', Myriad, sans-serif;
+    font-size:17px;
+    line-height:160%;
+    color:#1d1313;
+    max-width:700px;
+    margin:auto;
+  }
+
+  .footnotes {
+    margin: 30px 0 40px 0;
+  }
+  sup.footnote-ref {
+    font-size: 0.85em;
+    vertical-align: top;
+    position: relative;
+    top: -0.5em;
+  }
+
+  footer {
+    font-size: x-small;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    margin: 20px 0;
+  }
+
+  a img {
+    border:none;
+  }
+
+  img {
+    margin: 10px auto 10px auto;
+    max-width: 75%;
+    display: block;
+  }
+
+  .left-justify {
+    float: left;
+  }
+
+  .right-justify {
+    float:right;
+  }
+
+  pre, code {
+    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    background-color: #f7f7f7;
+  }
+
+  code {
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  pre {
+    margin-top: 0;
+    margin-bottom: 16px;
+    word-wrap: normal;
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+  }
+
+  pre>code {
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
+  }
+
+  pre code {
+    display: inline;
+    max-width: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    line-height: inherit;
+    word-wrap: normal;
+    background-color: transparent;
+    border: 0;
+  }
+
+  pre code::before,
+  pre code::after {
+    content: normal;
+  }
+
+  em,q,em,dfn {
+    font-style:italic;
+  }
+
+  .sans,html .gist .gist-file .gist-meta {
+    font-family:"Open Sans","Myriad Pro",Myriad,sans-serif;
+  }
+
+  .mono,pre,code,tt,p code,li code {
+    font-family:Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
+  }
+
+  .heading,.serif,h1,h2,h3 {
+    font-family:"Old Standard TT",serif;
+  }
+
+  strong {
+    font-weight:600;
+  }
+
+  q:before {
+    content:"\201C";
+  }
+
+  q:after {
+    content:"\201D";
+  }
+
+  del,s {
+    text-decoration:line-through;
+  }
+
+  blockquote {
+    font-family:"Old Standard TT",serif;
+    text-align:center;
+    padding:50px;
+  }
+
+  blockquote p {
+    display:inline-block;
+    font-style:italic;
+  }
+
+  blockquote:before,blockquote:after {
+    font-family:"Old Standard TT",serif;
+    content:'\201C';
+    font-size:35px;
+    color:#403c3b;
+  }
+
+  blockquote:after {
+    content:'\201D';
+  }
+
+  hr {
+    width:40%;
+    height: 1px;
+    background:#403c3b;
+    margin: 25px auto;
+  }
+
+  h1 {
+    font-size:35px;
+  }
+
+  h2 {
+    font-size:28px;
+  }
+
+  h3 {
+    font-size:22px;
+    margin-top:18px;
+  }
+
+  h1 a,h2 a,h3 a {
+    text-decoration:none;
+  }
+
+  h1,h2 {
+    margin-top:28px;
+  }
+
+  #sub-header, time {
+    color:#403c3b;
+    font-size:13px;
+  }
+
+  #sub-header {
+    margin: 0 4px;
+  }
+
+  #nav h1 a {
+    font-size:35px;
+    color:#1d1313;
+    line-height:120%;
+  }
+
+  .posts_listing a,#nav a {
+    text-decoration: none;
+  }
+
+  li {
+    margin-left: 20px;
+  }
+
+  ul li {
+    margin-left: 5px;
+  }
+
+  ul li {
+    list-style-type: none;
+  }
+
+  ul li:before {
+    content:"\2022 \0020";
+  }
+
+  ul li ul li:before {
+    content:"\2043 \0020";
+  }
+
+  #nav ul li:before, .posts_listing li:before {
+    content:'';
+    margin-right:0;
+  }
+
+  #content {
+    text-align:left;
+    width:100%;
+    font-size:15px;
+    padding:60px 0 80px;
+  }
+
+  #content h1,#content h2 {
+    margin-bottom:5px;
+  }
+
+  #content h2 {
+    font-size:25px;
+  }
+
+  #content .entry-content {
+    margin-top:15px;
+  }
+
+  #content time {
+    margin-left:3px;
+  }
+
+  #content h1 {
+    font-size:30px;
+  }
+
+  .highlight {
+    margin: 10px 0;
+  }
+
+  .posts_listing {
+    margin:0 0 50px;
+  }
+
+  .posts_listing li {
+    margin:0 0 25px 15px;
+  }
+
+  .posts_listing li a:hover,#nav a:hover {
+    text-decoration: underline;
+  }
+
+  #nav {
+    text-align:center;
+    position:static;
+    margin-top:60px;
+  }
+
+  #nav ul {
+    display: table;
+    margin: 8px auto 0 auto;
+  }
+
+  #nav li {
+    list-style-type:none;
+    display:table-cell;
+    font-size:15px;
+    padding: 0 20px;
+  }
+
+  #links {
+    margin: 50px 0 0 0;
+  }
+
+  #links :nth-child(2) {
+    float:right;
+  }
+
+  img.avatar {
+    border-radius: 50%;
+    width: 300px;
+  }
+
+   
+  .social_id {
+    color:#9b9b9b; 
+    font-size:10px;
+    text-align:center;
+  }
+  .social-icons {
+    display: flex;
+    justify-content: center;
+  }
+  .social-icons__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  
+  .social-icons__icon--linkedin {
+    background-image: url(/icons/linkedin.svg);
+    margin-right: 2rem;    
+  }
+  .social-icons__icon--github {
+    background-image: url(/icons/github.svg);
+    margin-right: 2rem; 
+  }
+  .social-icons__icon--gmail {
+    background-image: url(/icons/gmail.svg);
+  }
+
+  .rss-icon {
+    display: flex;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/rss.svg);
+  }
+
+  #not-found {
+    display: flex;
+  }
+  .not-found__icon--docker {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-right: 0.5em;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/docker.svg);
+  }
+
+  nav#TableOfContents {
+    margin: 20px 0 50px 0;
+  }
+
+  @media (max-width: 750px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 80%;
+    }
+
+    #nav h1 a {
+      font-size:28px;
+    }
+
+    #nav li {
+      font-size:13px;
+      padding: 0 15px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:50px;
+      font-size:14px;
+    }
+
+    #content h1 {
+      font-size:25px;
+    }
+
+    #content h2 {
+      font-size:22px;
+    }
+
+    .posts_listing li div {
+      font-size:12px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    #nav h1 a {
+      font-size:22px;
+    }
+
+    #nav li {
+      font-size:12px;
+      padding: 0 10px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:20px;
+      font-size:12px;
+    }
+
+    #content h1 {
+      font-size:20px;
+    }
+
+    #content h2 {
+      font-size:18px;
+    }
+
+    .posts_listing li div{
+      font-size:12px;
+    }
+
+    img.avatar {
+      border-radius: 50%;
+      width: 170px;
+    }
+  }
+</style>
+
+
+    
+  </head>
+
+  <body>
+    <section id=nav>
+      <h1><a href="/">Blog · 김근호(Kim, Geunho)</a></h1>
+      <ul>
+        
+          <li><a href="/about">About</a></li>
+        
+          <li><a href="/posts">Posts</a></li>
+        
+          <li><a href="/thoughts">Thoughts</a></li>
+        
+        <a class="rss-icon" href="/index.xml"></a>
+      </ul>
+    </section>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-146312497-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+<section id="content">
+  <h1> Git Tips - 로컬 커밋 복구하기 </h1>
+
+  
+    <div id="sub-header">
+      20 August 2019 · 1 minute read
+    </div>
+  
+
+  
+
+  <div class="entry-content">
+    <p><code>git reflog</code>는 로컬 git repository의 HEAD 변경 이력을 보여주는 명령어이다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git reflog
+
+<span class="m">6552006</span> <span class="o">(</span>HEAD -&gt; master, origin/master, origin/HEAD<span class="o">)</span> HEAD@<span class="o">{</span><span class="m">0</span><span class="o">}</span>: commit: Publish a post about git tips
+d5acbda HEAD@<span class="o">{</span><span class="m">1</span><span class="o">}</span>: reset: moving to HEAD   
+d5acbda HEAD@<span class="o">{</span><span class="m">2</span><span class="o">}</span>: reset: moving to origin/master                                                                                                                                                                d5acbda HEAD@<span class="o">{</span><span class="m">3</span><span class="o">}</span>: reset: moving to HEAD                                                                                                                                                                         d5acbda HEAD@<span class="o">{</span><span class="m">4</span><span class="o">}</span>: reset: moving to HEAD                                                                                                                                                                         d5acbda HEAD@<span class="o">{</span><span class="m">5</span><span class="o">}</span>: pull: Fast-forward                                                                                                                                                                      d5acbda HEAD@<span class="o">{</span><span class="m">2</span><span class="o">}</span>: reset: moving to origin/master                                                                                                                                                                d5acbda HEAD@<span class="o">{</span><span class="m">3</span><span class="o">}</span>: reset: moving to HEAD                                                                                                                                                                         d5acbda HEAD@<span class="o">{</span><span class="m">4</span><span class="o">}</span>: reset: moving to HEAD                                                                                                                                                                         d5acbda HEAD@<span class="o">{</span><span class="m">5</span><span class="o">}</span>: pull: Fast-forward                                                                                                                                                                            26c5382 HEAD@<span class="o">{</span><span class="m">6</span><span class="o">}</span>: pull: Fast-forward  
+...</code></pre></div>
+<p>로컬에 커밋을 하면 HEAD를 과거로 reset 하더라도 이렇게 모두 기록이 남아있다. 실수로 커밋을 날려버렸다면 당황하지 말고 다음과 같은 명령어로 복구한다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 먼저 HEAD 이력을 출력</span>
+git reflog
+
+d7250d58 <span class="o">(</span>HEAD -&gt; feature/my-branch<span class="o">)</span> HEAD@<span class="o">{</span><span class="m">0</span><span class="o">}</span>: reset: moving to d7250d583c09605f1409c0dc7c35744aaae91cd2
+c685b83c HEAD@<span class="o">{</span><span class="m">1</span><span class="o">}</span>: rebase -i <span class="o">(</span>finish<span class="o">)</span>: returning to refs/heads/feature/my-branch
+c685b83c HEAD@<span class="o">{</span><span class="m">2</span><span class="o">}</span>: rebase -i <span class="o">(</span>squash<span class="o">)</span>: Some comments
+51e05171 HEAD@<span class="o">{</span><span class="m">3</span><span class="o">}</span>: rebase -i <span class="o">(</span>squash<span class="o">)</span>: <span class="c1"># This is a combination of 7 commits.</span>
+0f46bda8 HEAD@<span class="o">{</span><span class="m">4</span><span class="o">}</span>: rebase -i <span class="o">(</span>squash<span class="o">)</span>: <span class="c1"># This is a combination of 6 commits.</span>
+
+<span class="c1"># 0f46bda8 HEAD@{4}로 돌아가자</span>
+git reset <span class="s1">&#39;HEAD@{4}&#39;</span></code></pre></div>
+  </div>
+
+  
+    <div id="sub-header">
+      Updated 20 August 2019
+    </div>
+  
+
+  <div id="links">
+    
+      <a class="basic-alignment left" href="https://blog.geunho.dev/posts/hadoop-yarn/">&laquo; Hadoop YARN</a>
+    
+    
+      <a class="basic-alignment left" href="https://blog.geunho.dev/posts/git-tips-1/">Git Tips - 과거 커밋으로부터 텍스트 검색하기 &raquo;</a>
+    
+  </div>
+</section>
+<section id="comment">
+  <script src="https://utteranc.es/client.js"
+    repo="geunho/blog"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>  
+</section>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2013-2020 Copyright Geunho Kim. All rights reserved.
+    </p>
+  </div>
+</footer>
+

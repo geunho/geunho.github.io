@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="referrer" content="no-referrer">
+    
+
+    
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans:400|Old+Standard+TT:400' rel='stylesheet' type='text/css'>
+    
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <title>
+      
+      
+         마이크로서비스 아키텍처(MSA) 도전과제들 
+      
+    </title>
+    <link rel="canonical" href="https://blog.geunho.dev/posts/microservice-challenges/">
+
+    <style>
+  * {
+    border:0;
+    font:inherit;
+    font-size:100%;
+    vertical-align:baseline;
+    margin:0;
+    padding:0;
+    color: black;
+    text-decoration-skip: ink;
+  }
+
+  body {
+    font-family:'Open Sans', 'Myriad Pro', Myriad, sans-serif;
+    font-size:17px;
+    line-height:160%;
+    color:#1d1313;
+    max-width:700px;
+    margin:auto;
+  }
+
+  .footnotes {
+    margin: 30px 0 40px 0;
+  }
+  sup.footnote-ref {
+    font-size: 0.85em;
+    vertical-align: top;
+    position: relative;
+    top: -0.5em;
+  }
+
+  footer {
+    font-size: x-small;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    margin: 20px 0;
+  }
+
+  a img {
+    border:none;
+  }
+
+  img {
+    margin: 10px auto 10px auto;
+    max-width: 75%;
+    display: block;
+  }
+
+  .left-justify {
+    float: left;
+  }
+
+  .right-justify {
+    float:right;
+  }
+
+  pre, code {
+    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    background-color: #f7f7f7;
+  }
+
+  code {
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  pre {
+    margin-top: 0;
+    margin-bottom: 16px;
+    word-wrap: normal;
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+  }
+
+  pre>code {
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
+  }
+
+  pre code {
+    display: inline;
+    max-width: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    line-height: inherit;
+    word-wrap: normal;
+    background-color: transparent;
+    border: 0;
+  }
+
+  pre code::before,
+  pre code::after {
+    content: normal;
+  }
+
+  em,q,em,dfn {
+    font-style:italic;
+  }
+
+  .sans,html .gist .gist-file .gist-meta {
+    font-family:"Open Sans","Myriad Pro",Myriad,sans-serif;
+  }
+
+  .mono,pre,code,tt,p code,li code {
+    font-family:Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
+  }
+
+  .heading,.serif,h1,h2,h3 {
+    font-family:"Old Standard TT",serif;
+  }
+
+  strong {
+    font-weight:600;
+  }
+
+  q:before {
+    content:"\201C";
+  }
+
+  q:after {
+    content:"\201D";
+  }
+
+  del,s {
+    text-decoration:line-through;
+  }
+
+  blockquote {
+    font-family:"Old Standard TT",serif;
+    text-align:center;
+    padding:50px;
+  }
+
+  blockquote p {
+    display:inline-block;
+    font-style:italic;
+  }
+
+  blockquote:before,blockquote:after {
+    font-family:"Old Standard TT",serif;
+    content:'\201C';
+    font-size:35px;
+    color:#403c3b;
+  }
+
+  blockquote:after {
+    content:'\201D';
+  }
+
+  hr {
+    width:40%;
+    height: 1px;
+    background:#403c3b;
+    margin: 25px auto;
+  }
+
+  h1 {
+    font-size:35px;
+  }
+
+  h2 {
+    font-size:28px;
+  }
+
+  h3 {
+    font-size:22px;
+    margin-top:18px;
+  }
+
+  h1 a,h2 a,h3 a {
+    text-decoration:none;
+  }
+
+  h1,h2 {
+    margin-top:28px;
+  }
+
+  #sub-header, time {
+    color:#403c3b;
+    font-size:13px;
+  }
+
+  #sub-header {
+    margin: 0 4px;
+  }
+
+  #nav h1 a {
+    font-size:35px;
+    color:#1d1313;
+    line-height:120%;
+  }
+
+  .posts_listing a,#nav a {
+    text-decoration: none;
+  }
+
+  li {
+    margin-left: 20px;
+  }
+
+  ul li {
+    margin-left: 5px;
+  }
+
+  ul li {
+    list-style-type: none;
+  }
+
+  ul li:before {
+    content:"\2022 \0020";
+  }
+
+  ul li ul li:before {
+    content:"\2043 \0020";
+  }
+
+  #nav ul li:before, .posts_listing li:before {
+    content:'';
+    margin-right:0;
+  }
+
+  #content {
+    text-align:left;
+    width:100%;
+    font-size:15px;
+    padding:60px 0 80px;
+  }
+
+  #content h1,#content h2 {
+    margin-bottom:5px;
+  }
+
+  #content h2 {
+    font-size:25px;
+  }
+
+  #content .entry-content {
+    margin-top:15px;
+  }
+
+  #content time {
+    margin-left:3px;
+  }
+
+  #content h1 {
+    font-size:30px;
+  }
+
+  .highlight {
+    margin: 10px 0;
+  }
+
+  .posts_listing {
+    margin:0 0 50px;
+  }
+
+  .posts_listing li {
+    margin:0 0 25px 15px;
+  }
+
+  .posts_listing li a:hover,#nav a:hover {
+    text-decoration: underline;
+  }
+
+  #nav {
+    text-align:center;
+    position:static;
+    margin-top:60px;
+  }
+
+  #nav ul {
+    display: table;
+    margin: 8px auto 0 auto;
+  }
+
+  #nav li {
+    list-style-type:none;
+    display:table-cell;
+    font-size:15px;
+    padding: 0 20px;
+  }
+
+  #links {
+    margin: 50px 0 0 0;
+  }
+
+  #links :nth-child(2) {
+    float:right;
+  }
+
+  img.avatar {
+    border-radius: 50%;
+    width: 300px;
+  }
+
+   
+  .social_id {
+    color:#9b9b9b; 
+    font-size:10px;
+    text-align:center;
+  }
+  .social-icons {
+    display: flex;
+    justify-content: center;
+  }
+  .social-icons__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  
+  .social-icons__icon--linkedin {
+    background-image: url(/icons/linkedin.svg);
+    margin-right: 2rem;    
+  }
+  .social-icons__icon--github {
+    background-image: url(/icons/github.svg);
+    margin-right: 2rem; 
+  }
+  .social-icons__icon--gmail {
+    background-image: url(/icons/gmail.svg);
+  }
+
+  .rss-icon {
+    display: flex;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/rss.svg);
+  }
+
+  #not-found {
+    display: flex;
+  }
+  .not-found__icon--docker {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-right: 0.5em;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/docker.svg);
+  }
+
+  nav#TableOfContents {
+    margin: 20px 0 50px 0;
+  }
+
+  @media (max-width: 750px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 80%;
+    }
+
+    #nav h1 a {
+      font-size:28px;
+    }
+
+    #nav li {
+      font-size:13px;
+      padding: 0 15px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:50px;
+      font-size:14px;
+    }
+
+    #content h1 {
+      font-size:25px;
+    }
+
+    #content h2 {
+      font-size:22px;
+    }
+
+    .posts_listing li div {
+      font-size:12px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    #nav h1 a {
+      font-size:22px;
+    }
+
+    #nav li {
+      font-size:12px;
+      padding: 0 10px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:20px;
+      font-size:12px;
+    }
+
+    #content h1 {
+      font-size:20px;
+    }
+
+    #content h2 {
+      font-size:18px;
+    }
+
+    .posts_listing li div{
+      font-size:12px;
+    }
+
+    img.avatar {
+      border-radius: 50%;
+      width: 170px;
+    }
+  }
+</style>
+
+
+    
+  </head>
+
+  <body>
+    <section id=nav>
+      <h1><a href="/">Blog · 김근호(Kim, Geunho)</a></h1>
+      <ul>
+        
+          <li><a href="/about">About</a></li>
+        
+          <li><a href="/posts">Posts</a></li>
+        
+          <li><a href="/thoughts">Thoughts</a></li>
+        
+        <a class="rss-icon" href="/index.xml"></a>
+      </ul>
+    </section>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-146312497-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+<section id="content">
+  <h1> 마이크로서비스 아키텍처(MSA) 도전과제들 </h1>
+
+  
+    <div id="sub-header">
+      12 September 2017 · 3 minutes read
+    </div>
+  
+
+  <nav id="TableOfContents">
+<ul>
+<li><a href="#마이크로서비스의-도전과제">마이크로서비스의 도전과제</a>
+<ul>
+<li><a href="#마이크로서비스의-경계-정의하기">마이크로서비스의 경계 정의하기</a></li>
+<li><a href="#여러-마이크로서비스의-데이터-조회하기">여러 마이크로서비스의 데이터 조회하기</a>
+<ul>
+<li><a href="#api-gateway">API Gateway</a></li>
+<li><a href="#cqrs-with-query-reads-tables">CQRS with query/reads tables:</a></li>
+<li><a href="#cold-data-in-central-databases">Cold data in central databases</a></li>
+</ul></li>
+<li><a href="#여러-마이크로서비스간-일관성-유지하기">여러 마이크로서비스간 일관성 유지하기</a></li>
+<li><a href="#여러-마이크로서비스-경계간-통신-설계하기">여러 마이크로서비스 경계간 통신 설계하기</a></li>
+</ul></li>
+<li><a href="#참고자료">참고자료</a></li>
+</ul>
+</nav>
+
+  <div class="entry-content">
+    
+
+<h1 id="마이크로서비스의-도전과제">마이크로서비스의 도전과제</h1>
+
+<p>마이크로서비스 아키텍처 도입시 마주하게 되는 도전과제들을 정리한다.</p>
+
+<h2 id="마이크로서비스의-경계-정의하기">마이크로서비스의 경계 정의하기</h2>
+
+<p>가장 먼저, 애플리케이션의 논리적 도메인 모델과 그와 관련된 데이터에 집중해야 한다. 컨텍스트에 따라, 비슷한 용어로 보이는 엔티티가 서로 다른 의미를 가질 수 있다. 이러한 부분을 주의깊게 분석하면 경계를 나눌 수 있다.</p>
+
+<h2 id="여러-마이크로서비스의-데이터-조회하기">여러 마이크로서비스의 데이터 조회하기</h2>
+
+<h3 id="api-gateway">API Gateway</h3>
+
+<p>심플하게 여러 마이크로서비스의 데이터 집계 서비스로 조회한다. 그러나 시스템의 pain point가 될 수 있고 마이크로서비스의 자율성 원칙을 깨뜨릴 수 있다. (각 마이크로서비스가 강하게 결합될 수 있다는 것이다) 이를 피하려면 시스템의 버티컬한 영역으로, 혹은 비즈니스 영역 단위로 여러개의 세밀한fined-grained API Gateway 서비스로 구성한다.</p>
+
+<h3 id="cqrs-with-query-reads-tables">CQRS with query/reads tables:</h3>
+
+<p>구체화된 뷰 패턴으로 구현할 수 있는데, 미리 읽기 전용 테이블에 비정규화된 데이터를 저장해두고 조회하는 방식이다. 쿼리 테이블과 클라이언트 애플리케이션의 화면과 일대일 대응을 함으로써 복잡한 SQL join (여기에서는 여러 마이크로서비스의 조회) 을 처리하지 않고 데이터 조회를 할 수 있다. 물론 이 방식은 최종 일관성eventual consistency을 반드시 받아들여야만 하는 점, 추가적인 개발이 필요한 점이 있다. 그러나 높은 확장성과 성능에 대한 요구사항을 충분히 충족하므로 고려해볼 수 있다.</p>
+
+<h3 id="cold-data-in-central-databases">Cold data in central databases</h3>
+
+<p>실시간 데이터가 필요 없는 복잡한 리포트나 쿼리의 경우, 마이크로서비스에서 트랜잭션에 사용하는 hot data를 cold data로 추출함으로써 접근할 수 있다. cold data는 일반적으로 빅데이터 기반의 중앙 저장소를 뜻하는데, 이를 적용하는 곳이 실시간 데이터가 필요 없는 경우가 맞는지 주의해야 한다.</p>
+
+<p>위의 모든 방법에도 애플리케이션이 여러 마이크로서비스에 걸친 지속적인 집계 정보가 필요한 쿼리가 필요하다면, 마이크로서비스간 통합이 필요한 문제일 수 있다.</p>
+
+<h2 id="여러-마이크로서비스간-일관성-유지하기">여러 마이크로서비스간 일관성 유지하기</h2>
+
+<p>서로 다른 마이크로서비스 간 데이터 CUD가 필요한 경우, 직접 데이터베이스에 접근할 수 없으므로 서비스를 통해 이루어져야 한다. 이런 경우 이벤트 기반의 메시지와 같이 비동기 통신이 필요하다. CAP 이론에 명시된것 처럼, ACID의 강한 일관성과 가용성 사이에서 하나를 선택해야 한다. 대부분의 마이크로서비스 기반 시나리오는 강한 일관성 대신 가용성과 높은 확장성을 요구한다. 하지만 최종, 혹은 약한 일관성을 계속 유지하는 기술을 통해 강한 일관성을 유지할 수 있다. 이것이 대부분의 마이크로서비스 기반 아키텍처가 접근하는 방식이다.</p>
+
+<p>ACID 스타일이나 2단계 커밋 트랜잭션이 마이크로서비스 원칙을 위배하지는 않지만, 더 좋은 방법은 최종 일관성을 유지하는 것이다. 이는 이벤트 기반 통신과 게시-구독 시스템을 통해 해결할 수 있다.</p>
+
+<h2 id="여러-마이크로서비스-경계간-통신-설계하기">여러 마이크로서비스 경계간 통신 설계하기</h2>
+
+<p>단순히 통신에 어떤 프로토콜 (HTTP, REST, AMQP, &hellip;) 을 사용할지 정하는게 경계간 통신을 나타내지 않는다. 대신 마이크로서비스를 어떤 스타일로, 어떻게 결합할지가 중요하다. 이런 결합 단계에 따라 장애가 발생했을 때 시스템에 영향을 미치는 정도가 아주 크게 달라질 수 있다.</p>
+
+<p>예를 들어, A 라는 마이크로서비스의 HTTP API 호출시 다른 B, C, D API를 호출한다고 하면 이는 HTTP 호출 체인을 만들게 된다. 이는 다음과 같은 문제를 발생 시킬 수 있다:</p>
+
+<ul>
+<li>블로킹과 낮은 성능: HTTP의 동기적 특성 때문에 최초 요청은 내부 요청이 모두 끝날때까지 응답을 보낼 수 없다. 만약 중간에 한 요청이 지연 현상을 보이면서 블로킹되는 상황이 발생한다면, 추가되는 HTTP 요청이 늘어날 수록 성능에 영향을 미치고 확장성이 크게 떨어지게 된다.</li>
+<li>HTTP를 통한 마이크로서비스간 커플링: 이상적으로는 각 마이크로서비스는 서로에 대해 알아서는 안되는데, 위와 같은 커플링은 마이크로서비스의 자율성을 완전히 깨뜨리게 된다.</li>
+<li>어느 한 마이크로서비스의 오류 발생: 부분 요청이 실패하더라도 마이크로서비스 기반의 시스템은 지속적으로 작동해야 한다. HTTP 호출 체인이 더 복잡하게 이루어질 수록, 이를 위한 오류 처리 전략이 복잡해진다.</li>
+</ul>
+
+<p>따라서 마이크로서비스간 통신을 HTTP 호출 체인을 통해 처리한다면, 프로세스간 HTTP 기반으로 통신하는 모놀리틱 애플리케이션이라고 할 수 있다. 그렇기 때문에 마이크로서비스의 자율성autonomous과 탄력성resiliency을 높이려면 이러한 마이크로서비스간 요청/응답의 호출 체인을 최소한으로 사용해야 한다.</p>
+
+<p>비동기 메시징이나 이벤트 기반의 통신, 혹은 HTTP 폴링과 같은 최초 HTTP 요청/응답 사이클과 독립적인 비동기 방식을 사용하는 것이 좋다.</p>
+
+<h1 id="참고자료">참고자료</h1>
+
+<ul>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/net-core-microservice-domain-model">https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/net-core-microservice-domain-model</a></li>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/eshoponcontainers-cqrs-ddd-microservice">https://docs.microsoft.com/en-us/dotnet/standard/microservices-architecture/microservice-ddd-cqrs-patterns/eshoponcontainers-cqrs-ddd-microservice</a></li>
+</ul>
+
+  </div>
+
+  
+    <div id="sub-header">
+      Updated 26 December 2019
+    </div>
+  
+
+  <div id="links">
+    
+      <a class="basic-alignment left" href="https://blog.geunho.dev/posts/rpm-install-ubuntu/">&laquo; Ubuntu에서 RPM 파일 설치하기</a>
+    
+    
+      <a class="basic-alignment left" href="https://blog.geunho.dev/posts/microservice-decomposing/">마이크로서비스 아키텍처(MSA) 경계 구분하기 &raquo;</a>
+    
+  </div>
+</section>
+<section id="comment">
+  <script src="https://utteranc.es/client.js"
+    repo="geunho/blog"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>  
+</section>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2013-2020 Copyright Geunho Kim. All rights reserved.
+    </p>
+  </div>
+</footer>
+

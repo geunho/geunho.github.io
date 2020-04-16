@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Blog · 김근호(Kim, Geunho)</title>
+    <link>https://blog.geunho.dev/posts/</link>
+    <description>Recent content in Posts on Blog · 김근호(Kim, Geunho)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 07 Apr 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.geunho.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Docker 컨테이너 비정상 종료 문제 - non-zero exit (137)</title>
+      <link>https://blog.geunho.dev/posts/docker-exit-137/</link>
+      <pubDate>Tue, 07 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/docker-exit-137/</guid>
+      <description>로컬 컨테이너 환경에서 분산 환경 테스트 중 컨테이너 하나가 exit(137)로 로그 없이 죽는 현상이 발생했다.
+SIGKILL에 의해 컨테이너가 종료되면 이와 같은 코드를 남기는데, 다시 살리면 멀쩡하던 다른 컨테이너가 또 종료되는 일이 반복되었다. 137 종료 코드가 발생하는 케이스를 좀더 찾아보니 OOM에 의해서도 발생할 수 있다는 사실을 발견!
+https://success.docker.com/article/what-causes-a-container-to-exit-with-code-137
+컨테이너는 java 애플리케이션이었는데, 호스트인 로컬 환경의 메모리 부족이 원인이었다! 로컬 환경은 Mac으로, Docker for Mac으로, 가상 머신 위에서 도커 엔진이 동작하는데&amp;hellip; 가상 머신 기본 메모리 값이 2GB 밖에 되지 않았던 것.</description>
+    </item>
+    
+    <item>
+      <title>관제에서 평균값, 중앙값, 그리고 백분위</title>
+      <link>https://blog.geunho.dev/posts/mean-median-percentile/</link>
+      <pubDate>Mon, 11 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/mean-median-percentile/</guid>
+      <description>평균값(mean)의 문제 어떤 서비스의 관제 시스템은 지표를 1초 단위로 시계열 저장소에 수집한다고 가정해보자.
+지표들을 시계열 그래프의 차트로 나타낸다면, 최근 한 시간 추이만 보려고 해도 하나의 지표당 3600개(1시간 = 3600초)의 데이터 포인트를 데이터베이스에서 조회하고 화면에 그려야 한다. 대부분의 시계열 저장소에서는 이를 위해 조회시 집계를 할 수 있도록 함수를 제공하고 있다.
+일반적으로 많이 사용하는 것은 n초(혹은 분)간 평균값(mean)인데, CPU, RAM, Disk 등 서버 한 대에서 수집하는 리소스의 평균값은 대표값으로 사용하는데 큰 문제가 없다.</description>
+    </item>
+    
+    <item>
+      <title>Docker - 오래된 버전의 OS 베이스 이미지에 텍스트 편집기 설치하기</title>
+      <link>https://blog.geunho.dev/posts/docker-old-os-editor/</link>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/docker-old-os-editor/</guid>
+      <description>테스트 목적으로 도커 컨테이너를 띄워 작업하다보면 가끔 컨테이너 쉘을 직접 실행해서 파일을 편집하는 경우가 있다. 베이스 이미지 용량을 줄이기 위해 텍스트 편집기 도구는 모두 삭제하고 이미지로 배포하기 때문에 별도로 설치해야한다.
+Debian 계열인 경우 다음과 같이 설치하게 되는데,
+apt-get update apt-get install vim -y LTS 기간까지 지난 버전인 경우 apt-get update 명령 실행시 오류가 발생한다.
+# Wheezy apt-get update Ign http://security.debian.org wheezy/updates Release.gpg Ign http://security.debian.org wheezy/updates Release Ign http://deb.debian.org wheezy Release.gpg Err http://security.</description>
+    </item>
+    
+    <item>
+      <title>Java - PKIX path building failed</title>
+      <link>https://blog.geunho.dev/posts/pkix-path-building-failed/</link>
+      <pubDate>Thu, 07 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/pkix-path-building-failed/</guid>
+      <description>오류 발생 원인 SSL 연결이 필요한 웹 리소스를 웹 브라우저에서는 신뢰하는 인증서로 확인됨에도 자바 클라이언트에서 아래와 같은 오류가 발생할 때가 있다.
+PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested 오류 메시지 내용대로, 요청에 대해 올바른 인증 경로를 찾지 못했다는 것인데 왜 브라우저에서는 확인된 인증서가 애플리케이션에서는 오류가 발생하는걸까?
+그 답은 SSL 연결의 HANDSHAKE 과정을 살펴보면 알 수 있다.
+ 클라이언트가 CA1로 부터 발급받은 인증서로 서비스허는 서버로 연결을 맺는다.</description>
+    </item>
+    
+    <item>
+      <title>Vuejs 정리 1 - 인스턴스와 컴포넌트</title>
+      <link>https://blog.geunho.dev/posts/vue-instance-and-components/</link>
+      <pubDate>Wed, 25 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/vue-instance-and-components/</guid>
+      <description>서두 회사에서 Vuejs 교육을 지원해줘서, 좋은 기회로 Vuejs 전문 강사이신 장기효님의 강의를 수강하게 되었다.
+백엔드를 주로 해왔던 개발자 입장에서 수강했던 내용을 다시 정리해보려고 한다.
+Vuejs에 대해 가장 잘 정리된 문서는 Vuejs 공식 홈페이지의 가이드이다. 빠르게 훑어볼 수 있도록 축약하고 보조 자료들을 추가해서 정리한 장기효님의 Cracking Vue.js도 추천한다.
+인스턴스 Vuejs를 사용하기 위해서는 가장 먼저 Vue 인스턴스를 생성해야 한다. 간단한 테스트를 위해 하나의 html 파일을 생성하고 다음과 같이 내용을 입력한다.
+hello-vuejs.html &amp;lt;!</description>
+    </item>
+    
+    <item>
+      <title>Docker for Mac 오류 - UNIX error exception: 17</title>
+      <link>https://blog.geunho.dev/posts/docker-mac-crash/</link>
+      <pubDate>Fri, 20 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/docker-mac-crash/</guid>
+      <description>증상 여느 날처럼 맥에서 도커 데몬을 띄우고 작업을 시작하려는데 데몬이 크래시 리포트도 보여주지 않은채 죽어버렸다.
+몇 번 재시작을 해서 데몬이 기동되는 것을 확인했지만 역시 곧 종료되었다. 데몬에 무슨 일이 일어나는 것인지 알아보기 위해 실행 로그를 살펴보았다.
+로그 분석 맥에는 Console이라는 실행 중인 프로세스에서 발생한 로그를 통합해서 살펴볼 수 있는 도구가 있다.
+Console 애플리케이션을 실행해보자.
+상단의 검색 텍스트 박스에 docker를 입력하고 엔터를 치면 검색어가 포함된 프로세스 이름에서 발생한 로그들을 필터링하여 보여준다.</description>
+    </item>
+    
+    <item>
+      <title>Testcontainers - 컨테이너 기반 테스트 환경</title>
+      <link>https://blog.geunho.dev/posts/container-based-test-env/</link>
+      <pubDate>Tue, 03 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/container-based-test-env/</guid>
+      <description>2017년 중순, 회사 내에서 완전히 새로운 개발/운영 플랫폼 도입을 위한 TF 진행을 하면서 다양한 레퍼런스를 조사했었다.
+그때 발견한 한 샘플 프로젝트가 .NET Core로 구현된 웹 서비스였는데, Visual Studio 2017 솔루션으로 구성되어 각 프로젝트를 모두 컨테이너화까지 해놓은 좋은 예제였다.
+재미있었던 것은 한번 빌드하면 자동으로 필요한 서브 시스템들(mongodb, redis, rabbitmq, &amp;hellip;)을 docker compose로 구성해서 빌드가 실행될 때 컨테이너가 함께 로컬에 띄워지도록 한 것이었다.
+각 웹 프로젝트들도 빌드 타임에 도커 이미지까지 빌드한 후 컨테이너를 띄워서 컨테이너 내 프로세스를 디버그하는 방식이었는데, 당시에는 신선한 충격이었다.</description>
+    </item>
+    
+    <item>
+      <title>Docker로 Hadoop 테스트 환경 구축하기 - HDFS</title>
+      <link>https://blog.geunho.dev/posts/hadoop-docker-test-env-hdfs/</link>
+      <pubDate>Wed, 28 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/hadoop-docker-test-env-hdfs/</guid>
+      <description>Docker와 테스트 환경 Docker는 애플리케이션을 컨테이너화해서 이미지로 만들어 배치하고 실행할 수 있는 환경을 제공하는 컨테이너 도구1이다.
+격리된 파일 시스템을 갖는 컨테이너 특성 덕분에, 운영 환경에 대한 프로비져닝 뿐만 아니라 Docker가 설치된 환경에서 컨테이너화된 애플리케이션을 즉시 구동시켜서 테스트할 수 있는 환경을 구성하는데에도 유용하게 쓰인다.
+오픈소스를 포함한 다양한 애플리케이션을 로컬 환경에 설치하고 구성하면서 테스트하다보면(주로 개발자의 노트북), 어느새 로컬 환경은 지저분해지고 몇 해 전에 설치한 애플리케이션이 자동 재시작되어 리소스를 점유하게 된다. 환경 설정 파일은 언제 어떻게 바꿨는지도 모른다.</description>
+    </item>
+    
+    <item>
+      <title>Mac Terminal에서 텍스트 편집기 바로 열기</title>
+      <link>https://blog.geunho.dev/posts/mac-terminal-text-edit/</link>
+      <pubDate>Wed, 28 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/mac-terminal-text-edit/</guid>
+      <description>Mac의 Terminal에서 이런 저런 작업을 하다가 파일을 수정할때 vim과 같은 텍스트 편집기를 사용한다.
+가끔은 자주 사용하는 GUI 텍스트 편집기로 파일을 수정하고 싶을 때 곧바로 Terminal에서 어떻게 명령어를 입력해야 할까? 답은 open 명령어에 있다.
+man open OPEN(1) BSD General Commands Manual OPEN(1) NAME open -- open files and directories SYNOPSIS open [-e] [-t] [-f] [-F] [-W] [-R] [-n] [-g] [-j] [-h] [-s sdk] [-b bundle_identifier] [-a application] file ... [--args arg1 .</description>
+    </item>
+    
+    <item>
+      <title>Git Tips - 과거 커밋으로부터 텍스트 검색하기</title>
+      <link>https://blog.geunho.dev/posts/git-tips-1/</link>
+      <pubDate>Tue, 20 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/git-tips-1/</guid>
+      <description>git log은 커밋 히스토리를 조회하는 명령어이다. git repository에서 명령어를 입력하면 커밋의 내용을 시간의 역순으로 보여준다.
+git log commit d5acbda550c5877dc957158229acf7a76044118a (HEAD -&amp;gt; master, origin/master, origin/HEAD) Author: GeunhoKim &amp;lt;geunho.khim@gmail.com&amp;gt; Date: Mon Aug 19 23:18:41 2019 +0900 Migrate posts from geunhokhim.wordpress.com commit 26c538203ece30ea4179735d2a41af15b6a01ce7 Author: GeunhoKim &amp;lt;geunho.khim@gmail.com&amp;gt; Date: Mon Aug 19 00:48:12 2019 +0900 Publish a post: hadoop yarn ... 커밋 아이디와 저자, 커밋일시 그리고 커밋 메시지까지 일목요연하게 보여주는데, -S 명령어를 사용해서 커밋 히스토리로부터 문자열을 검색할 수 있다.</description>
+    </item>
+    
+    <item>
+      <title>Git Tips - 로컬 커밋 복구하기</title>
+      <link>https://blog.geunho.dev/posts/git-tips-2/</link>
+      <pubDate>Tue, 20 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/git-tips-2/</guid>
+      <description>git reflog는 로컬 git repository의 HEAD 변경 이력을 보여주는 명령어이다.
+git reflog 6552006 (HEAD -&amp;gt; master, origin/master, origin/HEAD) HEAD@{0}: commit: Publish a post about git tips d5acbda HEAD@{1}: reset: moving to HEAD d5acbda HEAD@{2}: reset: moving to origin/master d5acbda HEAD@{3}: reset: moving to HEAD d5acbda HEAD@{4}: reset: moving to HEAD d5acbda HEAD@{5}: pull: Fast-forward d5acbda HEAD@{2}: reset: moving to origin/master d5acbda HEAD@{3}: reset: moving to HEAD d5acbda HEAD@{4}: reset: moving to HEAD d5acbda HEAD@{5}: pull: Fast-forward 26c5382 HEAD@{6}: pull: Fast-forward .</description>
+    </item>
+    
+    <item>
+      <title>Hadoop YARN</title>
+      <link>https://blog.geunho.dev/posts/hadoop-yarn/</link>
+      <pubDate>Mon, 05 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/hadoop-yarn/</guid>
+      <description>Hadoop 1 YARN에 대해서 얘기하기 전에, 먼저 하둡 1에서 Job의 실행과 관리가 어떻게 이루어졌는지 살펴본다.
+NameNode와 DataNode가 하둡의 분산 파일 시스템인 HDFS를 구성하는 주요 컴포넌트라면, MapReduce job을 구동하기 위해 JobTracker와 TaskTracker 컴포넌트가 필요하다.
+MapReduce job은 여러 개의 mapper과 reducer task로 이루어지는데, JobTracker는 HDFS의 NameNode처럼 단일 마스터 노드로서 job의 mapper, reducer task를 스케쥴링하고 관제한다. 만약 실패한 task가 있다면 다른 TaskTracker로 task를 재할당한다. TaskTracker는 task를 실행한다.
+그림 1. JobTracker와 TaskTracker의 Master/Slave 구조</description>
+    </item>
+    
+    <item>
+      <title>Hadoop DataNode</title>
+      <link>https://blog.geunho.dev/posts/hadoop-datanode/</link>
+      <pubDate>Mon, 29 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/hadoop-datanode/</guid>
+      <description>Architecture 하둡 클러스터에서 DataNode는 파일 블록이 저장되는 노드이다. 십 수대의 서버에서 수백, 수천대의 서버에 DataNode가 기동되어 네트워크 상에서 거대한 파일 시스템의 블록 구조를 가지게 된다. 단일 디스크를 위한 파일 시스템의 블록 구조가 네트워크를 통해 확장, 추상화 되었다.
+그림 1. FAT 파일 시스템 구조. 첫 번째 블록은 파일 할당 테이블(FAT) 정보를 담고 있다. NameNode가 하둡 파일 시스템의 전체 블록 정보를 가지고 있는 것과 유사하다.
+단일 디스크 파일 시스템의 기본 블록 크기가 4KB 정도 인것에 비해,1 DataNode에 저장되는 블록의 크기는 64MB~128MB의 크기를 가진다.</description>
+    </item>
+    
+    <item>
+      <title>Hadoop NameNode</title>
+      <link>https://blog.geunho.dev/posts/hadoop-namenode/</link>
+      <pubDate>Tue, 23 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/hadoop-namenode/</guid>
+      <description>Architecture 하둡 클러스터는 단일 마스터 노드와 여러 대의 워커 노드로 이루어진 Master/Slave 구조이다. 마스터 노드는 NameNode라 불리며 하둡 분산 파일 시스템(HDFS, Hadoop Distributed File System)의 네임스페이스를 관리하며, 워커 노드인 DataNode는 파일 시스템의 파일 블록을 저장하는 역할을 한다.
+그림 1. Master/Slave 구조
+HDFS는 MapReduce 프레임워크와 함께 하둡을 구성하는 한 줄기인데, 용량이 큰 규모의 파일을 분산 저장하기 위해 설계되었다. 큰 용량의 파일이란 수십 기가바이트에서 테라바이트까지의 규모를 뜻하는데, 이러한 파일을 블록 단위로 나누어 저장한다.</description>
+    </item>
+    
+    <item>
+      <title>마이크로서비스 아키텍처(MSA) 경계 구분하기</title>
+      <link>https://blog.geunho.dev/posts/microservice-decomposing/</link>
+      <pubDate>Wed, 13 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/microservice-decomposing/</guid>
+      <description>마이크로서비스간 도메인 모델의 경계 구분하기 도메인 지식에 따른 의미있는 분할이 목표가 되어야 한다. 그리고 의존성이 높은 명확한 응집력이 있다면 이는 단일 마이크로서비스로 구성할 필요가 있다는 것을 나타낸다. 응집력은 마이크로서비스를 쪼갤지, 그룹화 할지를 구분할 수 있는 방법 중 하나이다. 도메인 지식이 쌓일때 마다 반복적으로 마이크로서비스의 크기를 조정해야 한다. 이는 단 한번에 이루어질 수 없다.
+도메인 엔티티가 있는 도메인 모델은 명확한 바운디드 컨텍스트 내, 혹은 마이크로서비스 내에 적용된다. 바운디드 컨텍스트는 도메인 모델의 적용 가능성의 경계를 결정하고 무엇이 응집되고 독립적으로 개발될 수 있을지 보여준다.</description>
+    </item>
+    
+    <item>
+      <title>마이크로서비스 아키텍처(MSA) 도전과제들</title>
+      <link>https://blog.geunho.dev/posts/microservice-challenges/</link>
+      <pubDate>Tue, 12 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/microservice-challenges/</guid>
+      <description>마이크로서비스의 도전과제 마이크로서비스 아키텍처 도입시 마주하게 되는 도전과제들을 정리한다.
+마이크로서비스의 경계 정의하기 가장 먼저, 애플리케이션의 논리적 도메인 모델과 그와 관련된 데이터에 집중해야 한다. 컨텍스트에 따라, 비슷한 용어로 보이는 엔티티가 서로 다른 의미를 가질 수 있다. 이러한 부분을 주의깊게 분석하면 경계를 나눌 수 있다.
+여러 마이크로서비스의 데이터 조회하기 API Gateway 심플하게 여러 마이크로서비스의 데이터 집계 서비스로 조회한다. 그러나 시스템의 pain point가 될 수 있고 마이크로서비스의 자율성 원칙을 깨뜨릴 수 있다. (각 마이크로서비스가 강하게 결합될 수 있다는 것이다) 이를 피하려면 시스템의 버티컬한 영역으로, 혹은 비즈니스 영역 단위로 여러개의 세밀한fined-grained API Gateway 서비스로 구성한다.</description>
+    </item>
+    
+    <item>
+      <title>Ubuntu에서 RPM 파일 설치하기</title>
+      <link>https://blog.geunho.dev/posts/rpm-install-ubuntu/</link>
+      <pubDate>Thu, 02 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/rpm-install-ubuntu/</guid>
+      <description>RPM에 대해서 RPM은 Red Hat Package Manager의 약자로 원래 레드햇 리눅스에서 사용되던 패키지 매니저와 배포용 패키지 파일을 뜻한다.
+현재는 레드햇 리눅스 뿐만 아니라 CentOS, Fedora에서도 널리 사용되고 있다. 이렇게 리눅스의 표준 패키지 포맷 중 하나가 되면서, 배포 파일이 RPM으로만 제공되는 경우가 있는데, 이런 경우 기본적으로 지원되지 않는 Debian 계열 – Ubuntu에서는 어떻게 설치하고 사용할 수 있는지 알아본다.
+Ubuntu에서 RPM 파일 설치하기 Ubuntu에서는 rpm 파일로 곧바로 설치할 수 없다. apt 패키지 매니저를 통해 rpm 도구를 설치했다 하더라도 아래와 같은 에러가 발생한다:</description>
+    </item>
+    
+    <item>
+      <title>Grafana, Influxdb, Telegraf - 서버의 관제(Monitoring)와 알림(Alerting)</title>
+      <link>https://blog.geunho.dev/posts/grafana-influxdb-telegraf-monitoring-alerting/</link>
+      <pubDate>Mon, 02 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/grafana-influxdb-telegraf-monitoring-alerting/</guid>
+      <description>서버의 관제(Monitoring)에 대해서 개발자의 DevOps 역량이 점점 중요해지면서, 서버의 운영에도 적극적으로 개입하게 되었다. 단순히 인프라 부서에서 일괄적인 지표로 관제하고 문제가 생겼을 때 수동적으로 통보 받는 것에서 벗어나, 서버의 리소스 뿐만 아니라 서비스에서 발생하는 다양한 지표들을 관제하여 서비스의 장애 여부를 즉시 알아차릴 수 있어야 한다.
+이 글에서는 1) 오픈소스로 공개된 influxdata의 tsdb(Time Series DataBase)인 influxdb와 collector agent인 telegraf를 통해 시계열 데이터를 적재하고, 2) 오픈소스 대시보드인 grafana를 통해 관제 대시보드와 알림 통보(alert)를 구성하여, 3) 특정 상황에서 사용자가 정의한 동작을 수행하도록 하는 방법을 설명한다.</description>
+    </item>
+    
+    <item>
+      <title>Hbase, Phoenix - PhoenixIOException: The system cannot find the path specified</title>
+      <link>https://blog.geunho.dev/posts/hbase-phoenix-troubleshoot-1/</link>
+      <pubDate>Fri, 17 Jun 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/hbase-phoenix-troubleshoot-1/</guid>
+      <description>발생원인 및 해결방법 윈도우에서 Phoenix에 jdbc client로 접속 후 order by 혹은 group by가 포함된 쿼리를 수행하면 아래와 같은 에러 메시지가 발생한다.
+PhoenixIOException: The system cannot find the path specified 메시지 내용 그대로 특정 파일 경로를 찾지 못해 발생하는 IOException인데, 특이한 점은 위와 같은 집계 절이 포함된 쿼리에 대해서만 발생 한다는 것이다. 이는 Phoenix의 쿼리 처리 방법과 관련이 있다. Phoenix 쿼리 서버에 쿼리를 요청하면,
+ Hbase 서버의 데이터를 scan (full or range) 필요한 경우 client에서 데이터 처리 (merge, limit, …)</description>
+    </item>
+    
+    <item>
+      <title>Kafka - org.apache.zookeeper.KeeperException$NoNodeException: KeeperErrorCode = NoNode for $BROKER_PATH</title>
+      <link>https://blog.geunho.dev/posts/kafa-troubleshoot-2/</link>
+      <pubDate>Wed, 01 Jun 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/kafa-troubleshoot-2/</guid>
+      <description>발생 원인 및 해결 방법 Kafka consumer가 zookeeper 접속에 실패하면 발생하는 에러이다. 그 원인에는 여러가지 이유가 있는데 그 중 timeout 시간이 짧아 발생한 상황에 대해 정리한다.
+Kafka는 consumer group에 변화가 생기면 partition을 다시 분배하기 위해 rebalance가 일어난다. 그런데 Broker가 Zookeeper로 heartbeat를 전송하다가 실패하면 그 broker가 죽은 것으로 인지하여 rebalance가 발생하기도 한다.
+heartbeat의 timeout 시간을 조정하는 설정값이 바로 zookeeper.session.timeout.ms1인데 기본 값이 6000ms으로 짧기 때문에, Kafka의 부하가 큰 경우 timeout이 여러번 발생하게 되면서 rebalance가 계속해서 일어날 수 있다.</description>
+    </item>
+    
+    <item>
+      <title>kafka - kafka.common.InconsistentBrokerIdException: Configured brokerId $id doesn’t match stored brokerId $id in meta.properties</title>
+      <link>https://blog.geunho.dev/posts/kafka-troubleshoot-1/</link>
+      <pubDate>Mon, 09 May 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/kafka-troubleshoot-1/</guid>
+      <description>발생 원인 및 해결 방법 Kafka broker 서버의 설정 파일 (conf/server.properties) 에 명시된 broker.id 값과 로그 파일이 저장되는 폴더 (kafka-logs/meta.properties) 에 명시된 broker.id 값이 서로 달라서 발생하는 문제이다.
+Kafka 클러스터를 처음 구성할 때, 설정 파일 (e.g. zookeeper 연결 문자열) 수정시 brokerid를 자동으로 생성, 할당하는 과정에서 불일치가 발생할 수 있다. 아래 방법들 중 하나로 불일치를 해결하면 된다.
+ 로그 파일이 저장된 폴더의 meta.properties 파일에 broker.id 값을 server.properties에 명시된 값으로 수정 후 broker 재시작 아직 운영하기 전인 클러스터라면, 로그 파일이 저장된 폴더를 모두 삭제 후 broker 재시작</description>
+    </item>
+    
+    <item>
+      <title>Linux 파일 시스템 접근 권한</title>
+      <link>https://blog.geunho.dev/posts/filesystem-permission/</link>
+      <pubDate>Fri, 15 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/filesystem-permission/</guid>
+      <description>파일 시스템의 접근 권한 리눅스를 포함한 POSIX 계열 운영체제에서는 “전통적인 유닉스 권한” (Traditional Unix Permissions)을 따른다. 파일 목록을 보는 명령어를 입력하면 아래와 같은 출력을 볼 수 있다.
+ls -al # 접근 권한 소유자 소유그룹 drwxr‐‐r‐‐ 7 root root 62 Apr 14 12:21 . drwxrwxr-x 3 root root 19 Apr 14 19:49 .. drwxr‐‐r‐‐ 1 root root 19 Apr 14 19:49 bin drwxr‐‐r‐‐ 1 root root 19 Apr 14 19:49 etc ‐rwxr-xr-x 1 root root 19 Apr 14 19:49 script.</description>
+    </item>
+    
+    <item>
+      <title>Nodejs - Error: listen EACCES 0.0.0.0:80</title>
+      <link>https://blog.geunho.dev/posts/nodejs-troubleshoot-1/</link>
+      <pubDate>Tue, 29 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/nodejs-troubleshoot-1/</guid>
+      <description>발생 원인 및 해결 방법 root 권한이 없는 계정으로 Linux 내에서 애플리케이션을 수행할 때, 1024 보다 작은 포트에는 바인딩 할 수 없다. Nodejs에서 웹 서버를 띄울 때에도 마찬가지 인데, 아래와 같은 방법으로 처리 할 수 있다.
+ 애플리케이션을 root 권한으로 수행 혹은, 1024 이상의 포트 번호를 바인딩 하도록 수정 애플리케이션이 1024 보다 작은 포트에 바인딩 할 수 있도록 설정  이 중 세 번째 방법은 애플리케이션에 cap_net_bind_service capability를 설정하면 된다.</description>
+    </item>
+    
+    <item>
+      <title>Java - 깊은 복사(Deep copy)와 얕은 복사(Shallow copy)</title>
+      <link>https://blog.geunho.dev/posts/java-deep-copy-shallow-copy/</link>
+      <pubDate>Sat, 15 Jun 2013 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/java-deep-copy-shallow-copy/</guid>
+      <description>Java에서 int, long, float, double과 같은 primitive type은 선언되는 변수 자체에 값을 가지는데, 값을 복사하거나 할당할 때 흔히 다음과 같이 코드를 작성하게 된다.
+int a = 3; int b = 1; a = b; 그림 1. primitive type의 복사
+너무나 간단한 코드이지만 이를 Object 클래스를 상속하는 모든 객체(reference type)에서 그대로 적용하면, reference 값만을 복사하게 되어 같은 참조를 가진 두 개의 변수가 생기게 된다.
+그림 2. 객체의 얕은 복사
+그림2와 같은 복사를 얕은 복사(Shallow copy)라고 부른다.</description>
+    </item>
+    
+  </channel>
+</rss>

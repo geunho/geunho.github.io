@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="referrer" content="no-referrer">
+    
+
+    
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans:400|Old+Standard+TT:400' rel='stylesheet' type='text/css'>
+    
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <title>
+      
+      
+         관제에서 평균값, 중앙값, 그리고 백분위 
+      
+    </title>
+    <link rel="canonical" href="https://blog.geunho.dev/posts/mean-median-percentile/">
+
+    <style>
+  * {
+    border:0;
+    font:inherit;
+    font-size:100%;
+    vertical-align:baseline;
+    margin:0;
+    padding:0;
+    color: black;
+    text-decoration-skip: ink;
+  }
+
+  body {
+    font-family:'Open Sans', 'Myriad Pro', Myriad, sans-serif;
+    font-size:17px;
+    line-height:160%;
+    color:#1d1313;
+    max-width:700px;
+    margin:auto;
+  }
+
+  .footnotes {
+    margin: 30px 0 40px 0;
+  }
+  sup.footnote-ref {
+    font-size: 0.85em;
+    vertical-align: top;
+    position: relative;
+    top: -0.5em;
+  }
+
+  footer {
+    font-size: x-small;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    margin: 20px 0;
+  }
+
+  a img {
+    border:none;
+  }
+
+  img {
+    margin: 10px auto 10px auto;
+    max-width: 75%;
+    display: block;
+  }
+
+  .left-justify {
+    float: left;
+  }
+
+  .right-justify {
+    float:right;
+  }
+
+  pre, code {
+    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    background-color: #f7f7f7;
+  }
+
+  code {
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  pre {
+    margin-top: 0;
+    margin-bottom: 16px;
+    word-wrap: normal;
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+  }
+
+  pre>code {
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
+  }
+
+  pre code {
+    display: inline;
+    max-width: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    line-height: inherit;
+    word-wrap: normal;
+    background-color: transparent;
+    border: 0;
+  }
+
+  pre code::before,
+  pre code::after {
+    content: normal;
+  }
+
+  em,q,em,dfn {
+    font-style:italic;
+  }
+
+  .sans,html .gist .gist-file .gist-meta {
+    font-family:"Open Sans","Myriad Pro",Myriad,sans-serif;
+  }
+
+  .mono,pre,code,tt,p code,li code {
+    font-family:Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
+  }
+
+  .heading,.serif,h1,h2,h3 {
+    font-family:"Old Standard TT",serif;
+  }
+
+  strong {
+    font-weight:600;
+  }
+
+  q:before {
+    content:"\201C";
+  }
+
+  q:after {
+    content:"\201D";
+  }
+
+  del,s {
+    text-decoration:line-through;
+  }
+
+  blockquote {
+    font-family:"Old Standard TT",serif;
+    text-align:center;
+    padding:50px;
+  }
+
+  blockquote p {
+    display:inline-block;
+    font-style:italic;
+  }
+
+  blockquote:before,blockquote:after {
+    font-family:"Old Standard TT",serif;
+    content:'\201C';
+    font-size:35px;
+    color:#403c3b;
+  }
+
+  blockquote:after {
+    content:'\201D';
+  }
+
+  hr {
+    width:40%;
+    height: 1px;
+    background:#403c3b;
+    margin: 25px auto;
+  }
+
+  h1 {
+    font-size:35px;
+  }
+
+  h2 {
+    font-size:28px;
+  }
+
+  h3 {
+    font-size:22px;
+    margin-top:18px;
+  }
+
+  h1 a,h2 a,h3 a {
+    text-decoration:none;
+  }
+
+  h1,h2 {
+    margin-top:28px;
+  }
+
+  #sub-header, time {
+    color:#403c3b;
+    font-size:13px;
+  }
+
+  #sub-header {
+    margin: 0 4px;
+  }
+
+  #nav h1 a {
+    font-size:35px;
+    color:#1d1313;
+    line-height:120%;
+  }
+
+  .posts_listing a,#nav a {
+    text-decoration: none;
+  }
+
+  li {
+    margin-left: 20px;
+  }
+
+  ul li {
+    margin-left: 5px;
+  }
+
+  ul li {
+    list-style-type: none;
+  }
+
+  ul li:before {
+    content:"\2022 \0020";
+  }
+
+  ul li ul li:before {
+    content:"\2043 \0020";
+  }
+
+  #nav ul li:before, .posts_listing li:before {
+    content:'';
+    margin-right:0;
+  }
+
+  #content {
+    text-align:left;
+    width:100%;
+    font-size:15px;
+    padding:60px 0 80px;
+  }
+
+  #content h1,#content h2 {
+    margin-bottom:5px;
+  }
+
+  #content h2 {
+    font-size:25px;
+  }
+
+  #content .entry-content {
+    margin-top:15px;
+  }
+
+  #content time {
+    margin-left:3px;
+  }
+
+  #content h1 {
+    font-size:30px;
+  }
+
+  .highlight {
+    margin: 10px 0;
+  }
+
+  .posts_listing {
+    margin:0 0 50px;
+  }
+
+  .posts_listing li {
+    margin:0 0 25px 15px;
+  }
+
+  .posts_listing li a:hover,#nav a:hover {
+    text-decoration: underline;
+  }
+
+  #nav {
+    text-align:center;
+    position:static;
+    margin-top:60px;
+  }
+
+  #nav ul {
+    display: table;
+    margin: 8px auto 0 auto;
+  }
+
+  #nav li {
+    list-style-type:none;
+    display:table-cell;
+    font-size:15px;
+    padding: 0 20px;
+  }
+
+  #links {
+    margin: 50px 0 0 0;
+  }
+
+  #links :nth-child(2) {
+    float:right;
+  }
+
+  img.avatar {
+    border-radius: 50%;
+    width: 300px;
+  }
+
+   
+  .social_id {
+    color:#9b9b9b; 
+    font-size:10px;
+    text-align:center;
+  }
+  .social-icons {
+    display: flex;
+    justify-content: center;
+  }
+  .social-icons__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  
+  .social-icons__icon--linkedin {
+    background-image: url(/icons/linkedin.svg);
+    margin-right: 2rem;    
+  }
+  .social-icons__icon--github {
+    background-image: url(/icons/github.svg);
+    margin-right: 2rem; 
+  }
+  .social-icons__icon--gmail {
+    background-image: url(/icons/gmail.svg);
+  }
+
+  .rss-icon {
+    display: flex;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/rss.svg);
+  }
+
+  #not-found {
+    display: flex;
+  }
+  .not-found__icon--docker {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-right: 0.5em;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/docker.svg);
+  }
+
+  nav#TableOfContents {
+    margin: 20px 0 50px 0;
+  }
+
+  @media (max-width: 750px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 80%;
+    }
+
+    #nav h1 a {
+      font-size:28px;
+    }
+
+    #nav li {
+      font-size:13px;
+      padding: 0 15px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:50px;
+      font-size:14px;
+    }
+
+    #content h1 {
+      font-size:25px;
+    }
+
+    #content h2 {
+      font-size:22px;
+    }
+
+    .posts_listing li div {
+      font-size:12px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    #nav h1 a {
+      font-size:22px;
+    }
+
+    #nav li {
+      font-size:12px;
+      padding: 0 10px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:20px;
+      font-size:12px;
+    }
+
+    #content h1 {
+      font-size:20px;
+    }
+
+    #content h2 {
+      font-size:18px;
+    }
+
+    .posts_listing li div{
+      font-size:12px;
+    }
+
+    img.avatar {
+      border-radius: 50%;
+      width: 170px;
+    }
+  }
+</style>
+
+
+    
+  </head>
+
+  <body>
+    <section id=nav>
+      <h1><a href="/">Blog · 김근호(Kim, Geunho)</a></h1>
+      <ul>
+        
+          <li><a href="/about">About</a></li>
+        
+          <li><a href="/posts">Posts</a></li>
+        
+          <li><a href="/thoughts">Thoughts</a></li>
+        
+        <a class="rss-icon" href="/index.xml"></a>
+      </ul>
+    </section>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-146312497-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+<section id="content">
+  <h1> 관제에서 평균값, 중앙값, 그리고 백분위 </h1>
+
+  
+    <div id="sub-header">
+      11 November 2019 · 2 minutes read
+    </div>
+  
+
+  <nav id="TableOfContents">
+<ul>
+<li><a href="#평균값-mean-의-문제">평균값(mean)의 문제</a></li>
+<li><a href="#백분위수-percentile">백분위수(percentile)</a></li>
+</ul>
+</nav>
+
+  <div class="entry-content">
+    
+
+<h1 id="평균값-mean-의-문제">평균값(mean)의 문제</h1>
+
+<p>어떤 서비스의 관제 시스템은 지표를 1초 단위로 시계열 저장소에 수집한다고 가정해보자.</p>
+
+<p>지표들을 시계열 그래프의 차트로 나타낸다면, 최근 한 시간 추이만 보려고 해도 하나의 지표당 3600개(1시간 = 3600초)의 데이터 포인트를 데이터베이스에서 조회하고 화면에 그려야 한다.
+대부분의 시계열 저장소에서는 이를 위해 조회시 집계를 할 수 있도록 함수를 제공하고 있다.</p>
+
+<p>일반적으로 많이 사용하는 것은 n초(혹은 분)간 평균값(mean)인데, CPU, RAM, Disk 등 서버 한 대에서 수집하는 리소스의 평균값은 대표값으로 사용하는데 큰 문제가 없다.
+(시간에 따른 값의 편차가 크지 않고 일시적으로 튄 데이터 포인트는 서버에 큰 위협이 없기 때문)</p>
+
+<p>그런데 만약 요청 응답 시간과 같은 수치를 평균값으로 집계해서 그리면 어떻게 될까?</p>
+
+<p>응답 시간이라는 하나의 지표이지만 다양한 클라이언트로부터 요청을 받아 처리하고, 응답을 보내는데까지 걸리는 시간은 클라이언트마다 편차가 클 것이다.
+편차가 크면 수치가 고르게 분포되어 있지 않을 것이고 특정 구간에서 크게 튀는 값들은 적당한 값으로 다운샘플링 될것이다.
+즉, 평균 30ms의 응답 시간으로 보이는 지표에서, 사실 일부 클라이언트는 2000ms가 넘는 지연 시간을 보일 수 있는 것이다.</p>
+
+<p>이렇듯 일부 항목에 대해서 발생하는 이상 현상을 관제시 놓치지 않으려면 백분위수(percentile)를 이용해야 한다.</p>
+
+<h1 id="백분위수-percentile">백분위수(percentile)</h1>
+
+<p>백분위수는 수치 데이터를 정렬해서 나열했을 때, 백분율로 구간을 나누어서 수치의 위치를 기술할때 사용할 수 있다.
+(정의에 따라 50분위수는 중앙값(median)을 나타낸다)</p>
+
+<p>위의 응답 시간의 예에서 100개의 응답 시간 수치 데이터가 있다고 가정해보자.
+이를 정렬해서 나열하면 아래와 같은데,</p>
+<div class="highlight"><pre class="chroma">response_time_milis = [20, 20, 20, 20, ..., 20, 2000]</pre></div>
+<p>99개의 수치는 20ms이고 한 개의 수치가 2000이라는 100배 큰 값을 나타내고 있다.
+평균값으로 이 수치 데이터를 나타내면 <code>(20ms * 99 + 2000ms)/100 = 29.9ms</code>로 나오게 된다.</p>
+
+<p>하나의 요청이 비정상적인 응답 시간을 보였지만 약 30ms 수치로 완벽히 가려져버렸다.
+이 예제에서는 하나의 요청에 해당한 것이지만, 수치 데이터의 크기가 커질 수록 다른 요청에 비해 100배가 넘는 응답 시간을 보이는 비정상 응답 수도 훨씬 증가할 것이다.</p>
+
+<p>여기에서 2000은 99분위수 구간 이후에 위치한다. 상위 1% 데이터는 2000ms 이상의 응답 시간을 가진다고 할 수 있는 것이다.
+따라서 99분위수를 시계열 그래프에 그리면 상위 1% 데이터의 최소 응답 시간에 대한 분포를 볼 수 있다.</p>
+
+<p>이제 일부(상위 몇 퍼센트까지)가 얼마나 비정상적인 값들을 보이는지 알 수 있게 된다.</p>
+
+<p>이러한 특성 덕분에 백분위수는 성능 테스트를 할때에도 유용하게 쓰일 수 있다.</p>
+
+  </div>
+
+  
+    <div id="sub-header">
+      Updated 11 November 2019
+    </div>
+  
+
+  <div id="links">
+    
+      <a class="basic-alignment left" href="https://blog.geunho.dev/posts/docker-old-os-editor/">&laquo; Docker - 오래된 버전의 OS 베이스 이미지에 텍스트 편집기 설치하기</a>
+    
+    
+      <a class="basic-alignment left" href="https://blog.geunho.dev/posts/docker-exit-137/">Docker 컨테이너 비정상 종료 문제 - non-zero exit (137) &raquo;</a>
+    
+  </div>
+</section>
+<section id="comment">
+  <script src="https://utteranc.es/client.js"
+    repo="geunho/blog"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>  
+</section>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2013-2020 Copyright Geunho Kim. All rights reserved.
+    </p>
+  </div>
+</footer>
+

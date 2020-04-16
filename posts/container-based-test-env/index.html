@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="referrer" content="no-referrer">
+    
+
+    
+      <link href='https://fonts.googleapis.com/css?family=Open+Sans:400|Old+Standard+TT:400' rel='stylesheet' type='text/css'>
+    
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <title>
+      
+      
+         Testcontainers - 컨테이너 기반 테스트 환경 
+      
+    </title>
+    <link rel="canonical" href="https://blog.geunho.dev/posts/container-based-test-env/">
+
+    <style>
+  * {
+    border:0;
+    font:inherit;
+    font-size:100%;
+    vertical-align:baseline;
+    margin:0;
+    padding:0;
+    color: black;
+    text-decoration-skip: ink;
+  }
+
+  body {
+    font-family:'Open Sans', 'Myriad Pro', Myriad, sans-serif;
+    font-size:17px;
+    line-height:160%;
+    color:#1d1313;
+    max-width:700px;
+    margin:auto;
+  }
+
+  .footnotes {
+    margin: 30px 0 40px 0;
+  }
+  sup.footnote-ref {
+    font-size: 0.85em;
+    vertical-align: top;
+    position: relative;
+    top: -0.5em;
+  }
+
+  footer {
+    font-size: x-small;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    margin: 20px 0;
+  }
+
+  a img {
+    border:none;
+  }
+
+  img {
+    margin: 10px auto 10px auto;
+    max-width: 75%;
+    display: block;
+  }
+
+  .left-justify {
+    float: left;
+  }
+
+  .right-justify {
+    float:right;
+  }
+
+  pre, code {
+    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    background-color: #f7f7f7;
+  }
+
+  code {
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  pre {
+    margin-top: 0;
+    margin-bottom: 16px;
+    word-wrap: normal;
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+  }
+
+  pre>code {
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
+  }
+
+  pre code {
+    display: inline;
+    max-width: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    line-height: inherit;
+    word-wrap: normal;
+    background-color: transparent;
+    border: 0;
+  }
+
+  pre code::before,
+  pre code::after {
+    content: normal;
+  }
+
+  em,q,em,dfn {
+    font-style:italic;
+  }
+
+  .sans,html .gist .gist-file .gist-meta {
+    font-family:"Open Sans","Myriad Pro",Myriad,sans-serif;
+  }
+
+  .mono,pre,code,tt,p code,li code {
+    font-family:Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace;
+  }
+
+  .heading,.serif,h1,h2,h3 {
+    font-family:"Old Standard TT",serif;
+  }
+
+  strong {
+    font-weight:600;
+  }
+
+  q:before {
+    content:"\201C";
+  }
+
+  q:after {
+    content:"\201D";
+  }
+
+  del,s {
+    text-decoration:line-through;
+  }
+
+  blockquote {
+    font-family:"Old Standard TT",serif;
+    text-align:center;
+    padding:50px;
+  }
+
+  blockquote p {
+    display:inline-block;
+    font-style:italic;
+  }
+
+  blockquote:before,blockquote:after {
+    font-family:"Old Standard TT",serif;
+    content:'\201C';
+    font-size:35px;
+    color:#403c3b;
+  }
+
+  blockquote:after {
+    content:'\201D';
+  }
+
+  hr {
+    width:40%;
+    height: 1px;
+    background:#403c3b;
+    margin: 25px auto;
+  }
+
+  h1 {
+    font-size:35px;
+  }
+
+  h2 {
+    font-size:28px;
+  }
+
+  h3 {
+    font-size:22px;
+    margin-top:18px;
+  }
+
+  h1 a,h2 a,h3 a {
+    text-decoration:none;
+  }
+
+  h1,h2 {
+    margin-top:28px;
+  }
+
+  #sub-header, time {
+    color:#403c3b;
+    font-size:13px;
+  }
+
+  #sub-header {
+    margin: 0 4px;
+  }
+
+  #nav h1 a {
+    font-size:35px;
+    color:#1d1313;
+    line-height:120%;
+  }
+
+  .posts_listing a,#nav a {
+    text-decoration: none;
+  }
+
+  li {
+    margin-left: 20px;
+  }
+
+  ul li {
+    margin-left: 5px;
+  }
+
+  ul li {
+    list-style-type: none;
+  }
+
+  ul li:before {
+    content:"\2022 \0020";
+  }
+
+  ul li ul li:before {
+    content:"\2043 \0020";
+  }
+
+  #nav ul li:before, .posts_listing li:before {
+    content:'';
+    margin-right:0;
+  }
+
+  #content {
+    text-align:left;
+    width:100%;
+    font-size:15px;
+    padding:60px 0 80px;
+  }
+
+  #content h1,#content h2 {
+    margin-bottom:5px;
+  }
+
+  #content h2 {
+    font-size:25px;
+  }
+
+  #content .entry-content {
+    margin-top:15px;
+  }
+
+  #content time {
+    margin-left:3px;
+  }
+
+  #content h1 {
+    font-size:30px;
+  }
+
+  .highlight {
+    margin: 10px 0;
+  }
+
+  .posts_listing {
+    margin:0 0 50px;
+  }
+
+  .posts_listing li {
+    margin:0 0 25px 15px;
+  }
+
+  .posts_listing li a:hover,#nav a:hover {
+    text-decoration: underline;
+  }
+
+  #nav {
+    text-align:center;
+    position:static;
+    margin-top:60px;
+  }
+
+  #nav ul {
+    display: table;
+    margin: 8px auto 0 auto;
+  }
+
+  #nav li {
+    list-style-type:none;
+    display:table-cell;
+    font-size:15px;
+    padding: 0 20px;
+  }
+
+  #links {
+    margin: 50px 0 0 0;
+  }
+
+  #links :nth-child(2) {
+    float:right;
+  }
+
+  img.avatar {
+    border-radius: 50%;
+    width: 300px;
+  }
+
+   
+  .social_id {
+    color:#9b9b9b; 
+    font-size:10px;
+    text-align:center;
+  }
+  .social-icons {
+    display: flex;
+    justify-content: center;
+  }
+  .social-icons__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  
+  .social-icons__icon--linkedin {
+    background-image: url(/icons/linkedin.svg);
+    margin-right: 2rem;    
+  }
+  .social-icons__icon--github {
+    background-image: url(/icons/github.svg);
+    margin-right: 2rem; 
+  }
+  .social-icons__icon--gmail {
+    background-image: url(/icons/gmail.svg);
+  }
+
+  .rss-icon {
+    display: flex;
+    width: 1.2rem;
+    height: 1.2rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/rss.svg);
+  }
+
+  #not-found {
+    display: flex;
+  }
+  .not-found__icon--docker {
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-right: 0.5em;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/icons/docker.svg);
+  }
+
+  nav#TableOfContents {
+    margin: 20px 0 50px 0;
+  }
+
+  @media (max-width: 750px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 80%;
+    }
+
+    #nav h1 a {
+      font-size:28px;
+    }
+
+    #nav li {
+      font-size:13px;
+      padding: 0 15px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:50px;
+      font-size:14px;
+    }
+
+    #content h1 {
+      font-size:25px;
+    }
+
+    #content h2 {
+      font-size:22px;
+    }
+
+    .posts_listing li div {
+      font-size:12px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    body {
+      padding-left:20px;
+      padding-right:20px;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    #nav h1 a {
+      font-size:22px;
+    }
+
+    #nav li {
+      font-size:12px;
+      padding: 0 10px;
+    }
+
+    #content {
+      margin-top:0;
+      padding-top:20px;
+      font-size:12px;
+    }
+
+    #content h1 {
+      font-size:20px;
+    }
+
+    #content h2 {
+      font-size:18px;
+    }
+
+    .posts_listing li div{
+      font-size:12px;
+    }
+
+    img.avatar {
+      border-radius: 50%;
+      width: 170px;
+    }
+  }
+</style>
+
+
+    
+  </head>
+
+  <body>
+    <section id=nav>
+      <h1><a href="/">Blog · 김근호(Kim, Geunho)</a></h1>
+      <ul>
+        
+          <li><a href="/about">About</a></li>
+        
+          <li><a href="/posts">Posts</a></li>
+        
+          <li><a href="/thoughts">Thoughts</a></li>
+        
+        <a class="rss-icon" href="/index.xml"></a>
+      </ul>
+    </section>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-146312497-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+<section id="content">
+  <h1> Testcontainers - 컨테이너 기반 테스트 환경 </h1>
+
+  
+    <div id="sub-header">
+      3 September 2019 · 3 minutes read
+    </div>
+  
+
+  <nav id="TableOfContents">
+<ul>
+<li><a href="#테스트-환경">테스트 환경</a></li>
+<li><a href="#컨테이너-기반-테스트-환경">컨테이너 기반 테스트 환경</a></li>
+<li><a href="#testcontainers">Testcontainers</a></li>
+</ul>
+</nav>
+
+  <div class="entry-content">
+    
+
+<p>2017년 중순, 회사 내에서 완전히 새로운 개발/운영 플랫폼 도입을 위한 TF 진행을 하면서 다양한 레퍼런스를 조사했었다.<br />
+그때 발견한 한 샘플 프로젝트가 <a href="https://dotnet.microsoft.com">.NET Core</a>로 구현된 웹 서비스였는데, Visual Studio 2017 솔루션으로 구성되어 각 프로젝트를 모두 컨테이너화까지 해놓은 좋은 예제였다.</p>
+
+<p>재미있었던 것은 한번 빌드하면 자동으로 필요한 서브 시스템들(mongodb, redis, rabbitmq, &hellip;)을 docker compose로 구성해서 빌드가 실행될 때 컨테이너가 함께 로컬에 띄워지도록 한 것이었다.<br />
+각 웹 프로젝트들도 빌드 타임에 도커 이미지까지 빌드한 후 컨테이너를 띄워서 컨테이너 내 프로세스를 디버그하는 방식이었는데, 당시에는 신선한 충격이었다.</p>
+
+<h1 id="테스트-환경">테스트 환경</h1>
+
+<p>일관된 테스트 환경을 갖는 것은 어려운 일이다. 특히 개발 테스트 환경은 개발 환경에서 동작하는 별도의 데이터 소스를 바라보도록 구성되고, 유기적으로 연결된 각 서비스들은 서로의 개발 환경을 바라보고 있다.<br />
+개발 환경에 띄워진 서비스들은 적절한 개발 브랜치 전략과 CI<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup> 구성이 되어있지 않으면 쉽게 망가질 수 있다. 특히 데이터 소스는 언제든 아무도 모르게 프로세스가 중단될 수도 있고 RDB의 경우에는 테스트용 데이터가 망가지거나, DB의 저장 프로시져가 바뀔 수도 있다.</p>
+
+<p>이렇듯, 우리가 테스트하고자 하는 하나의 서비스는 독립적으로 동작하지 않고 여러 서비스와 데이터 소스와 관계를 맺기 때문에 테스트하기가 쉽지 않다.</p>
+
+<h1 id="컨테이너-기반-테스트-환경">컨테이너 기반 테스트 환경</h1>
+
+<p>&ldquo;컨테이너 기반 테스트 환경&rdquo;은 당시에 샘플 프로젝트를 보고 착안한 생각이었다. 상당히 러프한 아이디어였는데, 그 구조는 다음과 같다.</p>
+
+<p><img src="/container-based-test-env-1.png" alt="테스트 환경 관리 시스템" /> <em>그림 1. 서비스 관리자는 이미지와 테스트용 volume 데이터를 관리한다.</em></p>
+
+<p><img src="/container-based-test-env-2.png" alt="로컬 개발 환경" /> <em>그림 2. 로컬 개발 환경</em></p>
+
+<p>그림 1을 보면, 서비스 관리자가 도커 이미지와 테스트용 volume 데이터를 관리한다. 이때 테스트 환경 관리 시스템을 통해서 권한을 제어한다.<br />
+그림 2에서는 어떻게 로컬 개발 환경이 구성되는지 알 수 있는데, 개발자는 서로 통신하는 외부 서비스를 로컬에 이미지로 내려받아 컨테이너로 띄워 바라보면서 개발을 하게 되고, 데이터 소스인 경우 미리 관리되고 있는 volume 데이터를 로컬에 복제해서 사용한다. 개발이 완료되어 개발 브랜치에 새로운 커밋이 생성되면 CI 환경에 의해 새로운 버전의 도커 이미지로 빌드되어 테스트 환경 관리 시스템의 레지스트리에 저장된다.</p>
+
+<p>이렇게 구성이 된다면 로컬 개발 환경에서 다른 외부 서비스와 데이터 소스가 일관되게 유지되어 서비스 환경과 무관하게, 개발자가 담당하는 서비스 개발에만 집중할 수 있게 된다.<br />
+만약 하나의 서비스가 여러 개의 하위 서비스로 구성되어 있다면 하위 서비스의 개발 환경을 직접 구성하면서 보내는 시간을 크게 단축할 수 있다.</p>
+
+<p>사실 이러한 환경이 제대로 구성이 되려면 여러가지 문제가 발생하는데,</p>
+
+<ol>
+<li>모든 서비스의 도커화</li>
+<li>테스트용 volume 데이터 관리에 대한 책임</li>
+<li>개별 서비스의 소스코드 프로젝트에 외부 서비스와 데이터 소스를 띄우기 위한 스크립트 필요</li>
+<li>3번 스크립트의 유지보수 필요</li>
+</ol>
+
+<p>모든 서비스를 도커화하고 빌드 스크립트를 유지보수 하는 일은 당시 환경에서는 현실적이지 않아 보였다. 윈도우 환경에서는 도커에 대한 지원이 많이 부족했고, 소스코드 외부에서 스크립트를 통해 환경을 구성하는 방식은 테스트 코드 내에서 통합해서 사용하기에는 어려웠기 때문이다.</p>
+
+<h1 id="testcontainers">Testcontainers</h1>
+
+<p><a href="https://www.testcontainers.org">Testcontainers</a>는 테스트 코드 내에서 컨테이너를 생성하고 제어하는 기능을 제공하는 자바 라이브러리이다. .NET, Scala, Python, Nodejs, Go 등 다른 환경을 위한 라이브러리도 작성되었으나, 공식 사이트에 정식으로 공개하지는 않았다.<sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup></p>
+
+<p>다음과 같은 목적으로 개발되었는데,</p>
+
+<ul>
+<li>Data access layer integration tests</li>
+<li>Application integration tests</li>
+<li>UI/Acceptance tests</li>
+</ul>
+
+<p>앞서 소개한 아이디어의 테스트 코드에서 통합을 손쉽게 할 수 있을 것으로 보인다.<br />
+다음은 JUnit4를 이용한 테스트 코드이다. <code>RedisBackedCache</code> 레디스 클라이언트를 테스트하는 것을 살펴볼 수 있다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RedisBackedCacheIntTest</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">RedisBackedCache</span> <span class="n">underTest</span><span class="o">;</span>
+
+    <span class="nd">@Rule</span>
+    <span class="c1">//(1) 레디스 서버 컨테이너를 생성해서 로컬에 띄우고
+</span><span class="c1"></span>    <span class="kd">public</span> <span class="n">GenericContainer</span> <span class="n">redis</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GenericContainer</span><span class="o">&lt;&gt;(</span><span class="s">&#34;redis:5.0.3-alpine&#34;</span><span class="o">)</span>
+                                            <span class="o">.</span><span class="na">withExposedPorts</span><span class="o">(</span><span class="n">6379</span><span class="o">);</span>
+
+    <span class="nd">@Before</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setUp</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">//(2) 컨테이너의 IP, port를 가져와서
+</span><span class="c1"></span>        <span class="n">String</span> <span class="n">address</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="na">getContainerIpAddress</span><span class="o">();</span>
+        <span class="n">Integer</span> <span class="n">port</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="na">getFirstMappedPort</span><span class="o">();</span>
+
+        <span class="c1">//(3) `RedisBackedCache` 인스턴스를 생성
+</span><span class="c1"></span>        <span class="n">underTest</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RedisBackedCache</span><span class="o">(</span><span class="n">address</span><span class="o">,</span> <span class="n">port</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSimplePutAndGet</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">//(4) put(), get() 메서드 테스트
+</span><span class="c1"></span>        <span class="n">underTest</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">&#34;test&#34;</span><span class="o">,</span> <span class="s">&#34;example&#34;</span><span class="o">);</span>
+
+        <span class="n">String</span> <span class="n">retrieved</span> <span class="o">=</span> <span class="n">underTest</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;test&#34;</span><span class="o">);</span>
+        <span class="n">assertEquals</span><span class="o">(</span><span class="s">&#34;example&#34;</span><span class="o">,</span> <span class="n">retrieved</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></div><div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1"><a href="https://ko.wikipedia.org/wiki/%EC%A7%80%EC%86%8D%EC%A0%81_%ED%86%B5%ED%95%A9">Continuous Integration</a>.
+ <a class="footnote-return" href="#fnref:1">[↑]</a></li>
+<li id="fn:2"><a href="https://github.com/testcontainers">GitHub testcontainser organization</a>을 참고한다.
+ <a class="footnote-return" href="#fnref:2">[↑]</a></li>
+</ol>
+</div>
+
+  </div>
+
+  
+    <div id="sub-header">
+      Updated 3 September 2019
+    </div>
+  
+
+  <div id="links">
+    
+      <a class="basic-alignment left" href="https://blog.geunho.dev/posts/hadoop-docker-test-env-hdfs/">&laquo; Docker로 Hadoop 테스트 환경 구축하기 - HDFS</a>
+    
+    
+      <a class="basic-alignment left" href="https://blog.geunho.dev/posts/docker-mac-crash/">Docker for Mac 오류 - UNIX error exception: 17 &raquo;</a>
+    
+  </div>
+</section>
+<section id="comment">
+  <script src="https://utteranc.es/client.js"
+    repo="geunho/blog"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>  
+</section>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2013-2020 Copyright Geunho Kim. All rights reserved.
+    </p>
+  </div>
+</footer>
+

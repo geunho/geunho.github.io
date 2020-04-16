@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Thoughts on Blog · 김근호(Kim, Geunho)</title>
+    <link>https://blog.geunho.dev/thoughts/</link>
+    <description>Recent content in Thoughts on Blog · 김근호(Kim, Geunho)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 06 Aug 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.geunho.dev/thoughts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Code Review에 대한 단상</title>
+      <link>https://blog.geunho.dev/thoughts/code-review/</link>
+      <pubDate>Tue, 06 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/thoughts/code-review/</guid>
+      <description>Code Quality 코드 리뷰(Code Review)는 개발자가 작성하는 코드의 품질(Code Quality)을 유지하기 위한 활동이다.
+코드의 품질은 여러가지 측면에서 측정될 수 있는데, 가장 많이 언급되는 항목들이 다음과 같다:
+ 가독성
+ 일관성
+ 예측 가능성
+ 안정성 및 견고성
+ 유지 관리 및 확장성
+  코드가 읽기에 얼마나 쉽고 예측 가능한지, 숨겨진 버그는 없는지, 코드의 수정과 개선이 복잡하지 않고 얼마나 단순한지 보는 것이다.
+완전히 새로운 코드를 작성해나가는 것이 아니라면, 개발자는 코드를 작성하는데 대부분의 시간을 다른 사람이(혹은 과거의 스스로가) 작성한 코드를 읽고 분석하는데 보낸다.</description>
+    </item>
+    
+    <item>
+      <title>Metatron, GitHub star 사건과 관련하여</title>
+      <link>https://blog.geunho.dev/thoughts/metatron-github-abuse/</link>
+      <pubDate>Wed, 31 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/thoughts/metatron-github-abuse/</guid>
+      <description>사건의 발단 여느 날처럼 GitHub에 접속했다가, 한 친구가 starred한 feed를 클릭하게 되었다. Metatron Discovery라는 처음보는 오픈 소스 프로젝트였는데, 잘 정리된 README를 살펴보니 Druid 기반의 데이터 집계/시각화 도구였다.
+평소에 데이터 시각화 프로젝트들을 좋아기도 했고(Grafana 덕후) Druid 쿼리를 여러가지 대시보드로 구성할 수 있다는 소개 페이지는 꽤나 매력적이어서 더 자세한 정보를 얻기 위해 공식 사이트 링크를 클릭했다. 소개 내용을 보면서 쭈욱 스크롤하는데 웬걸, 페이지의 footer를 보니 SKT에서 개발하고 공개한 프로젝트였던 것이다.
+대기업에서 프로젝트를 오픈 소스로 공개하는데 이렇게까지 이쁘게 인테리어 해놓은 것에 놀라면서, 다음에 시간을 내어 더 살펴봐야겠다고 마음을 먹었다.</description>
+    </item>
+    
+  </channel>
+</rss>
