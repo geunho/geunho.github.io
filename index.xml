@@ -6,10 +6,33 @@
     <description>Recent content on Blog · 김근호(Kim, Geunho)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 07 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 31 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://blog.geunho.dev/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Git Tips - Sparse checkout 하기</title>
+      <link>https://blog.geunho.dev/posts/git-tips-3/</link>
+      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/git-tips-3/</guid>
+      <description>프로젝트 규모가 큰 repository나 mono repository로 구성한 repository는 개발 도구에서 프로젝트를 불러오면 빌드 시간이 오래걸릴 뿐만 아니라 개발 장비의 리소스도 많이 차지하게 된다. git의 core.sparseCheckout 옵션을 활성화 하거나, sparse-checkout 명령어를 사용하면 이런 경우를 해결할 수 있다.
+core.sparseCheckout 옵션 먼저 옵션을 활성화한다.
+git config core.sparseCheckout true 그리고 체크아웃할 파일/폴더 혹은 제외할 대상을 아래 파일에 설정하면 끝. 다음 예제에서는 README.md 파일을 제외한 모든 파일을 체크하도록 설정한다.
+touch .git/info/sparse-checkout # 파일 편집기로 열어서 다음과 같은 내용을 추가 # # 대상에서 제외하려면 !</description>
+    </item>
+    
+    <item>
+      <title>distcp - HDFS 클러스터 간 파일 복제하기</title>
+      <link>https://blog.geunho.dev/til/hadoop/distcp/</link>
+      <pubDate>Fri, 29 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/til/hadoop/distcp/</guid>
+      <description>distcp - HDFS 클러스터 간 파일 복제하기 distcp는 distributed copy의 약어로, 서로다른 HDFS 클러스터 간 파일을 복제할때 사용하는 명령어이다.
+사용방법 hadoop distcp hdfs://nn1/job/logs hdfs://nn1/job/others hdfs://nn2/job/ nn2 hdfs에 nn1의 두 디렉토리를 복제한다. 공백으로 구분해서 입력 경로를 여러 개를 지정할 수 있고, 마지막 인자에 출력 경로를 지정하면 된다.
+hadoop distcp -D dfs.replication=2 -m 32 hdfs://nn1/job/logs hdfs://nn1/job/others hdfs://nn2/job/ -D 옵션으로 hadoop 프로그램에 일반적인 옵션을 지정할 수 있고, -m 옵셥으로 map 수를 지정하여 최대 동시 복제 수를 설정한다.</description>
+    </item>
     
     <item>
       <title>Docker 컨테이너 비정상 종료 문제 - non-zero exit (137)</title>
@@ -306,6 +329,15 @@ int a = 3; int b = 1; a = b; 그림 1. primitive type의 복사
 너무나 간단한 코드이지만 이를 Object 클래스를 상속하는 모든 객체(reference type)에서 그대로 적용하면, reference 값만을 복사하게 되어 같은 참조를 가진 두 개의 변수가 생기게 된다.
 그림 2. 객체의 얕은 복사
 그림2와 같은 복사를 얕은 복사(Shallow copy)라고 부른다.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://blog.geunho.dev/til/readme/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/til/readme/</guid>
+      <description>TIL 📝 Today I Learned</description>
     </item>
     
     <item>

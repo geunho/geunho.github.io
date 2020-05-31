@@ -4,19 +4,35 @@
   
   <url>
     <loc>https://blog.geunho.dev/</loc>
-    <lastmod>2020-04-08T00:24:12+09:00</lastmod>
+    <lastmod>2020-05-31T17:52:44+09:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.geunho.dev/posts/git-tips-3/</loc>
+    <lastmod>2020-05-31T17:52:44+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.geunho.dev/posts/</loc>
+    <lastmod>2020-05-31T17:52:44+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.geunho.dev/til/</loc>
+    <lastmod>2020-05-29T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.geunho.dev/til/hadoop/distcp/</loc>
+    <lastmod>2020-05-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://blog.geunho.dev/posts/docker-exit-137/</loc>
     <lastmod>2020-04-08T00:24:12+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.geunho.dev/posts/</loc>
-    <lastmod>2020-04-08T00:24:12+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -148,6 +164,11 @@
   <url>
     <loc>https://blog.geunho.dev/posts/java-deep-copy-shallow-copy/</loc>
     <lastmod>2019-08-19T23:18:41+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.geunho.dev/til/readme/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
