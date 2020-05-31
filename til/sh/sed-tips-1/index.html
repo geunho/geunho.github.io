@@ -21,10 +21,10 @@
     <title>
       
       
-         Posts 
+         sh - sed로 마지막 N개 문자열 제거하기 
       
     </title>
-    <link rel="canonical" href="https://blog.geunho.dev/posts/">
+    <link rel="canonical" href="https://blog.geunho.dev/til/sh/sed-tips-1/">
 
     <style>
   * {
@@ -469,8 +469,6 @@
 
 
     
-        <atom:link href="https://blog.geunho.dev/posts/index.xml" rel="self" type="application/rss+xml" />
-    
   </head>
 
   <body>
@@ -502,185 +500,56 @@ if (!doNotTrack) {
 <script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
-<section id=content>
-  <ul class=posts_listing>
+
+
+<section id="content">
+  <h1> sh - sed로 마지막 N개 문자열 제거하기 </h1>
+
+  
+    <div id="sub-header">
+      31 May 2020 · 1 minute read
+    </div>
+  
+
+  <nav id="TableOfContents"></nav>
+
+  <div class="entry-content">
+    <p>쉘에서 <code>sed</code> (stream editor) 도구를 사용하면 다채로운 문자열 조작을 할 수 있다.</p>
+<h1 id="사용방법">사용방법</h1>
+<p>아래는 마지막 2개 문자열을 제거하는 예제이다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># sed s/regexp/replacement/</span>
+sed <span class="s1">&#39;s/.\{2\}$//&#39;</span> <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;Hello, Bash&#34;</span>
+Hello, Ba
+
+<span class="c1"># 위 예시는 마지막 2개 문자를 공백으로 치환한 것. 따라서 다른 문자열로 치환도 가능하다.</span>
+sed <span class="s1">&#39;s/.\{2\}$/bo/&#39;</span> <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;Hello, Bash&#34;</span>
+Hello, Babo
+</code></pre></div><h1 id="참고">참고</h1>
+<p><a href="https://linux.die.net/man/1/sed">https://linux.die.net/man/1/sed</a></p>
+
+  </div>
+
+  
+    <div id="sub-header">
+      Updated 31 May 2020
+    </div>
+  
+
+  <div id="links">
     
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/git-tips-3/">Git Tips - Sparse checkout 하기</a></h2>
-        <div id=date>
-          <time>May 2020</time>
-        </div>
-      </li>
+      <a class="basic-alignment left" href="https://blog.geunho.dev/til/hadoop/distcp/">&laquo; distcp - HDFS 클러스터 간 파일 복제하기</a>
     
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/docker-exit-137/">Docker 컨테이너 비정상 종료 문제 - non-zero exit (137)</a></h2>
-        <div id=date>
-          <time>April 2020</time>
-        </div>
-      </li>
     
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/mean-median-percentile/">관제에서 평균값, 중앙값, 그리고 백분위</a></h2>
-        <div id=date>
-          <time>November 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/docker-old-os-editor/">Docker - 오래된 버전의 OS 베이스 이미지에 텍스트 편집기 설치하기</a></h2>
-        <div id=date>
-          <time>November 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/pkix-path-building-failed/">Java - PKIX path building failed</a></h2>
-        <div id=date>
-          <time>November 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/vue-instance-and-components/">Vuejs 정리 1 - 인스턴스와 컴포넌트</a></h2>
-        <div id=date>
-          <time>September 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/docker-mac-crash/">Docker for Mac 오류 - UNIX error exception: 17</a></h2>
-        <div id=date>
-          <time>September 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/container-based-test-env/">Testcontainers - 컨테이너 기반 테스트 환경</a></h2>
-        <div id=date>
-          <time>September 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/hadoop-docker-test-env-hdfs/">Docker로 Hadoop 테스트 환경 구축하기 - HDFS</a></h2>
-        <div id=date>
-          <time>August 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/mac-terminal-text-edit/">Mac Terminal에서 텍스트 편집기 바로 열기</a></h2>
-        <div id=date>
-          <time>August 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/git-tips-1/">Git Tips - 과거 커밋으로부터 텍스트 검색하기</a></h2>
-        <div id=date>
-          <time>August 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/git-tips-2/">Git Tips - 로컬 커밋 복구하기</a></h2>
-        <div id=date>
-          <time>August 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/hadoop-yarn/">Hadoop YARN</a></h2>
-        <div id=date>
-          <time>August 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/hadoop-datanode/">Hadoop DataNode</a></h2>
-        <div id=date>
-          <time>July 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/hadoop-namenode/">Hadoop NameNode</a></h2>
-        <div id=date>
-          <time>July 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/microservice-decomposing/">마이크로서비스 아키텍처(MSA) 경계 구분하기</a></h2>
-        <div id=date>
-          <time>September 2017</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/microservice-challenges/">마이크로서비스 아키텍처(MSA) 도전과제들</a></h2>
-        <div id=date>
-          <time>September 2017</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/rpm-install-ubuntu/">Ubuntu에서 RPM 파일 설치하기</a></h2>
-        <div id=date>
-          <time>February 2017</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/grafana-influxdb-telegraf-monitoring-alerting/">Grafana, Influxdb, Telegraf - 서버의 관제(Monitoring)와 알림(Alerting)</a></h2>
-        <div id=date>
-          <time>January 2017</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/hbase-phoenix-troubleshoot-1/">Hbase, Phoenix - PhoenixIOException: The system cannot find the path specified</a></h2>
-        <div id=date>
-          <time>June 2016</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/kafa-troubleshoot-2/">Kafka - org.apache.zookeeper.KeeperException$NoNodeException: KeeperErrorCode = NoNode for $BROKER_PATH</a></h2>
-        <div id=date>
-          <time>June 2016</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/kafka-troubleshoot-1/">kafka - kafka.common.InconsistentBrokerIdException: Configured brokerId $id doesn’t match stored brokerId $id in meta.properties</a></h2>
-        <div id=date>
-          <time>May 2016</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/filesystem-permission/">Linux 파일 시스템 접근 권한</a></h2>
-        <div id=date>
-          <time>April 2016</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/nodejs-troubleshoot-1/">Nodejs - Error: listen EACCES 0.0.0.0:80</a></h2>
-        <div id=date>
-          <time>March 2016</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/java-deep-copy-shallow-copy/">Java - 깊은 복사(Deep copy)와 얕은 복사(Shallow copy)</a></h2>
-        <div id=date>
-          <time>June 2013</time>
-        </div>
-      </li>
-    
-  </ul>
+  </div>
+</section>
+<section id="comment">
+  <script src="https://utteranc.es/client.js"
+    repo="geunho/blog"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>  
 </section>
 
 <footer>
@@ -690,5 +559,4 @@ if (!doNotTrack) {
     </p>
   </div>
 </footer>
-
 

@@ -480,9 +480,9 @@
         
           <li><a href="/posts">Posts</a></li>
         
-          <li><a href="/til">TIL</a></li>
-        
           <li><a href="/thoughts">Thoughts</a></li>
+        
+          <li><a href="/til">TIL</a></li>
         
         <a class="rss-icon" href="/index.xml"></a>
       </ul>
@@ -511,25 +511,16 @@ if (!doNotTrack) {
     </div>
   
 
-  <nav id="TableOfContents">
-<ul>
-<li><a href="#발생-원인-및-해결-방법">발생 원인 및 해결 방법</a></li>
-</ul>
-</nav>
+  <nav id="TableOfContents"></nav>
 
   <div class="entry-content">
-    
-
-<h1 id="발생-원인-및-해결-방법">발생 원인 및 해결 방법</h1>
-
+    <h1 id="발생-원인-및-해결-방법">발생 원인 및 해결 방법</h1>
 <p>root 권한이 없는 계정으로 Linux 내에서 애플리케이션을 수행할 때, 1024 보다 작은 포트에는 바인딩 할 수 없다. Nodejs에서 웹 서버를 띄울 때에도 마찬가지 인데, 아래와 같은 방법으로 처리 할 수 있다.</p>
-
 <ol>
 <li>애플리케이션을 root 권한으로 수행</li>
 <li>혹은, 1024 이상의 포트 번호를 바인딩 하도록 수정</li>
 <li>애플리케이션이 1024 보다 작은 포트에 바인딩 할 수 있도록 설정</li>
 </ol>
-
 <p>이 중 세 번째 방법은 애플리케이션에 cap_net_bind_service capability를 설정하면 된다.</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># root 계정으로 로그인</span>
 su –
@@ -542,9 +533,8 @@ setcap <span class="s1">&#39;cap_net_bind_service=+ep&#39;</span> <span class="n
 
 <span class="c1"># capability 설정 확인</span>
 getcap <span class="nv">$NODE_PATH</span>
-/usr/bin/nodejs <span class="o">=</span> cap_net_bind_service+ep</code></pre></div>
-<p>Nodejs 뿐만 아니라 다른 애플리케이션도 위와 같은 방법으로 1024 미만 포트에 root 권한 없이 바인딩이 가능하다.</p>
-
+/usr/bin/nodejs <span class="o">=</span> cap_net_bind_service+ep
+</code></pre></div><p>Nodejs 뿐만 아니라 다른 애플리케이션도 위와 같은 방법으로 1024 미만 포트에 root 권한 없이 바인딩이 가능하다.</p>
 <ul>
 <li>주의: 파일의 접근 권한을 변경하게 되면 설정한 capability가 제거된다.</li>
 </ul>

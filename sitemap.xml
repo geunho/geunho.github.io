@@ -1,28 +1,30 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
     <loc>https://blog.geunho.dev/</loc>
-    <lastmod>2020-05-31T17:52:44+09:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2020-05-31T20:51:51+09:00</lastmod>
   </url>
   
   <url>
     <loc>https://blog.geunho.dev/posts/git-tips-3/</loc>
-    <lastmod>2020-05-31T17:52:44+09:00</lastmod>
+    <lastmod>2020-05-31T20:51:51+09:00</lastmod>
   </url>
   
   <url>
     <loc>https://blog.geunho.dev/posts/</loc>
-    <lastmod>2020-05-31T17:52:44+09:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2020-05-31T20:51:51+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.geunho.dev/til/sh/sed-tips-1/</loc>
+    <lastmod>2020-05-31T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://blog.geunho.dev/til/</loc>
-    <lastmod>2020-05-29T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2020-05-31T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -93,7 +95,6 @@
   <url>
     <loc>https://blog.geunho.dev/thoughts/</loc>
     <lastmod>2020-04-08T00:24:12+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -173,12 +174,10 @@
   
   <url>
     <loc>https://blog.geunho.dev/categories/</loc>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://blog.geunho.dev/tags/</loc>
-    <priority>0</priority>
   </url>
   
 </urlset>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Blog · 김근호(Kim, Geunho)</title>
@@ -80,7 +80,7 @@ PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderExce
 백엔드를 주로 해왔던 개발자 입장에서 수강했던 내용을 다시 정리해보려고 한다.
 Vuejs에 대해 가장 잘 정리된 문서는 Vuejs 공식 홈페이지의 가이드이다. 빠르게 훑어볼 수 있도록 축약하고 보조 자료들을 추가해서 정리한 장기효님의 Cracking Vue.js도 추천한다.
 인스턴스 Vuejs를 사용하기 위해서는 가장 먼저 Vue 인스턴스를 생성해야 한다. 간단한 테스트를 위해 하나의 html 파일을 생성하고 다음과 같이 내용을 입력한다.
-hello-vuejs.html &amp;lt;!</description>
+hello-vuejs.html &amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html lang=&amp;#34;en&amp;#34;&amp;gt; &amp;lt;head&amp;gt; &amp;lt;meta charset=&amp;#34;UTF-8&amp;#34; /&amp;gt; &amp;lt;meta name=&amp;#34;viewport&amp;#34; content=&amp;#34;width=device-width, initial-scale=1.</description>
     </item>
     
     <item>
@@ -234,7 +234,7 @@ Ubuntu에서 RPM 파일 설치하기 Ubuntu에서는 rpm 파일로 곧바로 설
       <guid>https://blog.geunho.dev/posts/hbase-phoenix-troubleshoot-1/</guid>
       <description>발생원인 및 해결방법 윈도우에서 Phoenix에 jdbc client로 접속 후 order by 혹은 group by가 포함된 쿼리를 수행하면 아래와 같은 에러 메시지가 발생한다.
 PhoenixIOException: The system cannot find the path specified 메시지 내용 그대로 특정 파일 경로를 찾지 못해 발생하는 IOException인데, 특이한 점은 위와 같은 집계 절이 포함된 쿼리에 대해서만 발생 한다는 것이다. 이는 Phoenix의 쿼리 처리 방법과 관련이 있다. Phoenix 쿼리 서버에 쿼리를 요청하면,
- Hbase 서버의 데이터를 scan (full or range) 필요한 경우 client에서 데이터 처리 (merge, limit, …)</description>
+ Hbase 서버의 데이터를 scan (full or range) 필요한 경우 client에서 데이터 처리 (merge, limit, …)  를 하게 된다.</description>
     </item>
     
     <item>
@@ -256,7 +256,7 @@ heartbeat의 timeout 시간을 조정하는 설정값이 바로 zookeeper.sessio
       <guid>https://blog.geunho.dev/posts/kafka-troubleshoot-1/</guid>
       <description>발생 원인 및 해결 방법 Kafka broker 서버의 설정 파일 (conf/server.properties) 에 명시된 broker.id 값과 로그 파일이 저장되는 폴더 (kafka-logs/meta.properties) 에 명시된 broker.id 값이 서로 달라서 발생하는 문제이다.
 Kafka 클러스터를 처음 구성할 때, 설정 파일 (e.g. zookeeper 연결 문자열) 수정시 brokerid를 자동으로 생성, 할당하는 과정에서 불일치가 발생할 수 있다. 아래 방법들 중 하나로 불일치를 해결하면 된다.
- 로그 파일이 저장된 폴더의 meta.properties 파일에 broker.id 값을 server.properties에 명시된 값으로 수정 후 broker 재시작 아직 운영하기 전인 클러스터라면, 로그 파일이 저장된 폴더를 모두 삭제 후 broker 재시작</description>
+ 로그 파일이 저장된 폴더의 meta.properties 파일에 broker.id 값을 server.properties에 명시된 값으로 수정 후 broker 재시작 아직 운영하기 전인 클러스터라면, 로그 파일이 저장된 폴더를 모두 삭제 후 broker 재시작  </description>
     </item>
     
     <item>

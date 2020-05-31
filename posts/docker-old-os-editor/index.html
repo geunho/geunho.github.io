@@ -480,9 +480,9 @@
         
           <li><a href="/posts">Posts</a></li>
         
-          <li><a href="/til">TIL</a></li>
-        
           <li><a href="/thoughts">Thoughts</a></li>
+        
+          <li><a href="/til">TIL</a></li>
         
         <a class="rss-icon" href="/index.xml"></a>
       </ul>
@@ -511,17 +511,16 @@ if (!doNotTrack) {
     </div>
   
 
-  
+  <nav id="TableOfContents"></nav>
 
   <div class="entry-content">
     <p>테스트 목적으로 도커 컨테이너를 띄워 작업하다보면 가끔 컨테이너 쉘을 직접 실행해서 파일을 편집하는 경우가 있다.
 베이스 이미지 용량을 줄이기 위해 텍스트 편집기 도구는 모두 삭제하고 이미지로 배포하기 때문에 별도로 설치해야한다.</p>
-
 <p>Debian 계열인 경우 다음과 같이 설치하게 되는데,</p>
-<div class="highlight"><pre class="chroma">apt-get update
-apt-get install vim -y</pre></div>
-<p>LTS 기간까지 지난 버전인 경우 <code>apt-get update</code> 명령 실행시 오류가 발생한다.</p>
-<div class="highlight"><pre class="chroma"># Wheezy
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">apt-get update
+apt-get install vim -y
+</code></pre></div><p>LTS 기간까지 지난 버전인 경우 <code>apt-get update</code> 명령 실행시 오류가 발생한다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"># Wheezy
 apt-get update
 Ign http://security.debian.org wheezy/updates Release.gpg
 Ign http://security.debian.org wheezy/updates Release
@@ -539,29 +538,27 @@ W: Failed to fetch http://security.debian.org/dists/wheezy/updates/main/binary-a
 W: Failed to fetch http://deb.debian.org/debian/dists/wheezy/main/binary-amd64/Packages  404  Not Found [IP: 151.101.196.204 80]
 W: Failed to fetch http://deb.debian.org/debian/dists/wheezy-updates/main/binary-amd64/Packages  404  Not Found [IP: 151.101.196.204 80]
 
-E: Some index files failed to download. They have been ignored, or old ones used instead.</pre></div>
-<p>Wheezy (Debian 7) 베이스 이미지에서 실행하면 발생하는 오류인데 apt repository를 찾지 못해서 404 오류를 내고 있다.</p>
-
-<p>LTS 기간이 끝나면서 apt repository도 아카이브 저장소로 이동<sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup>한 것이 원인으로 해결 방법은 간단한데,
+E: Some index files failed to download. They have been ignored, or old ones used instead.
+</code></pre></div><p>Wheezy (Debian 7) 베이스 이미지에서 실행하면 발생하는 오류인데 apt repository를 찾지 못해서 404 오류를 내고 있다.</p>
+<p>LTS 기간이 끝나면서 apt repository도 아카이브 저장소로 이동<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>한 것이 원인으로 해결 방법은 간단한데,
 apt repository를 아카이브 저장소로 변경하기만 하면 된다.</p>
-<div class="highlight"><pre class="chroma">echo &#34;deb http://archive.debian.org/debian wheezy main&#34; &gt; /etc/apt/sources.list
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">echo &#34;deb http://archive.debian.org/debian wheezy main&#34; &gt; /etc/apt/sources.list
 echo &#34;deb http://archive.debian.org/debian-security wheezy/updates main&#34; &gt;&gt; /etc/apt/sources.list
 
 # 이제 다운로드를 하기 시작한다.
 apt-get update
 
-apt-get install vim -y</pre></div>
-<p><a href="https://wiki.debian.org/LTS">Debian LTS</a> 기간을 확인해보면, 8버전인 Jessie도 내년 6월이면 지원이 끝나게 된다.
+apt-get install vim -y
+</code></pre></div><p><a href="https://wiki.debian.org/LTS">Debian LTS</a> 기간을 확인해보면, 8버전인 Jessie도 내년 6월이면 지원이 끝나게 된다.
 내년 6월 이후부터 8버전을 사용하는 베이스 이미지에서 비슷한 문제가 발생할 수 있으니 기억해두는 것이 좋겠다.</p>
-<div class="footnotes">
-
-<hr />
-
+<section class="footnotes" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn:1"><a href="https://www.debian.org/distrib/archive">https://www.debian.org/distrib/archive</a>
- <a class="footnote-return" href="#fnref:1">[↑]</a></li>
+<li id="fn:1" role="doc-endnote">
+<p><a href="https://www.debian.org/distrib/archive">https://www.debian.org/distrib/archive</a> <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
 </ol>
-</div>
+</section>
 
   </div>
 

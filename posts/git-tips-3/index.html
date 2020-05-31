@@ -480,9 +480,9 @@
         
           <li><a href="/posts">Posts</a></li>
         
-          <li><a href="/til">TIL</a></li>
-        
           <li><a href="/thoughts">Thoughts</a></li>
+        
+          <li><a href="/til">TIL</a></li>
         
         <a class="rss-icon" href="/index.xml"></a>
       </ul>
@@ -511,30 +511,15 @@ if (!doNotTrack) {
     </div>
   
 
-  <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li><a href="#core-sparsecheckout-옵션">core.sparseCheckout 옵션</a></li>
-<li><a href="#sparse-checkout-명령어">sparse-checkout 명령어</a></li>
-</ul></li>
-</ul></li>
-</ul>
-</nav>
+  <nav id="TableOfContents"></nav>
 
   <div class="entry-content">
-    
-
-<p>프로젝트 규모가 큰 repository나 mono repository로 구성한 repository는 개발 도구에서 프로젝트를 불러오면 빌드 시간이 오래걸릴 뿐만 아니라 개발 장비의 리소스도 많이 차지하게 된다.
+    <p>프로젝트 규모가 큰 repository나 mono repository로 구성한 repository는 개발 도구에서 프로젝트를 불러오면 빌드 시간이 오래걸릴 뿐만 아니라 개발 장비의 리소스도 많이 차지하게 된다.
 git의 <a href="https://git-scm.com/docs/git-read-tree#_sparse_checkout">core.sparseCheckout</a> 옵션을 활성화 하거나, <a href="https://git-scm.com/docs/git-sparse-checkout">sparse-checkout</a> 명령어를 사용하면 이런 경우를 해결할 수 있다.</p>
-
-<h3 id="core-sparsecheckout-옵션">core.sparseCheckout 옵션</h3>
-
+<h1 id="coresparsecheckout-옵션">core.sparseCheckout 옵션</h1>
 <p>먼저 옵션을 활성화한다.</p>
-<div class="highlight"><pre class="chroma">git config core.sparseCheckout true</pre></div>
-<p>그리고 체크아웃할 파일/폴더 혹은 제외할 대상을 아래 파일에 설정하면 끝.
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git config core.sparseCheckout true
+</code></pre></div><p>그리고 체크아웃할 파일/폴더 혹은 제외할 대상을 아래 파일에 설정하면 끝.
 다음 예제에서는 README.md 파일을 제외한 모든 파일을 체크하도록 설정한다.</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">touch .git/info/sparse-checkout
 
@@ -542,9 +527,8 @@ git의 <a href="https://git-scm.com/docs/git-read-tree#_sparse_checkout">core.sp
 # 
 <span class="c1"># 대상에서 제외하려면 !를 붙여준다.</span>
 /* 
-!README.md</code></pre></div>
-<h3 id="sparse-checkout-명령어">sparse-checkout 명령어</h3>
-
+!README.md
+</code></pre></div><h1 id="sparse-checkout-명령어">sparse-checkout 명령어</h1>
 <p>위의 일련의 작업을 명령어를 통해 설정할 수 있도록 제공되는 도구이다.
 동일한 작업을 다음과 같이 진행할 수 있다.</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># core.sparseCheckout 옵션 활성화</span>
@@ -553,7 +537,8 @@ git의 <a href="https://git-scm.com/docs/git-read-tree#_sparse_checkout">core.sp
 git sparse-checkout init 
 
 <span class="c1"># 공백응로 구분하여 대상을 설정한다.</span>
-git sparse-checkout <span class="nb">set</span> /* !README.md</code></pre></div>
+git sparse-checkout <span class="nb">set</span> /* !README.md
+</code></pre></div>
   </div>
 
   

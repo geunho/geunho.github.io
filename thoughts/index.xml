@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Thoughts on Blog · 김근호(Kim, Geunho)</title>
@@ -19,12 +19,7 @@
       <guid>https://blog.geunho.dev/thoughts/code-review/</guid>
       <description>Code Quality 코드 리뷰(Code Review)는 개발자가 작성하는 코드의 품질(Code Quality)을 유지하기 위한 활동이다.
 코드의 품질은 여러가지 측면에서 측정될 수 있는데, 가장 많이 언급되는 항목들이 다음과 같다:
- 가독성
- 일관성
- 예측 가능성
- 안정성 및 견고성
- 유지 관리 및 확장성
-  코드가 읽기에 얼마나 쉽고 예측 가능한지, 숨겨진 버그는 없는지, 코드의 수정과 개선이 복잡하지 않고 얼마나 단순한지 보는 것이다.
+ 가독성 일관성 예측 가능성 안정성 및 견고성 유지 관리 및 확장성  코드가 읽기에 얼마나 쉽고 예측 가능한지, 숨겨진 버그는 없는지, 코드의 수정과 개선이 복잡하지 않고 얼마나 단순한지 보는 것이다.
 완전히 새로운 코드를 작성해나가는 것이 아니라면, 개발자는 코드를 작성하는데 대부분의 시간을 다른 사람이(혹은 과거의 스스로가) 작성한 코드를 읽고 분석하는데 보낸다.</description>
     </item>
     

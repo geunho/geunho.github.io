@@ -480,9 +480,9 @@
         
           <li><a href="/posts">Posts</a></li>
         
-          <li><a href="/til">TIL</a></li>
-        
           <li><a href="/thoughts">Thoughts</a></li>
+        
+          <li><a href="/til">TIL</a></li>
         
         <a class="rss-icon" href="/index.xml"></a>
       </ul>
@@ -511,24 +511,15 @@ if (!doNotTrack) {
     </div>
   
 
-  <nav id="TableOfContents">
-<ul>
-<li><a href="#발생-원인-및-해결-방법">발생 원인 및 해결 방법</a></li>
-</ul>
-</nav>
+  <nav id="TableOfContents"></nav>
 
   <div class="entry-content">
-    
-
-<h1 id="발생-원인-및-해결-방법">발생 원인 및 해결 방법</h1>
-
+    <h1 id="발생-원인-및-해결-방법">발생 원인 및 해결 방법</h1>
 <p>Kafka broker 서버의 설정 파일 (<code>conf/server.properties</code>) 에 명시된 <code>broker.id</code> 값과 로그 파일이 저장되는 폴더 (<code>kafka-logs/meta.properties</code>) 에 명시된 <code>broker.id</code> 값이 서로 달라서 발생하는 문제이다.</p>
-
 <p>Kafka 클러스터를 처음 구성할 때, 설정 파일 (e.g. zookeeper 연결 문자열) 수정시 brokerid를 자동으로 생성, 할당하는 과정에서 불일치가 발생할 수 있다. 아래 방법들 중 하나로 불일치를 해결하면 된다.</p>
-
 <ul>
 <li>로그 파일이 저장된 폴더의 <code>meta.properties</code> 파일에 <code>broker.id</code> 값을 <code>server.properties</code>에 명시된 값으로 수정 후 broker 재시작</li>
-<li>아직 운영하기 전인 클러스터라면, 로그 파일이 저장된 폴더를 모두 삭제 후 broker 재시작<br /></li>
+<li>아직 운영하기 전인 클러스터라면, 로그 파일이 저장된 폴더를 모두 삭제 후 broker 재시작</li>
 </ul>
 
   </div>

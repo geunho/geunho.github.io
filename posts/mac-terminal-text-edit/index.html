@@ -480,9 +480,9 @@
         
           <li><a href="/posts">Posts</a></li>
         
-          <li><a href="/til">TIL</a></li>
-        
           <li><a href="/thoughts">Thoughts</a></li>
+        
+          <li><a href="/til">TIL</a></li>
         
         <a class="rss-icon" href="/index.xml"></a>
       </ul>
@@ -511,12 +511,12 @@ if (!doNotTrack) {
     </div>
   
 
-  
+  <nav id="TableOfContents"></nav>
 
   <div class="entry-content">
-    <p>Mac의 Terminal에서 이런 저런 작업을 하다가 파일을 수정할때 <code>vim</code>과 같은 텍스트 편집기를 사용한다.<br />
+    <p>Mac의 Terminal에서 이런 저런 작업을 하다가 파일을 수정할때 <code>vim</code>과 같은 텍스트 편집기를 사용한다.<br>
 가끔은 자주 사용하는 GUI 텍스트 편집기로 파일을 수정하고 싶을 때 곧바로 Terminal에서 어떻게 명령어를 입력해야 할까? 답은 <code>open</code> 명령어에 있다.</p>
-<div class="highlight"><pre class="chroma">man open
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">man open
 
 OPEN(1)                   BSD General Commands Manual                  OPEN(1)
 
@@ -543,13 +543,13 @@ DESCRIPTION
      -a application
          Specifies the application to use for opening the file
 
-...</pre></div>
-<p><code>open</code> 명령어는 파일을 여는 명령어인데, <code>-a</code> 옵션을 사용하면 어떤 애플리케이션으로 파일을 열것인지 명시할 수 있다.</p>
-<div class="highlight"><pre class="chroma">open -a &#34;application name&#34; /path/to/file</pre></div>
-<p><code>application name</code>에는 실행할 편집기 이름을 넣어준다. <code>/Applications</code>에 설치되어 있는 이름 그대로 넣으면 된다.<br />
+...
+</code></pre></div><p><code>open</code> 명령어는 파일을 여는 명령어인데, <code>-a</code> 옵션을 사용하면 어떤 애플리케이션으로 파일을 열것인지 명시할 수 있다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">open -a &#34;application name&#34; /path/to/file
+</code></pre></div><p><code>application name</code>에는 실행할 편집기 이름을 넣어준다. <code>/Applications</code>에 설치되어 있는 이름 그대로 넣으면 된다.<br>
 예를 들어 <a href="https://code.visualstudio.com">Visual Studio Code</a>로 폴더를 열고 싶다면,</p>
-<div class="highlight"><pre class="chroma">open -a &#34;Visual Studio Code&#34; ~/Downloads</pre></div>
-<p>처럼 입력하면 곧바로 애플리케이션을 실행하면서 해당 폴더를 연다. 이 명령어를 다시 <code>alias</code>로 등록하거나, 애플리케이션의 바이너리 파일을 <code>PATH</code> 환경 변수에 직접 등록해서 사용하면 쉽게 명령어를 입력할 수 있다.(후자의 경우 <code>open</code> 명령어를 사용하지 않아도 된다)<br />
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">open -a &#34;Visual Studio Code&#34; ~/Downloads
+</code></pre></div><p>처럼 입력하면 곧바로 애플리케이션을 실행하면서 해당 폴더를 연다. 이 명령어를 다시 <code>alias</code>로 등록하거나, 애플리케이션의 바이너리 파일을 <code>PATH</code> 환경 변수에 직접 등록해서 사용하면 쉽게 명령어를 입력할 수 있다.(후자의 경우 <code>open</code> 명령어를 사용하지 않아도 된다)<br>
 나의 경우 명령어 이름을 입맛에 맞게 지정할 수 있는 <code>alias</code> 방법을 선호한다.</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># profile 편집</span>
 vim ~/.profile
@@ -561,8 +561,8 @@ vim ~/.profile
 <span class="nb">source</span> ~/.profile
 
 <span class="c1"># 실행</span>
-vs ~/Downloads</code></pre></div>
-<p>짧은 명령어로 GUI 편집기를 실행하는 모습을 볼 수 있다.</p>
+vs ~/Downloads
+</code></pre></div><p>짧은 명령어로 GUI 편집기를 실행하는 모습을 볼 수 있다.</p>
 
   </div>
 

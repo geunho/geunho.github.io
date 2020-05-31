@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Blog · 김근호(Kim, Geunho)</title>
@@ -24,14 +24,26 @@ touch .git/info/sparse-checkout # 파일 편집기로 열어서 다음과 같은
     </item>
     
     <item>
+      <title>sh - sed로 마지막 N개 문자열 제거하기</title>
+      <link>https://blog.geunho.dev/til/sh/sed-tips-1/</link>
+      <pubDate>Sun, 31 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/til/sh/sed-tips-1/</guid>
+      <description>쉘에서 sed (stream editor) 도구를 사용하면 다채로운 문자열 조작을 할 수 있다.
+사용방법 아래는 마지막 2개 문자열을 제거하는 예제이다.
+# sed s/regexp/replacement/ sed &amp;#39;s/.\{2\}$//&amp;#39; &amp;lt;&amp;lt;&amp;lt; &amp;#34;Hello, Bash&amp;#34; Hello, Ba # 위 예시는 마지막 2개 문자를 공백으로 치환한 것. 따라서 다른 문자열로 치환도 가능하다. sed &amp;#39;s/.\{2\}$/bo/&amp;#39; &amp;lt;&amp;lt;&amp;lt; &amp;#34;Hello, Bash&amp;#34; Hello, Babo 참고 https://linux.die.net/man/1/sed</description>
+    </item>
+    
+    <item>
       <title>distcp - HDFS 클러스터 간 파일 복제하기</title>
       <link>https://blog.geunho.dev/til/hadoop/distcp/</link>
       <pubDate>Fri, 29 May 2020 00:00:00 +0000</pubDate>
       
       <guid>https://blog.geunho.dev/til/hadoop/distcp/</guid>
-      <description>distcp - HDFS 클러스터 간 파일 복제하기 distcp는 distributed copy의 약어로, 서로다른 HDFS 클러스터 간 파일을 복제할때 사용하는 명령어이다.
+      <description>distcp는 distributed copy의 약어로, 서로다른 HDFS 클러스터 간 파일을 복제할때 사용하는 명령어이다.
 사용방법 hadoop distcp hdfs://nn1/job/logs hdfs://nn1/job/others hdfs://nn2/job/ nn2 hdfs에 nn1의 두 디렉토리를 복제한다. 공백으로 구분해서 입력 경로를 여러 개를 지정할 수 있고, 마지막 인자에 출력 경로를 지정하면 된다.
-hadoop distcp -D dfs.replication=2 -m 32 hdfs://nn1/job/logs hdfs://nn1/job/others hdfs://nn2/job/ -D 옵션으로 hadoop 프로그램에 일반적인 옵션을 지정할 수 있고, -m 옵셥으로 map 수를 지정하여 최대 동시 복제 수를 설정한다.</description>
+hadoop distcp -D dfs.replication=2 -m 32 hdfs://nn1/job/logs hdfs://nn1/job/others hdfs://nn2/job/ -D 옵션으로 hadoop 프로그램에 일반적인 옵션을 지정할 수 있고, -m 옵셥으로 map 수를 지정하여 최대 동시 복제 수를 설정한다.
+참고 DistCp, Hadoop docs</description>
     </item>
     
     <item>
@@ -91,7 +103,7 @@ PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderExce
 백엔드를 주로 해왔던 개발자 입장에서 수강했던 내용을 다시 정리해보려고 한다.
 Vuejs에 대해 가장 잘 정리된 문서는 Vuejs 공식 홈페이지의 가이드이다. 빠르게 훑어볼 수 있도록 축약하고 보조 자료들을 추가해서 정리한 장기효님의 Cracking Vue.js도 추천한다.
 인스턴스 Vuejs를 사용하기 위해서는 가장 먼저 Vue 인스턴스를 생성해야 한다. 간단한 테스트를 위해 하나의 html 파일을 생성하고 다음과 같이 내용을 입력한다.
-hello-vuejs.html &amp;lt;!</description>
+hello-vuejs.html &amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html lang=&amp;#34;en&amp;#34;&amp;gt; &amp;lt;head&amp;gt; &amp;lt;meta charset=&amp;#34;UTF-8&amp;#34; /&amp;gt; &amp;lt;meta name=&amp;#34;viewport&amp;#34; content=&amp;#34;width=device-width, initial-scale=1.</description>
     </item>
     
     <item>
@@ -169,12 +181,7 @@ git reflog 6552006 (HEAD -&amp;gt; master, origin/master, origin/HEAD) HEAD@{0}:
       <guid>https://blog.geunho.dev/thoughts/code-review/</guid>
       <description>Code Quality 코드 리뷰(Code Review)는 개발자가 작성하는 코드의 품질(Code Quality)을 유지하기 위한 활동이다.
 코드의 품질은 여러가지 측면에서 측정될 수 있는데, 가장 많이 언급되는 항목들이 다음과 같다:
- 가독성
- 일관성
- 예측 가능성
- 안정성 및 견고성
- 유지 관리 및 확장성
-  코드가 읽기에 얼마나 쉽고 예측 가능한지, 숨겨진 버그는 없는지, 코드의 수정과 개선이 복잡하지 않고 얼마나 단순한지 보는 것이다.
+ 가독성 일관성 예측 가능성 안정성 및 견고성 유지 관리 및 확장성  코드가 읽기에 얼마나 쉽고 예측 가능한지, 숨겨진 버그는 없는지, 코드의 수정과 개선이 복잡하지 않고 얼마나 단순한지 보는 것이다.
 완전히 새로운 코드를 작성해나가는 것이 아니라면, 개발자는 코드를 작성하는데 대부분의 시간을 다른 사람이(혹은 과거의 스스로가) 작성한 코드를 읽고 분석하는데 보낸다.</description>
     </item>
     
@@ -273,7 +280,7 @@ Ubuntu에서 RPM 파일 설치하기 Ubuntu에서는 rpm 파일로 곧바로 설
       <guid>https://blog.geunho.dev/posts/hbase-phoenix-troubleshoot-1/</guid>
       <description>발생원인 및 해결방법 윈도우에서 Phoenix에 jdbc client로 접속 후 order by 혹은 group by가 포함된 쿼리를 수행하면 아래와 같은 에러 메시지가 발생한다.
 PhoenixIOException: The system cannot find the path specified 메시지 내용 그대로 특정 파일 경로를 찾지 못해 발생하는 IOException인데, 특이한 점은 위와 같은 집계 절이 포함된 쿼리에 대해서만 발생 한다는 것이다. 이는 Phoenix의 쿼리 처리 방법과 관련이 있다. Phoenix 쿼리 서버에 쿼리를 요청하면,
- Hbase 서버의 데이터를 scan (full or range) 필요한 경우 client에서 데이터 처리 (merge, limit, …)</description>
+ Hbase 서버의 데이터를 scan (full or range) 필요한 경우 client에서 데이터 처리 (merge, limit, …)  를 하게 된다.</description>
     </item>
     
     <item>
@@ -295,7 +302,7 @@ heartbeat의 timeout 시간을 조정하는 설정값이 바로 zookeeper.sessio
       <guid>https://blog.geunho.dev/posts/kafka-troubleshoot-1/</guid>
       <description>발생 원인 및 해결 방법 Kafka broker 서버의 설정 파일 (conf/server.properties) 에 명시된 broker.id 값과 로그 파일이 저장되는 폴더 (kafka-logs/meta.properties) 에 명시된 broker.id 값이 서로 달라서 발생하는 문제이다.
 Kafka 클러스터를 처음 구성할 때, 설정 파일 (e.g. zookeeper 연결 문자열) 수정시 brokerid를 자동으로 생성, 할당하는 과정에서 불일치가 발생할 수 있다. 아래 방법들 중 하나로 불일치를 해결하면 된다.
- 로그 파일이 저장된 폴더의 meta.properties 파일에 broker.id 값을 server.properties에 명시된 값으로 수정 후 broker 재시작 아직 운영하기 전인 클러스터라면, 로그 파일이 저장된 폴더를 모두 삭제 후 broker 재시작</description>
+ 로그 파일이 저장된 폴더의 meta.properties 파일에 broker.id 값을 server.properties에 명시된 값으로 수정 후 broker 재시작 아직 운영하기 전인 클러스터라면, 로그 파일이 저장된 폴더를 모두 삭제 후 broker 재시작  </description>
     </item>
     
     <item>
