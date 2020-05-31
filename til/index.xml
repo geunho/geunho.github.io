@@ -22,14 +22,5 @@
 hadoop distcp -D dfs.replication=2 -m 32 hdfs://nn1/job/logs hdfs://nn1/job/others hdfs://nn2/job/ -D 옵션으로 hadoop 프로그램에 일반적인 옵션을 지정할 수 있고, -m 옵셥으로 map 수를 지정하여 최대 동시 복제 수를 설정한다.</description>
     </item>
     
-    <item>
-      <title></title>
-      <link>https://blog.geunho.dev/til/readme/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.geunho.dev/til/readme/</guid>
-      <description>TIL 📝 Today I Learned</description>
-    </item>
-    
   </channel>
 </rss>
