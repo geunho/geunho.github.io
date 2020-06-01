@@ -21,10 +21,10 @@
     <title>
       
       
-         Posts 
+         Kafka - Replication Factor 변경하기 
       
     </title>
-    <link rel="canonical" href="https://blog.geunho.dev/posts/">
+    <link rel="canonical" href="https://blog.geunho.dev/posts/kafka-rf-modify/">
 
     <style>
   * {
@@ -469,8 +469,6 @@
 
 
     
-        <atom:link href="https://blog.geunho.dev/posts/index.xml" rel="self" type="application/rss+xml" />
-    
   </head>
 
   <body>
@@ -502,192 +500,108 @@ if (!doNotTrack) {
 <script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
-<section id=content>
-  <ul class=posts_listing>
+
+
+<section id="content">
+  <h1> Kafka - Replication Factor 변경하기 </h1>
+
+  
+    <div id="sub-header">
+      1 June 2020 · 2 minutes read
+    </div>
+  
+
+  <nav id="TableOfContents"></nav>
+
+  <div class="entry-content">
+    <p>Kafka topic 파티션의 Replication Factor(RF)는 broker 설정 중 <code>offsets.topic.replication.factor</code>에 의해 결정된다.
+기본 값은 3으로, 하나의 파티션이 총 세 개로 분산 저장되는 것이다.</p>
+<p>Kafka 바이너리에 포함된 <code>kafka-reassign-partitions.sh</code> 도구를 이용하면 topic의 RF를 변경할 수 있다.</p>
+<h1 id="사용방법">사용방법</h1>
+<p>먼저 변경하려는 topic의 상태를 확인해보자.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># zookeeper1 서버에서 my-topic 상태를 출력</span>
+bin/kafka-topics.sh --zookeeper zookeeper1:2181 --topic my-topic --describe
+Topic:my-topic   PartitionCount:2    ReplicationFactor:2 Configs:
+  Topic: my-topic    Partition: <span class="m">0</span>    Leader: <span class="m">5</span>   Replicas: 5,7 Isr: 5,7
+  Topic: my-topic    Partition: <span class="m">1</span>    Leader: <span class="m">7</span>   Replicas: 7,5 Isr: 5,7
+</code></pre></div><p>두 개의 파티션(0,1)과 RF는 2임을 알 수 있다. 그리고 파티션은 브로커(5,7)에 있다.
+브로커는 5, 6, 7번 세 개로 구성되어 있다고 가정하자.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">  my-topic
+  +---------------+ +----------------+ +----------------+
+  | 5             | | 6              | | 7              |
+  | +----+ +----+ | |                | | +----+ +----+  |
+  | |0   | |1&#39;  | | |                | | |0&#39;  | |1   |  |
+  | |    | |    | | |                | | |    | |    |  |
+  | +----+ +----+ | |                | | +----+ +----+  |
+  +---------------+ +----------------+ +----------------+
+
+</code></pre></div><p><code>0'</code> <code>1'</code>는 복제본을 나타낸다.
+여기서 RF를 3으로 늘려서 복제본을 6번 브로커에도 갖도록 하려면 어떻게 해야 할까?</p>
+<p>먼저 구성하려는 파티션 구성을 json 형식으로 다음과 같이 저장한다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">touch rf.json
+vim rf.json
+
+<span class="o">{</span>
+    <span class="s2">&#34;version&#34;</span>:1,
+    <span class="s2">&#34;partitions&#34;</span>:<span class="o">[</span>
+        <span class="o">{</span>
+            <span class="s2">&#34;topic&#34;</span>:<span class="s2">&#34;my-topic&#34;</span>,
+            <span class="s2">&#34;partition&#34;</span>:0,
+            <span class="s2">&#34;replicas&#34;</span>:<span class="o">[</span>5,7,6<span class="o">]</span>
+        <span class="o">}</span>,
+        <span class="o">{</span>
+            <span class="s2">&#34;topic&#34;</span>:<span class="s2">&#34;my-topic&#34;</span>,
+            <span class="s2">&#34;partition&#34;</span>:1,
+            <span class="s2">&#34;replicas&#34;</span>:<span class="o">[</span>7,5,6<span class="o">]</span>
+        <span class="o">}</span>
+    <span class="o">]</span>
+<span class="o">}</span> 
+</code></pre></div><p><code>replicas</code>의 첫 번째 원소가 해당 파티션의 리더 브로커가 되므로 파티션별 주의해서 순서를 지정하도록 하자.</p>
+<p>이제 생성한 파일과 리파티셔닝 도구를 이용해서 RF를 늘려준다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">bin/kafka-reassign-partitions.sh <span class="se">\
+</span><span class="se"></span>    --zookeeper zookeeper1:2181 <span class="se">\
+</span><span class="se"></span>    --reassignment-json-file rf.json --execute
+Current partition replica assignment
+</code></pre></div><p>다시 topic 상태를 확인해보자.</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># zookeeper1 서버에서 my-topic 상태를 출력</span>
+bin/kafka-topics.sh --zookeeper zookeeper1:2181 --topic my-topic --describe
+Topic:my-topic   PartitionCount:2    ReplicationFactor:3 Configs:
+  Topic: my-topic    Partition: <span class="m">0</span>    Leader: <span class="m">5</span>   Replicas: 5,7,6 Isr: 5,7,6
+  Topic: my-topic    Partition: <span class="m">1</span>    Leader: <span class="m">7</span>   Replicas: 7,5,6 Isr: 7.5,6
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">  my-topic
+  +---------------+ +----------------+ +----------------+
+  | 5             | | 6              | | 7              |
+  | +----+ +----+ | | +----+ +----+  | | +----+ +----+  |
+  | |0   | |1&#39;  | | | |0&#39;  | |1&#39;  |  | | |0&#39;  | |1   |  |
+  | |    | |    | | | |    | |    |  | | |    | |    |  |
+  | +----+ +----+ | | +----+ +----+  | | +----+ +----+  |
+  +---------------+ +----------------+ +----------------+
+
+</code></pre></div><p>이제 6번 브로커에도 0, 1 파티션의 복제본이 생성되었고, RF는 3이 되었다.</p>
+
+  </div>
+
+  
+    <div id="sub-header">
+      Updated 1 June 2020
+    </div>
+  
+
+  <div id="links">
     
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/kafka-rf-modify/">Kafka - Replication Factor 변경하기</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
+      <a class="basic-alignment left" href="https://blog.geunho.dev/posts/git-tips-3/">&laquo; Git Tips - Sparse checkout 하기</a>
     
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/git-tips-3/">Git Tips - Sparse checkout 하기</a></h2>
-        <div id=date>
-          <time>May 2020</time>
-        </div>
-      </li>
     
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/docker-exit-137/">Docker 컨테이너 비정상 종료 문제 - non-zero exit (137)</a></h2>
-        <div id=date>
-          <time>April 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/mean-median-percentile/">관제에서 평균값, 중앙값, 그리고 백분위</a></h2>
-        <div id=date>
-          <time>November 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/docker-old-os-editor/">Docker - 오래된 버전의 OS 베이스 이미지에 텍스트 편집기 설치하기</a></h2>
-        <div id=date>
-          <time>November 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/pkix-path-building-failed/">Java - PKIX path building failed</a></h2>
-        <div id=date>
-          <time>November 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/vue-instance-and-components/">Vuejs 정리 1 - 인스턴스와 컴포넌트</a></h2>
-        <div id=date>
-          <time>September 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/docker-mac-crash/">Docker for Mac 오류 - UNIX error exception: 17</a></h2>
-        <div id=date>
-          <time>September 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/container-based-test-env/">Testcontainers - 컨테이너 기반 테스트 환경</a></h2>
-        <div id=date>
-          <time>September 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/hadoop-docker-test-env-hdfs/">Docker로 Hadoop 테스트 환경 구축하기 - HDFS</a></h2>
-        <div id=date>
-          <time>August 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/mac-terminal-text-edit/">Mac Terminal에서 텍스트 편집기 바로 열기</a></h2>
-        <div id=date>
-          <time>August 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/git-tips-1/">Git Tips - 과거 커밋으로부터 텍스트 검색하기</a></h2>
-        <div id=date>
-          <time>August 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/git-tips-2/">Git Tips - 로컬 커밋 복구하기</a></h2>
-        <div id=date>
-          <time>August 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/hadoop-yarn/">Hadoop YARN</a></h2>
-        <div id=date>
-          <time>August 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/hadoop-datanode/">Hadoop DataNode</a></h2>
-        <div id=date>
-          <time>July 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/hadoop-namenode/">Hadoop NameNode</a></h2>
-        <div id=date>
-          <time>July 2019</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/microservice-decomposing/">마이크로서비스 아키텍처(MSA) 경계 구분하기</a></h2>
-        <div id=date>
-          <time>September 2017</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/microservice-challenges/">마이크로서비스 아키텍처(MSA) 도전과제들</a></h2>
-        <div id=date>
-          <time>September 2017</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/rpm-install-ubuntu/">Ubuntu에서 RPM 파일 설치하기</a></h2>
-        <div id=date>
-          <time>February 2017</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/grafana-influxdb-telegraf-monitoring-alerting/">Grafana, Influxdb, Telegraf - 서버의 관제(Monitoring)와 알림(Alerting)</a></h2>
-        <div id=date>
-          <time>January 2017</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/hbase-phoenix-troubleshoot-1/">Hbase, Phoenix - PhoenixIOException: The system cannot find the path specified</a></h2>
-        <div id=date>
-          <time>June 2016</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/kafa-troubleshoot-2/">Kafka - org.apache.zookeeper.KeeperException$NoNodeException: KeeperErrorCode = NoNode for $BROKER_PATH</a></h2>
-        <div id=date>
-          <time>June 2016</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/kafka-troubleshoot-1/">kafka - kafka.common.InconsistentBrokerIdException: Configured brokerId $id doesn’t match stored brokerId $id in meta.properties</a></h2>
-        <div id=date>
-          <time>May 2016</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/filesystem-permission/">Linux 파일 시스템 접근 권한</a></h2>
-        <div id=date>
-          <time>April 2016</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/nodejs-troubleshoot-1/">Nodejs - Error: listen EACCES 0.0.0.0:80</a></h2>
-        <div id=date>
-          <time>March 2016</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/posts/java-deep-copy-shallow-copy/">Java - 깊은 복사(Deep copy)와 얕은 복사(Shallow copy)</a></h2>
-        <div id=date>
-          <time>June 2013</time>
-        </div>
-      </li>
-    
-  </ul>
+  </div>
+</section>
+<section id="comment">
+  <script src="https://utteranc.es/client.js"
+    repo="geunho/blog"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>  
 </section>
 
 <footer>
@@ -697,5 +611,4 @@ if (!doNotTrack) {
     </p>
   </div>
 </footer>
-
 

@@ -6,10 +6,22 @@
     <description>Recent content on Blog · 김근호(Kim, Geunho)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 31 May 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://blog.geunho.dev/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kafka - Replication Factor 변경하기</title>
+      <link>https://blog.geunho.dev/posts/kafka-rf-modify/</link>
+      <pubDate>Mon, 01 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/posts/kafka-rf-modify/</guid>
+      <description>Kafka topic 파티션의 Replication Factor(RF)는 broker 설정 중 offsets.topic.replication.factor에 의해 결정된다. 기본 값은 3으로, 하나의 파티션이 총 세 개로 분산 저장되는 것이다.
+Kafka 바이너리에 포함된 kafka-reassign-partitions.sh 도구를 이용하면 topic의 RF를 변경할 수 있다.
+사용방법 먼저 변경하려는 topic의 상태를 확인해보자.
+# zookeeper1 서버에서 my-topic 상태를 출력 bin/kafka-topics.sh --zookeeper zookeeper1:2181 --topic my-topic --describe Topic:my-topic PartitionCount:2 ReplicationFactor:2 Configs: Topic: my-topic Partition: 0 Leader: 5 Replicas: 5,7 Isr: 5,7 Topic: my-topic Partition: 1 Leader: 7 Replicas: 7,5 Isr: 5,7 두 개의 파티션(0,1)과 RF는 2임을 알 수 있다.</description>
+    </item>
     
     <item>
       <title>Git Tips - Sparse checkout 하기</title>
