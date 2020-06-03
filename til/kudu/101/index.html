@@ -21,10 +21,10 @@
     <title>
       
       
-         sh - sed로 마지막 N개 문자열 제거하기 
+         Kudu - 기본 내용 정리 (1) 
       
     </title>
-    <link rel="canonical" href="https://blog.geunho.dev/til/sh/sed-tips-1/">
+    <link rel="canonical" href="https://blog.geunho.dev/til/kudu/101/">
 
     <style>
   * {
@@ -503,44 +503,54 @@ if (!doNotTrack) {
 
 
 <section id="content">
-  <h1> sh - sed로 마지막 N개 문자열 제거하기 </h1>
+  <h1> Kudu - 기본 내용 정리 (1) </h1>
 
   
     <div id="sub-header">
-      31 May 2020 · 1 minute read
+      3 June 2020 · 1 minute read
     </div>
   
 
   <nav id="TableOfContents"></nav>
 
   <div class="entry-content">
-    <p>쉘에서 <code>sed</code> (stream editor) 도구를 사용하면 다채로운 문자열 조작을 할 수 있다.</p>
-<h1 id="사용방법">사용방법</h1>
-<p>아래는 마지막 2개 문자열을 제거하는 예제이다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># sed s/regexp/replacement/</span>
-sed <span class="s1">&#39;s/.\{2\}$//&#39;</span> <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;Hello, Bash&#34;</span>
-Hello, Ba
-
-<span class="c1"># 위 예시는 마지막 2개 문자를 공백으로 치환한 것. 따라서 다른 문자열로 치환도 가능하다.</span>
-sed <span class="s1">&#39;s/.\{2\}$/bo/&#39;</span> <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;Hello, Bash&#34;</span>
-Hello, Babo
-</code></pre></div><h1 id="참고">참고</h1>
-<p><a href="https://linux.die.net/man/1/sed">https://linux.die.net/man/1/sed</a></p>
+    <h1 id="101">101</h1>
+<p>Apache Kudu는 Cloudera에서 개발한 컬럼 기반(Columnar) 저장소이다.
+저장소 자체는 다른 서비스(예. HDSF)에 대한 의존 없이, Kudu 인스턴스(Tablet)만으로 클러스터를 이루며 리더 선정도 내장된 알고리즘(<a href="https://kudu.apache.org/docs/#raft">Raft consensus algorithm</a>)에 의해 정해진다.</p>
+<p>Kudu는 물리적으로 레코드를 컬럼 단위로 저장하기 때문에, 일부 컬럼에 대한 질의시 네트워크 비용을 아끼면서 효율적으로 레코드를 조회할 수 있다.
+(컬럼 지향(Column oriented) 저장소인 HBase는 물리적으로 로우 단위로 저장)</p>
+<p>Kudu에 질의하기 위해서는 별도의 질의 엔진이 필요하다. MR, Spark와 같은 Hadoop 계열 엔진을 사용할 수 있는데, 아무래도 같은 Cloudera에서 개발한 Impala를 권장한다.
+Impala를 질의 엔진으로 사용하면, Kudu, RDB, HDFS의 파일까지 다양한 저장소를 데이터소스로 사용해서 질의할 수 있다.</p>
+<p>권장하는 사용 사례는 다음과 같다:</p>
+<blockquote>
+<ul>
+<li>Reporting applications where newly-arrived data needs to be immediately available for end users</li>
+<li>Time-series applications that must simultaneously support:
+<ul>
+<li>queries across large amounts of historic data</li>
+<li>granular queries about an individual entity that must return very quickly</li>
+</ul>
+</li>
+<li>Applications that use predictive models to make real-time decisions with periodic refreshes of the predictive model based on all historic data</li>
+</ul>
+</blockquote>
+<p>요약하자면, 대규모 데이터셋에 대해 개별 레코드가 실시간으로 변할 때 그 변경 사항을 즉시 반영할 수 있다.
+Apache Druid의 권장 사용 사례와 유사한데, 어떤 차이점이 있는지 살펴볼 필요가 있다.</p>
 
   </div>
 
   
     <div id="sub-header">
-      Updated 31 May 2020
+      Updated 3 June 2020
     </div>
   
 
   <div id="links">
     
-      <a class="basic-alignment left" href="https://blog.geunho.dev/til/hadoop/distcp/">&laquo; distcp - HDFS 클러스터 간 파일 복제하기</a>
+      <a class="basic-alignment left" href="https://blog.geunho.dev/til/hadoop/har/">&laquo; har - Hadoop archive 도구로 압축하기</a>
     
     
-      <a class="basic-alignment left" href="https://blog.geunho.dev/til/hadoop/har/">har - Hadoop archive 도구로 압축하기 &raquo;</a>
+      <a class="basic-alignment left" href="https://blog.geunho.dev/til/impala/from_timestamp/">from_timestamp - Impala 날짜 형식 사용하기 &raquo;</a>
     
   </div>
 </section>

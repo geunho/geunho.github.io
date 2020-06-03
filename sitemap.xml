@@ -4,7 +4,27 @@
   
   <url>
     <loc>https://blog.geunho.dev/</loc>
-    <lastmod>2020-06-01T23:33:00+09:00</lastmod>
+    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.geunho.dev/til/impala/from_timestamp/</loc>
+    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.geunho.dev/til/kudu/101/</loc>
+    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.geunho.dev/til/</loc>
+    <lastmod>2020-06-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.geunho.dev/til/hadoop/har/</loc>
+    <lastmod>2020-06-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -24,11 +44,6 @@
   
   <url>
     <loc>https://blog.geunho.dev/til/sh/sed-tips-1/</loc>
-    <lastmod>2020-05-31T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.geunho.dev/til/</loc>
     <lastmod>2020-05-31T00:00:00+00:00</lastmod>
   </url>
   

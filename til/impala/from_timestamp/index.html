@@ -21,10 +21,10 @@
     <title>
       
       
-         sh - sed로 마지막 N개 문자열 제거하기 
+         from_timestamp - Impala 날짜 형식 사용하기 
       
     </title>
-    <link rel="canonical" href="https://blog.geunho.dev/til/sh/sed-tips-1/">
+    <link rel="canonical" href="https://blog.geunho.dev/til/impala/from_timestamp/">
 
     <style>
   * {
@@ -503,44 +503,41 @@ if (!doNotTrack) {
 
 
 <section id="content">
-  <h1> sh - sed로 마지막 N개 문자열 제거하기 </h1>
+  <h1> from_timestamp - Impala 날짜 형식 사용하기 </h1>
 
   
     <div id="sub-header">
-      31 May 2020 · 1 minute read
+      3 June 2020 · 1 minute read
     </div>
   
 
   <nav id="TableOfContents"></nav>
 
   <div class="entry-content">
-    <p>쉘에서 <code>sed</code> (stream editor) 도구를 사용하면 다채로운 문자열 조작을 할 수 있다.</p>
-<h1 id="사용방법">사용방법</h1>
-<p>아래는 마지막 2개 문자열을 제거하는 예제이다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># sed s/regexp/replacement/</span>
-sed <span class="s1">&#39;s/.\{2\}$//&#39;</span> <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;Hello, Bash&#34;</span>
-Hello, Ba
-
-<span class="c1"># 위 예시는 마지막 2개 문자를 공백으로 치환한 것. 따라서 다른 문자열로 치환도 가능하다.</span>
-sed <span class="s1">&#39;s/.\{2\}$/bo/&#39;</span> <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;Hello, Bash&#34;</span>
-Hello, Babo
+    <p>일반적인 RDB에 내장된 <code>to_char(timestamp, text)</code> 함수가 Impala에는 없다.
+대신, 같은 역할을 하면서 이름만 다른 <code>from_timestamp(TIMESTAMP datetime, STRING pattern)</code> 함수를 사용하면 된다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span> <span class="n">ANSI</span>
+<span class="k">SELECT</span> <span class="n">to_char</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span> <span class="s1">&#39;yyyy-MM-dd, HH:mm&#39;</span><span class="p">)</span> 
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span> <span class="n">Impala</span>
+<span class="k">SELECT</span> <span class="n">from_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span> <span class="s1">&#39;yyyy-MM-dd, HH:mm&#39;</span><span class="p">)</span>
 </code></pre></div><h1 id="참고">참고</h1>
-<p><a href="https://linux.die.net/man/1/sed">https://linux.die.net/man/1/sed</a></p>
+<ul>
+<li><a href="https://impala.apache.org/docs/build/html/topics/impala_datetime_functions.html#datetime_functions__from_timestamp">Impala Date and Time Functions#FROM_TIMESTAMP, Impala docs</a></li>
+<li><a href="https://www.postgresql.org/docs/12/functions-formatting.html">9.8. Data Type Formatting Functions, Postgresql docs</a></li>
+</ul>
 
   </div>
 
   
     <div id="sub-header">
-      Updated 31 May 2020
+      Updated 3 June 2020
     </div>
   
 
   <div id="links">
     
-      <a class="basic-alignment left" href="https://blog.geunho.dev/til/hadoop/distcp/">&laquo; distcp - HDFS 클러스터 간 파일 복제하기</a>
+      <a class="basic-alignment left" href="https://blog.geunho.dev/til/kudu/101/">&laquo; Kudu - 기본 내용 정리 (1)</a>
     
-    
-      <a class="basic-alignment left" href="https://blog.geunho.dev/til/hadoop/har/">har - Hadoop archive 도구로 압축하기 &raquo;</a>
     
   </div>
 </section>
