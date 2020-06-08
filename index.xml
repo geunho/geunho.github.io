@@ -12,7 +12,19 @@
     
     
     <item>
-      <title>Maven - 의존성 관리</title>
+      <title>Git - remote에 커밋한 내용 되돌리기</title>
+      <link>https://blog.geunho.dev/til/git/rollback/</link>
+      <pubDate>Mon, 08 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/til/git/rollback/</guid>
+      <description>git에서 원격 저장소에 이미 커밋한 내용을 되돌리는(rollback) 방법은 두 가지가 있다:
+ 특정 커밋으로 강제 push revert 커밋 생성 후 push  특정 커밋으로 강제 push 아주 간단하고 강력한 방법으로, 원격 저장소에 커밋한 내용을 완전히 삭제할 수 있다. 개인용이거나 작업자가 많지 않은 저장소, 혹은 아직 병합(merge)되지 않은 브랜치와 같은 곳에서 효과적으로 사용할 수 있다.
+명령어도 간단하다. 다음과 같은 한 줄이면 즉시 원격 저장소의 커밋을 손쉽게 되돌린다.
+git push -f origin $hash:$remote_branch $remote_branch 원격 브랜치를 $hash 커밋으로 -f 강제 push 하겠다는 내용이다.</description>
+    </item>
+    
+    <item>
+      <title>Maven - 의존성 관리시 주의사항</title>
       <link>https://blog.geunho.dev/til/maven/dependencies/</link>
       <pubDate>Mon, 08 Jun 2020 00:00:00 +0000</pubDate>
       
