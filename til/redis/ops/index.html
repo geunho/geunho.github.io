@@ -21,10 +21,10 @@
     <title>
       
       
-         from_timestamp - Impala 날짜 형식 사용하기 
+         Redis - 조회 명령어 정리 
       
     </title>
-    <link rel="canonical" href="https://blog.geunho.dev/til/impala/from_timestamp/">
+    <link rel="canonical" href="https://blog.geunho.dev/til/redis/ops/">
 
     <style>
   * {
@@ -503,43 +503,80 @@ if (!doNotTrack) {
 
 
 <section id="content">
-  <h1> from_timestamp - Impala 날짜 형식 사용하기 </h1>
+  <h1> Redis - 조회 명령어 정리 </h1>
 
   
     <div id="sub-header">
-      3 June 2020 · 1 minute read
+      4 June 2020 · 1 minute read
     </div>
   
 
   <nav id="TableOfContents"></nav>
 
   <div class="entry-content">
-    <p>일반적인 RDB에 내장된 <code>to_char(timestamp, text)</code> 함수가 Impala에는 없다.
-대신, 같은 역할을 하면서 이름만 다른 <code>from_timestamp(TIMESTAMP datetime, STRING pattern)</code> 함수를 사용하면 된다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span> <span class="n">ANSI</span>
-<span class="k">SELECT</span> <span class="n">to_char</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span> <span class="s1">&#39;yyyy-MM-dd, HH:mm&#39;</span><span class="p">)</span> 
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span> <span class="n">Impala</span>
-<span class="k">SELECT</span> <span class="n">from_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span> <span class="s1">&#39;yyyy-MM-dd, HH:mm&#39;</span><span class="p">)</span>
-</code></pre></div><h1 id="참고">참고</h1>
-<ul>
-<li><a href="https://impala.apache.org/docs/build/html/topics/impala_datetime_functions.html#datetime_functions__from_timestamp">Impala Date and Time Functions#FROM_TIMESTAMP, Impala docs</a></li>
-<li><a href="https://www.postgresql.org/docs/12/functions-formatting.html">9.8. Data Type Formatting Functions, Postgresql docs</a></li>
-</ul>
+    <p>redis-cli를 이용해서 간단히 조회할 때 사용할만한 redis 명령어 몇 가지를 정리한다.</p>
+<h1 id="get">get</h1>
+<p><code>string</code> 형식으로 저장된 값 하나를 조회한다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">get my-key
+&#34;my value blah blah&#34;
+</code></pre></div><h1 id="hget">hget</h1>
+<p><code>hash</code>로 저장된 값의 필드 하나를 조회한다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"># my-hkey로 저장된 hash의 my-field에 대한 값을 조회
+hget my-hkey my-field
+&#34;my field value blah blah&#34;
+</code></pre></div><h1 id="lrange">lrange</h1>
+<p><code>list</code>로 저장된 목록을 조회한다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"># 전체 목록 조회
+lrange my-lkey 0 -1
 
+# 일부 목록 조회, 시작 인덱스와 끝 인덱스를 지정
+# 끝 인덱스는 결과에 포함됨
+lrange my-lkey 1 4
+</code></pre></div><h1 id="smembers">smembers</h1>
+<p><code>set</code>으로 저장된 모든 값을 조회한다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">smembers my-skey
+1) &#34;first&#34;
+2) &#34;second&#34;
+3) &#34;third&#34;
+</code></pre></div><h1 id="exists">exists</h1>
+<p>어떤 값들은 특정한 형식으로 저장되어 있어서 아래와 같은 오류를 뿜기도 한다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">(error) -WRONGTYPE Operation against a key holding the wrong kind of value
+</code></pre></div><p>키가 없나? 하고 처음에는 잘 못 생각했는데, <code>exists</code> 명령어를 이용하면 키의 유무를 파악할 수 있다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">exists my-key
+# 있음
+(integer) 1 
+
+# 없음 
+(integer) 0
+</code></pre></div><h1 id="type">type</h1>
+<p>만약 <code>exists</code> 명령어로 키가 있음을 알게 되었는데,
+지금까지 조회 명령어를 보면 알 수 있듯이 값이 어떤 형식으로 저장 되었는가에 따라 사용하는 명령어가 다르다.</p>
+<p>이때 <code>type</code> 명령어로 어떤 형식인지 확인할 수 있다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">type my-key
+&#34;string&#34; # get
+&#34;list&#34; # lrange
+&#34;set&#34; # SMEMBERS
+&#34;hash&#34;
+</code></pre></div><h1 id="dump">dump</h1>
+<p><code>type</code>으로 형식을 조회했는데 redis 내장 형식이 아니라면 어떻게 조회할까?
+이때는 <code>dump</code> 명령어로 redis 형식의 직렬화한 결과를 출력할 수 있다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">dump my-key
+&#34;\x05\x05\x01*\rblahblah...&#34;
+</code></pre></div>
   </div>
 
   
     <div id="sub-header">
-      Updated 3 June 2020
+      Updated 4 June 2020
     </div>
   
 
   <div id="links">
     
-      <a class="basic-alignment left" href="https://blog.geunho.dev/til/kudu/101/">&laquo; Kudu - 기본 내용 정리 (1)</a>
+      <a class="basic-alignment left" href="https://blog.geunho.dev/til/impala/from_timestamp/">&laquo; from_timestamp - Impala 날짜 형식 사용하기</a>
     
     
-      <a class="basic-alignment left" href="https://blog.geunho.dev/til/redis/ops/">Redis - 조회 명령어 정리 &raquo;</a>
+      <a class="basic-alignment left" href="https://blog.geunho.dev/til/github/markdown-tips-1/">GitHub - 코멘트에 접어두는 코드 삽입하기 &raquo;</a>
     
   </div>
 </section>

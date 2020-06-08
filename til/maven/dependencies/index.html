@@ -21,10 +21,10 @@
     <title>
       
       
-         from_timestamp - Impala 날짜 형식 사용하기 
+         Maven - 의존성 관리 
       
     </title>
-    <link rel="canonical" href="https://blog.geunho.dev/til/impala/from_timestamp/">
+    <link rel="canonical" href="https://blog.geunho.dev/til/maven/dependencies/">
 
     <style>
   * {
@@ -503,43 +503,72 @@ if (!doNotTrack) {
 
 
 <section id="content">
-  <h1> from_timestamp - Impala 날짜 형식 사용하기 </h1>
+  <h1> Maven - 의존성 관리 </h1>
 
   
     <div id="sub-header">
-      3 June 2020 · 1 minute read
+      8 June 2020 · 1 minute read
     </div>
   
 
   <nav id="TableOfContents"></nav>
 
   <div class="entry-content">
-    <p>일반적인 RDB에 내장된 <code>to_char(timestamp, text)</code> 함수가 Impala에는 없다.
-대신, 같은 역할을 하면서 이름만 다른 <code>from_timestamp(TIMESTAMP datetime, STRING pattern)</code> 함수를 사용하면 된다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span> <span class="n">ANSI</span>
-<span class="k">SELECT</span> <span class="n">to_char</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span> <span class="s1">&#39;yyyy-MM-dd, HH:mm&#39;</span><span class="p">)</span> 
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span> <span class="n">Impala</span>
-<span class="k">SELECT</span> <span class="n">from_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span> <span class="s1">&#39;yyyy-MM-dd, HH:mm&#39;</span><span class="p">)</span>
-</code></pre></div><h1 id="참고">참고</h1>
+    <p>Maven 프로젝트는 외부 모듈을 참조할때 maven repository로부터 참조 대상을  POM 파일의 의존성 항목에 추가해서 관리한다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;dependencies&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>$groupId<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>$artifactId<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>$version<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div><p>참조로 하는 모듈은 maven import시 프로젝트의 classpath에 참조 대상 라이브러리로 추가되고,
+만약 그 모듈이 다시 참조하는 모듈이 있는 경우 그 모듈도 classpath에 함께 추가된다.</p>
+<p>이로인해 발생하는 주의해야 할 부분이 발생한다.</p>
 <ul>
-<li><a href="https://impala.apache.org/docs/build/html/topics/impala_datetime_functions.html#datetime_functions__from_timestamp">Impala Date and Time Functions#FROM_TIMESTAMP, Impala docs</a></li>
-<li><a href="https://www.postgresql.org/docs/12/functions-formatting.html">9.8. Data Type Formatting Functions, Postgresql docs</a></li>
+<li>classpath에 참조의 하위 참조도 추가되므로 root 프로젝트에서 해당 모듈에 접근할 수 있음</li>
+<li>만약 root 프로젝트에서 하위 참조를 즉시 참조로 추가해서 사용할 경우 버전 충돌이 일어날 수 있음</li>
+<li>만약 즉시 참조없이 사용할 경우 상위 모듈 참조를 제거했을 때 빌드 오류가 발생할 수 있음</li>
 </ul>
+<p>따라서 어떤 모듈을 의존성에 추가할때, 하위 참조 모듈은 classpath에 추가되지 않도록 설정하거나 -(1)
+상위 모듈을 제거할 때 하위 참조 모듈을 명시적으로 의존성에 추가 -(2) 해줘야 한다.</p>
+<p>(1)의 경우</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>$groupId<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>$artifactId<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>$version<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;exclusions&gt;</span>
+    <span class="nt">&lt;exclusion&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>$child_groupId<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>$child_artifactId<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;/exclusion&gt;</span>
+    <span class="nt">&lt;/exclusions&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div><p><code>exclusion</code> 항목에 모듈 groupId, artifactId를 지정하면 된다.</p>
+<p>(2)의 경우</p>
+<div class="highlight"><pre class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>$child_groupId<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>$child_artifactId<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>$child_version<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div><p>이와 같이 하위 모듈을 의존성에 추가하고 상위 모듈은 제거한다.</p>
+<h1 id="교휸">교휸</h1>
+<p>POM의 의존성을 변경하거나 제거할 때에는 추가할 때 보다 참조 오류가 발생하지 않을지 신중히 작업해야 한다.
+커밋을 하기 전, Maven 캐시와 먼저 빌드된 타겟 디렉토리는 완전히 삭제하고 제빌드해서 빌드 오류 여부를 반드시 확인한다.
+(IDE에서 maven reimport, rebuild proejct 두 가지만 확실히 해줘도 충분할 듯 하다. 😂)</p>
 
   </div>
 
   
     <div id="sub-header">
-      Updated 3 June 2020
+      Updated 8 June 2020
     </div>
   
 
   <div id="links">
     
-      <a class="basic-alignment left" href="https://blog.geunho.dev/til/kudu/101/">&laquo; Kudu - 기본 내용 정리 (1)</a>
+      <a class="basic-alignment left" href="https://blog.geunho.dev/til/github/markdown-tips-1/">&laquo; GitHub - 코멘트에 접어두는 코드 삽입하기</a>
     
-    
-      <a class="basic-alignment left" href="https://blog.geunho.dev/til/redis/ops/">Redis - 조회 명령어 정리 &raquo;</a>
     
   </div>
 </section>

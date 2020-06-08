@@ -21,10 +21,10 @@
     <title>
       
       
-         from_timestamp - Impala 날짜 형식 사용하기 
+         GitHub - 코멘트에 접어두는 코드 삽입하기 
       
     </title>
-    <link rel="canonical" href="https://blog.geunho.dev/til/impala/from_timestamp/">
+    <link rel="canonical" href="https://blog.geunho.dev/til/github/markdown-tips-1/">
 
     <style>
   * {
@@ -503,43 +503,47 @@ if (!doNotTrack) {
 
 
 <section id="content">
-  <h1> from_timestamp - Impala 날짜 형식 사용하기 </h1>
+  <h1> GitHub - 코멘트에 접어두는 코드 삽입하기 </h1>
 
   
     <div id="sub-header">
-      3 June 2020 · 1 minute read
+      5 June 2020 · 1 minute read
     </div>
   
 
   <nav id="TableOfContents"></nav>
 
   <div class="entry-content">
-    <p>일반적인 RDB에 내장된 <code>to_char(timestamp, text)</code> 함수가 Impala에는 없다.
-대신, 같은 역할을 하면서 이름만 다른 <code>from_timestamp(TIMESTAMP datetime, STRING pattern)</code> 함수를 사용하면 된다.</p>
-<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span> <span class="n">ANSI</span>
-<span class="k">SELECT</span> <span class="n">to_char</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span> <span class="s1">&#39;yyyy-MM-dd, HH:mm&#39;</span><span class="p">)</span> 
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="o">#</span> <span class="n">Impala</span>
-<span class="k">SELECT</span> <span class="n">from_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span> <span class="s1">&#39;yyyy-MM-dd, HH:mm&#39;</span><span class="p">)</span>
-</code></pre></div><h1 id="참고">참고</h1>
-<ul>
-<li><a href="https://impala.apache.org/docs/build/html/topics/impala_datetime_functions.html#datetime_functions__from_timestamp">Impala Date and Time Functions#FROM_TIMESTAMP, Impala docs</a></li>
-<li><a href="https://www.postgresql.org/docs/12/functions-formatting.html">9.8. Data Type Formatting Functions, Postgresql docs</a></li>
-</ul>
+    <p>GitHub에서 마크다운 형식의 코멘트를 남기다보면 장황한 부가 설명은 접어두는 블럭으로 지정할 수 있다.</p>
+<p>접어두는 블럭은 <code>details</code>, <code>summary</code> 태그를 코멘트에 직접 넣어주면 되는데 다음과 같이 사용할 수 있다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;details&gt;
+ &lt;summary&gt;더 보기...&lt;/summary&gt;
+ 장황한 부연 설명들
+&lt;/details&gt;
 
+&gt; 더 보기... (클릭해서 펼치고 접어둘 수 있음)
+</code></pre></div><p>이때 코드 뭉치를 넣을 수 도 있는데, 한 줄 넘기고 작성하면 잘 동작한다.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;details&gt;
+ &lt;summary&gt;더 보기...&lt;/summary&gt;
+ 
+ 
+ [장황한 code block]
+&lt;/details&gt;
+</code></pre></div>
   </div>
 
   
     <div id="sub-header">
-      Updated 3 June 2020
+      Updated 5 June 2020
     </div>
   
 
   <div id="links">
     
-      <a class="basic-alignment left" href="https://blog.geunho.dev/til/kudu/101/">&laquo; Kudu - 기본 내용 정리 (1)</a>
+      <a class="basic-alignment left" href="https://blog.geunho.dev/til/redis/ops/">&laquo; Redis - 조회 명령어 정리</a>
     
     
-      <a class="basic-alignment left" href="https://blog.geunho.dev/til/redis/ops/">Redis - 조회 명령어 정리 &raquo;</a>
+      <a class="basic-alignment left" href="https://blog.geunho.dev/til/maven/dependencies/">Maven - 의존성 관리 &raquo;</a>
     
   </div>
 </section>
