@@ -6,10 +6,22 @@
     <description>Recent content in Tils on Blog · 김근호(Kim, Geunho)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 08 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 09 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://blog.geunho.dev/til/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Database - index에 대해서</title>
+      <link>https://blog.geunho.dev/til/database/</link>
+      <pubDate>Tue, 09 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/til/database/</guid>
+      <description>index는 데이터베이스(이하 DB)에 순차적으로 저장된 레코드를 빠르게 찾기 위한 자료구조다. DB 내부 엔진마다 구현된 내용은 다르겠지만, 일반적인 관계형 DB의 index는 B+트리 구조로 되어있다.
+레코드와 index가 물리적으로 저장되는 방식에 따라 index는 Clustered index, Non-clusterd index 두 종류로 나뉜다.
+Clustered index Clustered index는 하나의 테이블이 하나만 가질 수 있는 index인데, 이 index의 순서에 따라 실제로 레코드가 함께 저장된다. 테이블의 PK index가 이에 해당된다.
+Non-clustered index index가 레코드가 저장되는 공간과 별도의 공간에 저장되며 테이블은 여러 개의 non-clustered index를 가질 수 있다.</description>
+    </item>
     
     <item>
       <title>Git - remote에 커밋한 내용 되돌리기</title>
@@ -113,6 +125,15 @@ HDFS의 블록 크기보다 작은 다수 개의 파일은 namenode의 메모리
 사용방법 hadoop distcp hdfs://nn1/job/logs hdfs://nn1/job/others hdfs://nn2/job/ nn2 hdfs에 nn1의 두 디렉토리를 복제한다. 공백으로 구분해서 입력 경로를 여러 개를 지정할 수 있고, 마지막 인자에 출력 경로를 지정하면 된다.
 hadoop distcp -D dfs.replication=2 -m 32 hdfs://nn1/job/logs hdfs://nn1/job/others hdfs://nn2/job/ -D 옵션으로 hadoop 프로그램에 일반적인 옵션을 지정할 수 있고, -m 옵셥으로 map 수를 지정하여 최대 동시 복제 수를 설정한다.
 참고 DistCp, Hadoop docs</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://blog.geunho.dev/til/debezium/connectors/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/til/debezium/connectors/</guid>
+      <description></description>
     </item>
     
   </channel>

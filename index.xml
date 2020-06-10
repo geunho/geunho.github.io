@@ -6,10 +6,22 @@
     <description>Recent content on Blog · 김근호(Kim, Geunho)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 08 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 09 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://blog.geunho.dev/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Database - index에 대해서</title>
+      <link>https://blog.geunho.dev/til/database/</link>
+      <pubDate>Tue, 09 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/til/database/</guid>
+      <description>index는 데이터베이스(이하 DB)에 순차적으로 저장된 레코드를 빠르게 찾기 위한 자료구조다. DB 내부 엔진마다 구현된 내용은 다르겠지만, 일반적인 관계형 DB의 index는 B+트리 구조로 되어있다.
+레코드와 index가 물리적으로 저장되는 방식에 따라 index는 Clustered index, Non-clusterd index 두 종류로 나뉜다.
+Clustered index Clustered index는 하나의 테이블이 하나만 가질 수 있는 index인데, 이 index의 순서에 따라 실제로 레코드가 함께 저장된다. 테이블의 PK index가 이에 해당된다.
+Non-clustered index index가 레코드가 저장되는 공간과 별도의 공간에 저장되며 테이블은 여러 개의 non-clustered index를 가질 수 있다.</description>
+    </item>
     
     <item>
       <title>Git - remote에 커밋한 내용 되돌리기</title>
@@ -429,6 +441,15 @@ int a = 3; int b = 1; a = b; 그림 1. primitive type의 복사
 너무나 간단한 코드이지만 이를 Object 클래스를 상속하는 모든 객체(reference type)에서 그대로 적용하면, reference 값만을 복사하게 되어 같은 참조를 가진 두 개의 변수가 생기게 된다.
 그림 2. 객체의 얕은 복사
 그림2와 같은 복사를 얕은 복사(Shallow copy)라고 부른다.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://blog.geunho.dev/til/debezium/connectors/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/til/debezium/connectors/</guid>
+      <description></description>
     </item>
     
     <item>
