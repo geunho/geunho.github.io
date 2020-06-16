@@ -6,10 +6,70 @@
     <description>Recent content on Blog · 김근호(Kim, Geunho)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 09 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 16 Jun 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://blog.geunho.dev/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hive - implicit join 특성</title>
+      <link>https://blog.geunho.dev/til/hive/implicit-join/</link>
+      <pubDate>Tue, 16 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/til/hive/implicit-join/</guid>
+      <description>implicit join은 SQL 구문에서 join절을 직접 쓰지 않고 문자 그대로 암시적 구문으로써 join 하는 것을 뜻한다.
+INNER JOIN
+-- INNER JOIN SELECT a.id, b.name FROM a INNER JOIN b ON a.id = b.id -- IMPLICIT INNER JOIN SELECT a.id, b.name FROM a, b WHERE a.id = b.id implicit join은 두 번째 쿼리와 같이 대상 테이블을 FROM절 이후 콤마,로 구분해서 나열하며, WHERE절에 join 조건을 달게 된다.
+두 쿼리가 매우 유사하지만, implicit join에서 이 WHERE절 조건에 따라 어떤 join이 될지 달라지게 된다.</description>
+    </item>
+    
+    <item>
+      <title>GitHub - 코드 검색시 주의사항</title>
+      <link>https://blog.geunho.dev/til/github/cdoe-search/</link>
+      <pubDate>Mon, 15 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/til/github/cdoe-search/</guid>
+      <description>GitHub은 repository의 default 브랜치의 코드만 색인한다. 만약 버전 혹은 컴포넌트에 따라 서로 다른 브랜치로 관리하는 전략을 사용한다면, 추후 관련 코드가 색인되지 않아 코드 검색 기반 의사 결정시 잘 못된 결정을 내릴 수 있다.
+ Only the default branch is indexed for code search. In most cases, this will be the master branch.
+ 참고 https://help.github.com/en/github/searching-for-information-on-github/searching-code</description>
+    </item>
+    
+    <item>
+      <title>MapReduce - Reduce-side join</title>
+      <link>https://blog.geunho.dev/til/hadoop/reduce-side-join/</link>
+      <pubDate>Mon, 15 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/til/hadoop/reduce-side-join/</guid>
+      <description>SQL에서는 단일 구문 하나로 여러 테이블을 쉽게 join 할 수 있다. 구문 분석기가 데이터를 다루는 복잡한 부분은 알아서 처리해주는 덕분인데, MapReduce(이하 MR)로 join을 구현하려면 이러한 &amp;ldquo;알아서 처리해주는&amp;rdquo; 일을 직접 코드로 다뤄야 한다.
+MR join 중 가장 간단히 모든 join을 구현할 수 있는 방법이지만 비용이 비싼 Reduce-side join을 정리한다.
+Reduce-side join reduce 단계에서 데이터 셋을 join하는 처리 방식을 reduce-side join이라 한다.
+데이터 크기와 상관없이 inner join, left outer join, right outer join, full outer join, exclusive join, 그리고 Cartesian product까지 모든 종류의 join을 구현할 수 있다.</description>
+    </item>
+    
+    <item>
+      <title>Maven - Java cannot find symbol: javax.annotation.Resource</title>
+      <link>https://blog.geunho.dev/til/maven/java-cannot-find-symbol-resource/</link>
+      <pubDate>Mon, 15 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/til/maven/java-cannot-find-symbol-resource/</guid>
+      <description>다음과 같은 빌드 오류가 발생했을 때 해결 방법을 정리한다.
+Java cannot find symbol: javax.annotation.Resource javax.annotation.Resource 클래스를 찾을 수 없다는 오류인데, 이는 annotation으로 사용된다.
+@Resource Foo bar 해결 방안 JDK 11 빌드 환경에서는 Resource 클래스를 찾을 수 있도록 추가하거나,
+아래와 같이 Resource annotation 대신 Autowired, Qualifier를 사용한다.
+@Autowired @Qualifier(&amp;#34;bar&amp;#34;) Foo bar 변경이 부득이한 경우에는, JDK 11 -&amp;gt; JDK 8 로 빌드 버전을 낮추면 해결된다.</description>
+    </item>
+    
+    <item>
+      <title>Debezium - CDC를 위한 Connector 정리</title>
+      <link>https://blog.geunho.dev/til/debezium/connectors/</link>
+      <pubDate>Wed, 10 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.geunho.dev/til/debezium/connectors/</guid>
+      <description>Debezium은 변경 데이터 캡처(change data capture, 이하 CDC)를 구현하는 분산 플랫폼이다.
+과거에는 데이터베이스의 변경 로그를 내부 구현으로만 가지고 있었기 때문에 사용자는 직접 주기적인 쿼리를 하거나, 비용이 값비싼 트리거와 같은 방식을 이용해야 했다. Debezium을 비롯해 여러 솔루션들은 이러한 방식에서 직접 데이터베이스의 복제 로그를 추적해서 스트림으로 제공하는 방식으로 CDC를 구현하고 있다.
+Debezium은 이러한 스트림을 제공하기 위해, Kafka 플랫폼의 엔터프라이즈 솔루션을 제공하는 Confluent사에서 개발한 Kafka Connect의 Connector 구현체로 CDC를 제공한다.
+Debezium Connector는 Kafka Connect 기반으로 동작한다.</description>
+    </item>
     
     <item>
       <title>Database - index에 대해서</title>
@@ -441,15 +501,6 @@ int a = 3; int b = 1; a = b; 그림 1. primitive type의 복사
 너무나 간단한 코드이지만 이를 Object 클래스를 상속하는 모든 객체(reference type)에서 그대로 적용하면, reference 값만을 복사하게 되어 같은 참조를 가진 두 개의 변수가 생기게 된다.
 그림 2. 객체의 얕은 복사
 그림2와 같은 복사를 얕은 복사(Shallow copy)라고 부른다.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://blog.geunho.dev/til/debezium/connectors/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.geunho.dev/til/debezium/connectors/</guid>
-      <description></description>
     </item>
     
     <item>

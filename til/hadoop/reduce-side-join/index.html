@@ -21,10 +21,10 @@
     <title>
       
       
-         Tils 
+         MapReduce - Reduce-side join 
       
     </title>
-    <link rel="canonical" href="https://blog.geunho.dev/til/">
+    <link rel="canonical" href="https://blog.geunho.dev/til/hadoop/reduce-side-join/">
 
     <style>
   * {
@@ -469,8 +469,6 @@
 
 
     
-        <atom:link href="https://blog.geunho.dev/til/index.xml" rel="self" type="application/rss+xml" />
-    
   </head>
 
   <body>
@@ -502,115 +500,62 @@ if (!doNotTrack) {
 <script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
-<section id=content>
-  <ul class=posts_listing>
+
+
+<section id="content">
+  <h1> MapReduce - Reduce-side join </h1>
+
+  
+    <div id="sub-header">
+      15 June 2020 · 1 minute read
+    </div>
+  
+
+  <nav id="TableOfContents"></nav>
+
+  <div class="entry-content">
+    <p>SQL에서는 단일 구문 하나로 여러 테이블을 쉽게 join 할 수 있다. 구문 분석기가 데이터를 다루는 복잡한 부분은 알아서 처리해주는 덕분인데,
+MapReduce(이하 MR)로 join을 구현하려면 이러한 &ldquo;알아서 처리해주는&rdquo; 일을 직접 코드로 다뤄야 한다.</p>
+<p>MR join 중 가장 간단히 모든 join을 구현할 수 있는 방법이지만 비용이 비싼 Reduce-side join을 정리한다.</p>
+<h1 id="reduce-side-join">Reduce-side join</h1>
+<p>reduce 단계에서 데이터 셋을 join하는 처리 방식을 reduce-side join이라 한다.</p>
+<p>데이터 크기와 상관없이 inner join, left outer join, right outer join, full outer join, exclusive join, 그리고 Cartesian product까지 모든 종류의 join을 구현할 수 있다.</p>
+<ul>
+<li>각 데이터 셋의 mapper에서는 join의 외래키로 사용할 필드를 key로, 나머지는 value로 출력한다. 이때 데이터 셋이 어디로부터 온 것인지 알 수 있도록 구분자를 추가하거나, 각 레코드가 클래스 인스턴스로 변환하여 구분될 수 있도록 처리한다.</li>
+<li>외래키 간 서로 다른 형식의 레코드가 하나의 reducer에서 입력 받는다.</li>
+<li>reducer에서는 각 데이터 셋의 유무에 따라 join 처리를 한다.</li>
+</ul>
+<p>이렇듯 구현은 아주 간단한데, 대신 다음과 같은 단점들이 있다:</p>
+<ul>
+<li>입력 레코드의 대부분을 reduce 단계로 보내야 하기 때문에 네트워크 대역폭을 많이 사용</li>
+<li>따라서 처리 속도가 느림</li>
+</ul>
+
+  </div>
+
+  
+    <div id="sub-header">
+      Updated 15 June 2020
+    </div>
+  
+
+  <div id="links">
     
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/hive/implicit-join/">Hive - implicit join 특성</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
+      <a class="basic-alignment left" href="https://blog.geunho.dev/til/maven/java-cannot-find-symbol-resource/">&laquo; Maven - Java cannot find symbol: javax.annotation.Resource</a>
     
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/github/cdoe-search/">GitHub - 코드 검색시 주의사항</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
     
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/hadoop/reduce-side-join/">MapReduce - Reduce-side join</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
+      <a class="basic-alignment left" href="https://blog.geunho.dev/til/github/cdoe-search/">GitHub - 코드 검색시 주의사항 &raquo;</a>
     
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/maven/java-cannot-find-symbol-resource/">Maven - Java cannot find symbol: javax.annotation.Resource</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/debezium/connectors/">Debezium - CDC를 위한 Connector 정리</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/database/">Database - index에 대해서</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/git/rollback/">Git - remote에 커밋한 내용 되돌리기</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/maven/dependencies/">Maven - 의존성 관리시 주의사항</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/github/markdown-tips-1/">GitHub - 코멘트에 접어두는 코드 삽입하기</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/redis/ops/">Redis - 조회 명령어 정리</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/impala/from_timestamp/">from_timestamp - Impala 날짜 형식 사용하기</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/kudu/101/">Kudu - 기본 내용 정리 (1)</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/hadoop/har/">har - Hadoop archive 도구로 압축하기</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/sh/sed-tips-1/">sh - sed로 마지막 N개 문자열 제거하기</a></h2>
-        <div id=date>
-          <time>May 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/hadoop/distcp/">distcp - HDFS 클러스터 간 파일 복제하기</a></h2>
-        <div id=date>
-          <time>May 2020</time>
-        </div>
-      </li>
-    
-  </ul>
+  </div>
+</section>
+<section id="comment">
+  <script src="https://utteranc.es/client.js"
+    repo="geunho/blog"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>  
 </section>
 
 <footer>
@@ -620,5 +565,4 @@ if (!doNotTrack) {
     </p>
   </div>
 </footer>
-
 

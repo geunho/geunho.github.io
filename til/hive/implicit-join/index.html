@@ -21,10 +21,10 @@
     <title>
       
       
-         Tils 
+         Hive - implicit join 특성 
       
     </title>
-    <link rel="canonical" href="https://blog.geunho.dev/til/">
+    <link rel="canonical" href="https://blog.geunho.dev/til/hive/implicit-join/">
 
     <style>
   * {
@@ -469,8 +469,6 @@
 
 
     
-        <atom:link href="https://blog.geunho.dev/til/index.xml" rel="self" type="application/rss+xml" />
-    
   </head>
 
   <body>
@@ -502,115 +500,92 @@ if (!doNotTrack) {
 <script async src='https://www.google-analytics.com/analytics.js'></script>
 
 
-<section id=content>
-  <ul class=posts_listing>
+
+
+<section id="content">
+  <h1> Hive - implicit join 특성 </h1>
+
+  
+    <div id="sub-header">
+      16 June 2020 · 1 minute read
+    </div>
+  
+
+  <nav id="TableOfContents"></nav>
+
+  <div class="entry-content">
+    <p>implicit join은 SQL 구문에서 join절을 직접 쓰지 않고 문자 그대로 암시적 구문으로써 join 하는 것을 뜻한다.</p>
+<p>INNER JOIN</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="c1">-- INNER JOIN
+</span><span class="c1"></span><span class="k">SELECT</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">name</span>
+<span class="k">FROM</span> <span class="n">a</span> 
+<span class="k">INNER</span> <span class="k">JOIN</span> <span class="n">b</span> 
+<span class="k">ON</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">b</span><span class="p">.</span><span class="n">id</span>
+
+<span class="c1">-- IMPLICIT INNER JOIN
+</span><span class="c1"></span><span class="k">SELECT</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">name</span>
+<span class="k">FROM</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+<span class="k">WHERE</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">b</span><span class="p">.</span><span class="n">id</span>
+</code></pre></div><p>implicit join은 두 번째 쿼리와 같이 대상 테이블을 <code>FROM</code>절 이후 콤마<code>,</code>로 구분해서 나열하며,
+<code>WHERE</code>절에 join 조건을 달게 된다.</p>
+<p>두 쿼리가 매우 유사하지만, implicit join에서 이 <code>WHERE</code>절 조건에 따라 어떤 join이 될지 달라지게 된다.
+예를 들어, <code>WHERE</code>절을 제외하면 <code>CROSS JOIN</code>(<a href="https://en.wikipedia.org/wiki/Cartesian_product">Cartesian product</a>)이 된다.</p>
+<p>Hive에서는 0.13.0 버전부터 implicit join을 제공한다. 위 쿼리에 이어서 각각의 join절은 implicit join절로 변경할 수 있는지 살펴본다.</p>
+<p>CROSS JOIN</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="c1">-- CROSS JOIN 
+</span><span class="c1"></span><span class="k">SELECT</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">name</span>
+<span class="k">FROM</span> <span class="n">a</span> 
+<span class="k">CROSS</span> <span class="k">JOIN</span> <span class="n">b</span> 
+
+<span class="c1">-- IMPLICIT CROSS JOIN
+</span><span class="c1"></span><span class="k">SELECT</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">name</span>
+<span class="k">FROM</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+</code></pre></div><p>LEFT OUTER JOIN</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="c1">-- LEFT OUTER JOIN 
+</span><span class="c1"></span><span class="k">SELECT</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">name</span>
+<span class="k">FROM</span> <span class="n">a</span> 
+<span class="k">LEFT</span> <span class="k">OUTER</span> <span class="k">JOIN</span> <span class="n">b</span> 
+<span class="k">ON</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">b</span><span class="p">.</span><span class="n">id</span>
+
+<span class="c1">-- IMPLICIT LEFT OUTER JOIN
+</span><span class="c1"></span><span class="k">SELECT</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">name</span>
+<span class="k">FROM</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+<span class="k">WHERE</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">b</span><span class="p">.</span><span class="n">id</span> <span class="k">OR</span> <span class="n">b</span><span class="p">.</span><span class="n">id</span> <span class="k">IS</span> <span class="k">NULL</span>
+</code></pre></div><p>RIGHT OUTER JOIN</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="c1">-- RIGHT OUTER JOIN 
+</span><span class="c1"></span><span class="k">SELECT</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">name</span>
+<span class="k">FROM</span> <span class="n">a</span> 
+<span class="k">RIGHT</span> <span class="k">OUTER</span> <span class="k">JOIN</span> <span class="n">b</span> 
+<span class="k">ON</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">b</span><span class="p">.</span><span class="n">id</span>
+
+<span class="c1">-- IMPLICIT RIGHT OUTER JOIN
+</span><span class="c1"></span><span class="k">SELECT</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">b</span><span class="p">.</span><span class="n">name</span>
+<span class="k">FROM</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+<span class="k">WHERE</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">b</span><span class="p">.</span><span class="n">id</span> <span class="k">OR</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span> <span class="k">IS</span> <span class="k">NULL</span>
+</code></pre></div>
+  </div>
+
+  
+    <div id="sub-header">
+      Updated 16 June 2020
+    </div>
+  
+
+  <div id="links">
     
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/hive/implicit-join/">Hive - implicit join 특성</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
+      <a class="basic-alignment left" href="https://blog.geunho.dev/til/github/cdoe-search/">&laquo; GitHub - 코드 검색시 주의사항</a>
     
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/github/cdoe-search/">GitHub - 코드 검색시 주의사항</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
     
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/hadoop/reduce-side-join/">MapReduce - Reduce-side join</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/maven/java-cannot-find-symbol-resource/">Maven - Java cannot find symbol: javax.annotation.Resource</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/debezium/connectors/">Debezium - CDC를 위한 Connector 정리</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/database/">Database - index에 대해서</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/git/rollback/">Git - remote에 커밋한 내용 되돌리기</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/maven/dependencies/">Maven - 의존성 관리시 주의사항</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/github/markdown-tips-1/">GitHub - 코멘트에 접어두는 코드 삽입하기</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/redis/ops/">Redis - 조회 명령어 정리</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/impala/from_timestamp/">from_timestamp - Impala 날짜 형식 사용하기</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/kudu/101/">Kudu - 기본 내용 정리 (1)</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/hadoop/har/">har - Hadoop archive 도구로 압축하기</a></h2>
-        <div id=date>
-          <time>June 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/sh/sed-tips-1/">sh - sed로 마지막 N개 문자열 제거하기</a></h2>
-        <div id=date>
-          <time>May 2020</time>
-        </div>
-      </li>
-    
-      <li>
-        <h2><a href="https://blog.geunho.dev/til/hadoop/distcp/">distcp - HDFS 클러스터 간 파일 복제하기</a></h2>
-        <div id=date>
-          <time>May 2020</time>
-        </div>
-      </li>
-    
-  </ul>
+  </div>
+</section>
+<section id="comment">
+  <script src="https://utteranc.es/client.js"
+    repo="geunho/blog"
+    issue-term="title"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+  </script>  
 </section>
 
 <footer>
@@ -620,5 +595,4 @@ if (!doNotTrack) {
     </p>
   </div>
 </footer>
-
 
